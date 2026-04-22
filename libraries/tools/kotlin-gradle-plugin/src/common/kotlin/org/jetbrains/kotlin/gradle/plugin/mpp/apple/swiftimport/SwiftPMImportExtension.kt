@@ -523,6 +523,20 @@ sealed class PackageResolvedSynchronization {
     object None : PackageResolvedSynchronization()
 }
 
+internal fun PackageResolvedSynchronization.toSerializable(): SerializablePackageResolvedSynchronization = when (this) {
+    is PackageResolvedSynchronization.Identifier -> SerializablePackageResolvedSynchronization.Identifier(identifier)
+    PackageResolvedSynchronization.None -> SerializablePackageResolvedSynchronization.None
+}
+
+@kotlinx.serialization.Serializable
+internal sealed class SerializablePackageResolvedSynchronization {
+    @kotlinx.serialization.Serializable
+    data class Identifier(val identifier: String) : SerializablePackageResolvedSynchronization()
+
+    @kotlinx.serialization.Serializable
+    object None : SerializablePackageResolvedSynchronization()
+}
+
 // This is the structure that we serialize into
 @kotlinx.serialization.Serializable
 internal data class SwiftPMImportMetadata(
