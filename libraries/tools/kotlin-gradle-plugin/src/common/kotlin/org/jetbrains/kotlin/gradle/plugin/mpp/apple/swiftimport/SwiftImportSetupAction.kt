@@ -28,7 +28,6 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.apple.sdk
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.swiftimport.XcodebuildDefFileUtils.DUMP_FILE_ARGS_SEPARATOR
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.swiftimport.GenerateSyntheticLinkageImportProject.Companion.SYNTHETIC_IMPORT_TARGET_MAGIC_NAME
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.swiftimport.GenerateSyntheticLinkageImportProject.SyntheticProductType
-import org.jetbrains.kotlin.gradle.plugin.mpp.apple.swiftimport.SwiftPMDependency.Platform
 import org.jetbrains.kotlin.gradle.plugin.testTaskName
 import org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeSimulatorTest
 import org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeTest
@@ -38,6 +37,7 @@ import org.jetbrains.kotlin.gradle.tasks.locateOrRegisterTask
 import org.jetbrains.kotlin.gradle.tasks.registerTask
 import org.jetbrains.kotlin.gradle.utils.addConfigurationMetrics
 import org.jetbrains.kotlin.gradle.utils.getAttributeSafely
+import org.jetbrains.kotlin.gradle.utils.getFile
 import org.jetbrains.kotlin.gradle.utils.lowerCamelCaseName
 import org.jetbrains.kotlin.konan.target.HostManager
 import org.jetbrains.kotlin.statistics.metrics.BooleanMetrics
@@ -563,20 +563,20 @@ private fun KonanTarget.swiftPMPlatform(): SwiftPMDependency.Platform = when (th
     KonanTarget.IOS_ARM64,
     KonanTarget.IOS_SIMULATOR_ARM64,
     KonanTarget.IOS_X64,
-        -> Platform.iOS
+        -> SwiftPMDependency.Platform.iOS
     KonanTarget.MACOS_ARM64,
     KonanTarget.MACOS_X64,
-        -> Platform.macOS
+        -> SwiftPMDependency.Platform.macOS
     KonanTarget.TVOS_ARM64,
     KonanTarget.TVOS_SIMULATOR_ARM64,
     KonanTarget.TVOS_X64,
-        -> Platform.tvOS
+        -> SwiftPMDependency.Platform.tvOS
     KonanTarget.WATCHOS_ARM32,
     KonanTarget.WATCHOS_ARM64,
     KonanTarget.WATCHOS_DEVICE_ARM64,
     KonanTarget.WATCHOS_SIMULATOR_ARM64,
     KonanTarget.WATCHOS_X64,
-        -> Platform.watchOS
+        -> SwiftPMDependency.Platform.watchOS
 
     KonanTarget.ANDROID_ARM32,
     KonanTarget.ANDROID_ARM64,
@@ -748,9 +748,13 @@ internal fun searchForGradlew(path: File?): File? {
     return searchForGradlew(path.parentFile)
 }
 
-internal fun Project.hasDirectOrTransitiveSwiftPMDependencies(): Provider<Boolean> {
+internal fun Project.directSwiftPMDependencies(): Provider<Set<SwiftPMDependency>> {
     val swiftPMImportExtension = locateOrRegisterSwiftPMDependenciesExtension()
-    val hasDirectSwiftPMDependencies = provider { swiftPMImportExtension.swiftPMDependencies.isNotEmpty() }
+    return provider { swiftPMImportExtension.swiftPMDependencies }
+}
+
+internal fun Project.hasDirectOrTransitiveSwiftPMDependencies(): Provider<Boolean> {
+    val hasDirectSwiftPMDependencies = directSwiftPMDependencies().map { it.isNotEmpty() }
     return transitiveSwiftPMDependenciesProvider().map { transitiveDependencies ->
         hasDirectSwiftPMDependencies.get() || transitiveDependencies.metadataByDependencyIdentifier.values.any { it.dependencies.isNotEmpty() }
     }
@@ -842,5 +846,28 @@ internal fun Project.swiftPMImportIdeModelProvider(): Provider<SwiftPMImportIdeM
             hasDirectOrTransitiveSwiftPMDependencies,
             ("${project.path}:${IntegrateLinkagePackageIntoXcodeProject.TASK_NAME}").replace("::", ":"),
             SYNTHETIC_IMPORT_TARGET_MAGIC_NAME,
+            project.directSwiftPMDependencies().map directSwiftPMDependencies@ { dependencies ->
+                val declaredDependencies = dependencies.map {
+                    when (it) {
+                        is SwiftPMDependency.Local -> LocalSwiftPMDependencyForIde(it.absolutePath)
+                        is SwiftPMDependency.Remote -> {
+                            RemoteSwiftPMDependencyForIde(
+                                when (val repository = it.repository) {
+                                    is SwiftPMDependency.Remote.Repository.Id -> repository.value
+                                    is SwiftPMDependency.Remote.Repository.Url -> repository.value
+                                }
+                            )
+                        }
+                    }
+                }
+                if (declaredDependencies.isEmpty()) return@directSwiftPMDependencies null
+
+                val fetchTask = tasks.getByName(FetchSyntheticImportProjectPackages.TASK_NAME) as FetchSyntheticImportProjectPackages
+                DeclaredSwiftPMDependencies(
+                    dependencies = declaredDependencies,
+                    checkoutPath = fetchTask.swiftPMDependenciesCheckout.getFile(),
+                    swiftPackageResolveTaskPath = fetchTask.path,
+                )
+            }.orNull
         )
     }
