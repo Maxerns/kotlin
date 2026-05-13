@@ -20,8 +20,11 @@ import org.jetbrains.kotlin.ir.expressions.IrGetEnumValue
 import org.jetbrains.kotlin.ir.expressions.IrLazilyBoundAnnotationImpl
 import org.jetbrains.kotlin.ir.expressions.IrVararg
 import org.jetbrains.kotlin.ir.symbols.*
+import org.jetbrains.kotlin.ir.types.IrType
+import org.jetbrains.kotlin.ir.types.classifierOrNull
 import org.jetbrains.kotlin.ir.types.defaultType
 import org.jetbrains.kotlin.ir.types.isArray
+import org.jetbrains.kotlin.ir.types.isPrimitiveType
 import org.jetbrains.kotlin.name.*
 import org.jetbrains.kotlin.resolve.descriptorUtil.module
 import org.jetbrains.kotlin.util.OperatorNameConventions
@@ -408,3 +411,15 @@ inline fun <reified T> IrAnnotation.getConstArgument(name: String): T? {
     val expression = argumentMapping[Name.identifier(name)] as? IrConst
     return expression?.value as? T
 }
+
+val IrTypeParameter.isJvmSpecialized: Boolean
+    get() = hasAnnotation(FqName("kotlin.jvm.JvmSpecialize"))
+
+val IrFunction.isJvmSpecialized: Boolean
+    get() = typeParameters.any { it.isJvmSpecialized }
+
+val IrType.isJvmSpecializedGeneric: Boolean
+    get() = (this.classifierOrNull as? IrTypeParameterSymbol)?.owner?.isJvmSpecialized ?: false
+
+val IrType.genericTypeParameterIndex: Int?
+    get() = (this.classifierOrNull as? IrTypeParameterSymbol)?.owner?.index
