@@ -1,0 +1,2 @@
+Benchmark                             Mode  Cnt    Score   Error  Units
+TestInputsCheckerBenchmark.benchmark  avgt   30  935.171 ± 3.794  ms/op

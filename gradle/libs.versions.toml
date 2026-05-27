@@ -91,6 +91,7 @@ bouncycastle = "1.84"
 kotlin-before-bta-v2 = "2.2.21"
 bytebuddy = "1.18.9"
 playwright = "1.60.0"
+jmh = "0.7.3"
 
 analysis-api-kotlin = "2.3.21"
 analysis-api-kotlinx-coroutines = "1.8.0-intellij-13" # Should be synchronized with 'kotlinx-coroutines'
@@ -232,6 +233,8 @@ analysis-api-kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", 
 analysis-api-kotlin-metadata-jvm = { module = "org.jetbrains.kotlin:kotlin-metadata-jvm", version.ref = "analysis-api-kotlin" }
 analysis-api-intellij-patched-kotlinx-coroutines-core-jvm = { module = "com.intellij.platform:kotlinx-coroutines-core-jvm", version.ref = "analysis-api-kotlinx-coroutines" }
 analysis-api-intellij-patched-kotlinx-coroutines-debug = { module = "com.intellij.platform:kotlinx-coroutines-debug", version.ref = "analysis-api-kotlinx-coroutines" }
+
+jmh-gradle-plugin = { module = "me.champeau.jmh:jmh-gradle-plugin", version.ref = "jmh" }
 
 [plugins]
 gradle-node = { id = "com.github.node-gradle.node", version.ref = "gradle-node-plugin" }

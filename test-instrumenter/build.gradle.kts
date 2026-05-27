@@ -1,3 +1,4 @@
+import JdkMajorVersion.JDK_25_0
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
@@ -5,6 +6,7 @@ plugins {
     id("test-federation-convention")
     id("com.autonomousapps.dependency-analysis")
     kotlin("jvm")
+    id("jmh")
 }
 
 sourceSets {
@@ -22,6 +24,11 @@ sourceSets {
         compileClasspath += sourceSets["bootClasspath"].output
         runtimeClasspath += sourceSets["bootClasspath"].output
     }
+
+    "jmh" {
+        java.srcDirs("jmh")
+        compileClasspath += sourceSets["bootClasspath"].output
+    }
 }
 
 val bootClasspathCompileOnly by configurations.getting
@@ -31,6 +38,7 @@ dependencies {
     bootClasspathCompileOnly(libs.org.jetbrains.annotations)
 
     implementation(kotlinStdlib())
+    implementation(libs.kotlinx.coroutines.core)
     implementation(libs.bytebuddy)
 }
 
@@ -60,4 +68,17 @@ configurations {
             artifact(bootClasspathJar)
         }
     }
+}
+
+jmh {
+    javaLauncher = getToolchainLauncherFor(JDK_25_0)
+    resultsFile = layout.projectDirectory.file("benchmark-baseline.txt")
+    warmupIterations = 5
+    iterations = 10
+    fork = 3
+    threads = 1
+}
+
+tasks.jmh {
+    jmhClasspath.from(sourceSets["bootClasspath"].output)
 }
