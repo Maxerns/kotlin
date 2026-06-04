@@ -357,16 +357,18 @@ internal class ExportModelGenerator(private val config: TypeScriptExportConfig) 
                 )
             }
             function.receiverParameter?.let {
-                add(
-                    ExportedParameter(
-                        EXTENSION_RECEIVER_NAME,
-                        exportType(
-                            it.returnType,
-                            functionTypeParameterScope,
-                            inlineClassesShouldBeUnboxed = inlineClassesShouldBeUnboxed
+                if (!function.isCompanion) {
+                    add(
+                        ExportedParameter(
+                            EXTENSION_RECEIVER_NAME,
+                            exportType(
+                                it.returnType,
+                                functionTypeParameterScope,
+                                inlineClassesShouldBeUnboxed = inlineClassesShouldBeUnboxed
+                            )
                         )
                     )
-                )
+                }
             }
             for (parameter in function.valueParameters) {
                 val type = if (parameter.isVararg) {
@@ -635,11 +637,11 @@ internal class ExportModelGenerator(private val config: TypeScriptExportConfig) 
         }
 
         for (constructor in memberScope.constructors) {
-            if (!constructor.isEffectivelyExported(includingImplicitExport = true)) continue
+            if (!constructor.isEffectivelyExported(includingImplicitExport = true, effectiveParentClass = klass)) continue
             members.addIfNotNull(exportConstructor(constructor, klass, typeParameterScope))
         }
         for (member in memberScope.callables) {
-            if (!member.isEffectivelyExported(includingImplicitExport = true)) continue
+            if (!member.isEffectivelyExported(includingImplicitExport = true, effectiveParentClass = klass)) continue
             if (isCompanionObject && member.isJsStatic()) {
                 // @JsStatic companion members are exported below
                 continue
@@ -656,11 +658,21 @@ internal class ExportModelGenerator(private val config: TypeScriptExportConfig) 
             }
 
             val original = member.fakeOverrideOriginal
-            val actualParent = original.containingDeclaration as? KaClassSymbol ?: continue
-            // We include only declarations from the class itself, plus inherited interface members that have a default implementation.
-            val shouldInclude =
-                actualParent == klass || (klass.modality != KaSymbolModality.ABSTRACT && hasDefaultImplementationIn(actualParent))
-            if (!shouldInclude){
+            val actualParent = original.containingDeclaration as? KaClassSymbol
+
+            // We include only such declarations:
+            val shouldInclude = when {
+                // When they are declared in the class itself explicitly.
+                actualParent == klass -> true
+                // When they are from companion blocks. They are lifted to a top-level, so they are technically not explicitly defined in
+                // a class declaration.
+                member.isCompanion -> true
+                // When they are inherited interface members that have a default implementation.
+                actualParent != null && klass.modality != KaSymbolModality.ABSTRACT && hasDefaultImplementationIn(actualParent) ->
+                    true
+                else -> false
+            }
+            if (!shouldInclude) {
                 continue
             }
             when (member) {

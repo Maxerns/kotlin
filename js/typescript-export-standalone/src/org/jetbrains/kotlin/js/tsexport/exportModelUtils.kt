@@ -135,7 +135,10 @@ internal fun KaNamedSymbol.getExportedIdentifier(): String {
 }
 
 context(_: KaSession)
-internal fun KaDeclarationSymbol.isEffectivelyExported(includingImplicitExport: Boolean = false): Boolean {
+internal fun KaDeclarationSymbol.isEffectivelyExported(
+    includingImplicitExport: Boolean = false,
+    effectiveParentClass: KaNamedClassSymbol? = null
+): Boolean {
     if (isExpect || isJsExportIgnore() || !visibility.isPublicApi) {
         return false
     }
@@ -148,7 +151,9 @@ internal fun KaDeclarationSymbol.isEffectivelyExported(includingImplicitExport: 
                 || allOverriddenSymbols.any { it.isEffectivelyExported(includingImplicitExport) }
     }
 
-    val parent = containingDeclaration
+    // For declarations coming from companion blocks and extensions, containingDeclaration would be null, but parent class is still known
+    // from metadata, so falling back to it.
+    val parent = containingDeclaration ?: effectiveParentClass
     val parentModality = parent?.modality
     if (!(this is KaConstructorSymbol && isPrimary)
         && visibility == KaSymbolVisibility.PROTECTED
