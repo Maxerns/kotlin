@@ -375,7 +375,6 @@ kotlin {
             kotlin {
                 srcDir("common/src")
                 srcDir(files("src").builtBy(prepareCommonSources))
-                srcDir("unsigned/src")
             }
         }
         commonTest {
@@ -399,6 +398,7 @@ kotlin {
                 "jvm/src",
                 "jvm/runtime",
                 "jvm/builtins",
+                "jvm/unsigned",
             )
             project.sourceSets["jvmMain"].java.srcDirs(*jvmSrcDirs.toTypedArray())
             kotlin.setSrcDirs(jvmSrcDirs)
@@ -457,6 +457,7 @@ kotlin {
             kotlin {
                 srcDir(prepareJsIrMainSources.requiredForImport())
                 srcDir("$jsDir/builtins")
+                srcDir("$jsDir/unsigned")
                 srcDir("$jsDir/runtime")
                 srcDir("$jsDir/src").apply {
                     exclude("kotlin/browser")
@@ -509,6 +510,7 @@ kotlin {
             kotlin {
                 srcDir(prepareWasmBuiltinSources.requiredForImport())
                 srcDir("wasm/builtins")
+                srcDir("wasm/unsigned")
                 srcDir("wasm/internal")
                 srcDir("wasm/runtime")
                 srcDir("wasm/src")
@@ -550,6 +552,7 @@ kotlin {
             dependsOn(wasmCommonMain)
             kotlin {
                 srcDir("wasm/js/builtins")
+                srcDir("wasm/js/unsigned")
                 srcDir("wasm/js/internal")
                 srcDir("wasm/js/src")
             }
@@ -565,6 +568,7 @@ kotlin {
             dependsOn(nativeWasmWasiMain)
             kotlin {
                 srcDir("wasm/wasi/builtins")
+                srcDir("wasm/wasi/unsigned")
                 srcDir("wasm/wasi/internal")
                 srcDir("wasm/wasi/src")
             }
