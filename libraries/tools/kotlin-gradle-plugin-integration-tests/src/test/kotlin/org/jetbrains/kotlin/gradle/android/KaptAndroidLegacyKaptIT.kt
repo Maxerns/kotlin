@@ -32,6 +32,7 @@ class KaptAndroidLegacyKaptIT : KaptBaseIT() {
             buildJdk = jdkVersion.location,
         ) {
             build(":lib:kaptDebugKotlin") {
+                assertKaptSuccessful()
                 assertFileInProjectExists("lib/build/generated/source/kapt/debug/com/example/legacykapt/DaggerAppComponent.java")
             }
         }
