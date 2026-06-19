@@ -92,7 +92,11 @@ public inline fun maxOf(a: UShort, b: UShort, c: UShort): UShort {
 @ExperimentalUnsignedTypes
 public fun maxOf(a: UInt, vararg other: UInt): UInt {
     var max = a
-    for (e in other) max = maxOf(max, e)
+    var i = 0
+    while (i < other.size) {
+        max = maxOf(max, other[i])
+        i++
+    }
     return max
 }
 
@@ -103,7 +107,11 @@ public fun maxOf(a: UInt, vararg other: UInt): UInt {
 @ExperimentalUnsignedTypes
 public fun maxOf(a: ULong, vararg other: ULong): ULong {
     var max = a
-    for (e in other) max = maxOf(max, e)
+    var i = 0
+    while (i < other.size) {
+        max = maxOf(max, other[i])
+        i++
+    }
     return max
 }
 
@@ -114,7 +122,11 @@ public fun maxOf(a: ULong, vararg other: ULong): ULong {
 @ExperimentalUnsignedTypes
 public fun maxOf(a: UByte, vararg other: UByte): UByte {
     var max = a
-    for (e in other) max = maxOf(max, e)
+    var i = 0
+    while (i < other.size) {
+        max = maxOf(max, other[i])
+        i++
+    }
     return max
 }
 
@@ -125,7 +137,11 @@ public fun maxOf(a: UByte, vararg other: UByte): UByte {
 @ExperimentalUnsignedTypes
 public fun maxOf(a: UShort, vararg other: UShort): UShort {
     var max = a
-    for (e in other) max = maxOf(max, e)
+    var i = 0
+    while (i < other.size) {
+        max = maxOf(max, other[i])
+        i++
+    }
     return max
 }
 
@@ -204,7 +220,11 @@ public inline fun minOf(a: UShort, b: UShort, c: UShort): UShort {
 @ExperimentalUnsignedTypes
 public fun minOf(a: UInt, vararg other: UInt): UInt {
     var min = a
-    for (e in other) min = minOf(min, e)
+    var i = 0
+    while (i < other.size) {
+        min = minOf(min, other[i])
+        i++
+    }
     return min
 }
 
@@ -215,7 +235,11 @@ public fun minOf(a: UInt, vararg other: UInt): UInt {
 @ExperimentalUnsignedTypes
 public fun minOf(a: ULong, vararg other: ULong): ULong {
     var min = a
-    for (e in other) min = minOf(min, e)
+    var i = 0
+    while (i < other.size) {
+        min = minOf(min, other[i])
+        i++
+    }
     return min
 }
 
@@ -226,7 +250,11 @@ public fun minOf(a: ULong, vararg other: ULong): ULong {
 @ExperimentalUnsignedTypes
 public fun minOf(a: UByte, vararg other: UByte): UByte {
     var min = a
-    for (e in other) min = minOf(min, e)
+    var i = 0
+    while (i < other.size) {
+        min = minOf(min, other[i])
+        i++
+    }
     return min
 }
 
@@ -237,7 +265,11 @@ public fun minOf(a: UByte, vararg other: UByte): UByte {
 @ExperimentalUnsignedTypes
 public fun minOf(a: UShort, vararg other: UShort): UShort {
     var min = a
-    for (e in other) min = minOf(min, e)
+    var i = 0
+    while (i < other.size) {
+        min = minOf(min, other[i])
+        i++
+    }
     return min
 }
 

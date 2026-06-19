@@ -622,6 +622,19 @@ object Ordering : TemplateGroupBase() {
             }
             """
         }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var i = lastIndex
+            while (i >= 1) {
+                val j = random.nextInt(i + 1)
+                val copy = this[i]
+                this[i] = this[j]
+                this[j] = copy
+                i--
+            }
+            """
+        }
         specialFor(Lists) {
             body {
                 """
@@ -722,6 +735,17 @@ object Ordering : TemplateGroupBase() {
             return true
             """
         }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var i = 1
+            while (i <= lastIndex) {
+                if (comparator.compare(this[i - 1], this[i]) > 0) return false
+                i++
+            }
+            return true
+            """
+        }
     }
 
     val f_isSorted = fn("isSorted()") {
@@ -760,6 +784,17 @@ object Ordering : TemplateGroupBase() {
             return true
             """
         }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var i = 1
+            while (i <= lastIndex) {
+                if (this[i - 1] > this[i]) return false
+                i++
+            }
+            return true
+            """
+        }
     }
 
     val f_isSortedDescending = fn("isSortedDescending()") {
@@ -794,6 +829,17 @@ object Ordering : TemplateGroupBase() {
             """
             for (i in 1..lastIndex) {
                 if ($condition) return false
+            }
+            return true
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var i = 1
+            while (i <= lastIndex) {
+                if (this[i - 1] < this[i]) return false
+                i++
             }
             return true
             """
@@ -853,6 +899,21 @@ object Ordering : TemplateGroupBase() {
             return true
             """
         }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            if (size < 2) return true
+            var previousValue = selector(this[0])
+            var i = 1
+            while (i <= lastIndex) {
+                val currentValue = selector(this[i])
+                if (compareValues(previousValue, currentValue) > 0) return false
+                previousValue = currentValue
+                i++
+            }
+            return true
+            """
+        }
     }
 
     val f_isSortedByDescending = fn("isSortedByDescending(selector: (T) -> R?)") {
@@ -905,6 +966,21 @@ object Ordering : TemplateGroupBase() {
                 val currentValue = selector(this[i])
                 if (compareValues(previousValue, currentValue) < 0) return false
                 previousValue = currentValue
+            }
+            return true
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            if (size < 2) return true
+            var previousValue = selector(this[0])
+            var i = 1
+            while (i <= lastIndex) {
+                val currentValue = selector(this[i])
+                if (compareValues(previousValue, currentValue) < 0) return false
+                previousValue = currentValue
+                i++
             }
             return true
             """

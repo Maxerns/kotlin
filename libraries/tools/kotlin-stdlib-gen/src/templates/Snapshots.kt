@@ -548,5 +548,17 @@ object Snapshots : TemplateGroupBase() {
             return destination
             """
         }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var index = 0
+            while (index < size) {
+                val element = this[index]
+                destination.put(element, valueSelector(element))
+                index++
+            }
+            return destination
+            """
+        }
     }
 }

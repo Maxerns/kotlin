@@ -214,6 +214,17 @@ object Mapping : TemplateGroupBase() {
             return destination
             """
         }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var index = 0
+            while (index < size) {
+                destination.add(transform(this[index]))
+                index++
+            }
+            return destination
+            """
+        }
     }
 
     val f_mapIndexedTo = fn("mapIndexedTo(destination: C, transform: (index: Int, T) -> R)") {
@@ -242,6 +253,17 @@ object Mapping : TemplateGroupBase() {
             var index = 0
             for (item in this)
                 destination.add(transform(${checkOverflow("index++")}, item))
+            return destination
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var index = 0
+            while (index < size) {
+                destination.add(transform(index, this[index]))
+                index++
+            }
             return destination
             """
         }
@@ -381,6 +403,18 @@ object Mapping : TemplateGroupBase() {
             return destination
             """
         }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var index = 0
+            while (index < size) {
+                val list = transform(this[index])
+                destination.addAll(list)
+                index++
+            }
+            return destination
+            """
+        }
     }
 
     val f_flatMapToSequence = fn("flatMapTo(destination: C, transform: (T) -> Sequence<R>)") {
@@ -485,6 +519,18 @@ object Mapping : TemplateGroupBase() {
                 return destination
                 """
             }
+            // Workaround for KT-87083: avoid for-loops over the receiver array.
+            body(ArraysOfUnsigned) {
+                """
+                var index = 0
+                while (index < size) {
+                    val list = transform(index, this[index])
+                    destination.addAll(list)
+                    index++
+                }
+                return destination
+                """
+            }
         }
     }
 
@@ -537,6 +583,20 @@ object Mapping : TemplateGroupBase() {
                 val key = keySelector(element)
                 val list = destination.getOrPut(key) { ArrayList<T>() }
                 list.add(element)
+            }
+            return destination
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var index = 0
+            while (index < size) {
+                val element = this[index]
+                val key = keySelector(element)
+                val list = destination.getOrPut(key) { ArrayList<T>() }
+                list.add(element)
+                index++
             }
             return destination
             """
@@ -598,6 +658,20 @@ object Mapping : TemplateGroupBase() {
                 val key = keySelector(element)
                 val list = destination.getOrPut(key) { ArrayList<V>() }
                 list.add(valueTransform(element))
+            }
+            return destination
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var index = 0
+            while (index < size) {
+                val element = this[index]
+                val key = keySelector(element)
+                val list = destination.getOrPut(key) { ArrayList<V>() }
+                list.add(valueTransform(element))
+                index++
             }
             return destination
             """

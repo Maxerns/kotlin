@@ -208,6 +208,22 @@ object Filtering : TemplateGroupBase() {
             return list
             """
         }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            require(n >= 0) { "Requested element count $n is less than zero." }
+            if (n == 0) return emptyList()
+            if (n >= size) return toList()
+            if (n == 1) return listOf(this[0])
+            val list = ArrayList<T>(n)
+            var index = 0
+            while (index < n) {
+                list.add(this[index])
+                index++
+            }
+            return list
+            """
+        }
 
         // For object arrays, ensure a single array copy instead of copying using a loop (see KT-75801)
         body(ArraysOfObjects) {
@@ -295,6 +311,24 @@ object Filtering : TemplateGroupBase() {
             return list
             """
         }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            require(n >= 0) { "Requested element count $n is less than zero." }
+            if (n == 0) return emptyList()
+            val size = size
+            if (n >= size) return toList()
+            if (n == 1) return listOf(this[size - 1])
+
+            val list = ArrayList<T>(n)
+            var index = size - n
+            while (index < size) {
+                list.add(this[index])
+                index++
+            }
+            return list
+            """
+        }
 
         // For object arrays, ensure a single array copy instead of copying using a loop (see KT-75801)
         body(ArraysOfObjects) {
@@ -357,6 +391,25 @@ object Filtering : TemplateGroupBase() {
             return list
             """
         }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var yielding = false
+            val list = ArrayList<T>()
+            var index = 0
+            while (index < size) {
+                val item = this[index]
+                if (yielding)
+                    list.add(item)
+                else if (!predicate(item)) {
+                    list.add(item)
+                    yielding = true
+                }
+                index++
+            }
+            return list
+            """
+        }
 
         specialFor(Strings, CharSequences) {
             returns("SELF")
@@ -407,6 +460,21 @@ object Filtering : TemplateGroupBase() {
                 if (!predicate(item))
                     break
                 list.add(item)
+            }
+            return list
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            val list = ArrayList<T>()
+            var index = 0
+            while (index < size) {
+                val item = this[index]
+                if (!predicate(item))
+                    break
+                list.add(item)
+                index++
             }
             return list
             """
@@ -474,6 +542,19 @@ object Filtering : TemplateGroupBase() {
             return emptyList()
             """
         }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var index = lastIndex
+            while (index >= 0) {
+                if (!predicate(this[index])) {
+                    return take(index + 1)
+                }
+                index--
+            }
+            return emptyList()
+            """
+        }
         body(Lists) {
             """
             if (!isEmpty()) {
@@ -528,6 +609,19 @@ object Filtering : TemplateGroupBase() {
                 if (!predicate(this[index])) {
                     return drop(index + 1)
                 }
+            }
+            return toList()
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var index = lastIndex
+            while (index >= 0) {
+                if (!predicate(this[index])) {
+                    return drop(index + 1)
+                }
+                index--
             }
             return toList()
             """
@@ -621,6 +715,18 @@ object Filtering : TemplateGroupBase() {
         body {
             """
             for (element in this) if (predicate(element)) destination.add(element)
+            return destination
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var index = 0
+            while (index < size) {
+                val element = this[index]
+                if (predicate(element)) destination.add(element)
+                index++
+            }
             return destination
             """
         }
@@ -757,6 +863,18 @@ object Filtering : TemplateGroupBase() {
         body {
             """
             for (element in this) if (!predicate(element)) destination.add(element)
+            return destination
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var index = 0
+            while (index < size) {
+                val element = this[index]
+                if (!predicate(element)) destination.add(element)
+                index++
+            }
             return destination
             """
         }

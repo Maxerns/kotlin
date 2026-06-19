@@ -399,6 +399,15 @@ object Elements : TemplateGroupBase() {
                 return if (index in $indices) get(index) else defaultValue(index)
                 """
             }
+            // Workaround for KT-87083: avoid `index in indices` (a range-contains over the receiver array).
+            body(ArraysOfUnsigned) {
+                """
+                contract {
+                    callsInPlace(defaultValue, InvocationKind.AT_MOST_ONCE)
+                }
+                return if (index >= 0 && index < size) get(index) else defaultValue(index)
+                """
+            }
         }
     }
 
@@ -422,6 +431,15 @@ object Elements : TemplateGroupBase() {
                 callsInPlace(defaultValue, InvocationKind.AT_MOST_ONCE)
             }
             return if (index in $indices) get(index) else defaultValue(index)
+            """
+        }
+        // Workaround for KT-87083: avoid `index in indices` (a range-contains over the receiver array).
+        body(ArraysOfUnsigned) {
+            """
+            contract {
+                callsInPlace(defaultValue, InvocationKind.AT_MOST_ONCE)
+            }
+            return if (index >= 0 && index < size) get(index) else defaultValue(index)
             """
         }
     }
@@ -479,6 +497,12 @@ object Elements : TemplateGroupBase() {
         body {
             """
             return if (index in $indices) get(index) else null
+            """
+        }
+        // Workaround for KT-87083: avoid `index in indices` (a range-contains over the receiver array).
+        body(ArraysOfUnsigned) {
+            """
+            return if (index >= 0 && index < size) get(index) else null
             """
         }
     }
@@ -601,6 +625,18 @@ object Elements : TemplateGroupBase() {
             throw NoSuchElementException("${f.doc.collection.capitalize()} contains no ${f.doc.element} matching the predicate.")
             """
         }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var index = 0
+            while (index < size) {
+                val element = this[index]
+                if (predicate(element)) return element
+                index++
+            }
+            throw NoSuchElementException("${f.doc.collection.capitalize()} contains no ${f.doc.element} matching the predicate.")
+            """
+        }
     }
 
     val f_firstOrNull_predicate = fn("firstOrNull(predicate: (T) -> Boolean)") {
@@ -615,6 +651,18 @@ object Elements : TemplateGroupBase() {
         body {
             """
             for (element in this) if (predicate(element)) return element
+            return null
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var index = 0
+            while (index < size) {
+                val element = this[index]
+                if (predicate(element)) return element
+                index++
+            }
             return null
             """
         }
@@ -788,6 +836,18 @@ object Elements : TemplateGroupBase() {
             throw NoSuchElementException("${f.doc.collection.capitalize()} contains no ${f.doc.element} matching the predicate.")
             """
         }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var index = size - 1
+            while (index >= 0) {
+                val element = this[index]
+                if (predicate(element)) return element
+                index--
+            }
+            throw NoSuchElementException("${f.doc.collection.capitalize()} contains no ${f.doc.element} matching the predicate.")
+            """
+        }
         body(Lists) {
             """
             val iterator = this.listIterator(size)
@@ -827,6 +887,18 @@ object Elements : TemplateGroupBase() {
             for (index in this.indices.reversed()) {
                 val element = this[index]
                 if (predicate(element)) return element
+            }
+            return null
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var index = size - 1
+            while (index >= 0) {
+                val element = this[index]
+                if (predicate(element)) return element
+                index--
             }
             return null
             """
@@ -978,6 +1050,26 @@ object Elements : TemplateGroupBase() {
             return single as T
             """
         }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var single: T? = null
+            var found = false
+            var index = 0
+            while (index < size) {
+                val element = this[index]
+                if (predicate(element)) {
+                    if (found) throw IllegalArgumentException("${f.doc.collection.capitalize()} contains more than one matching element.")
+                    single = element
+                    found = true
+                }
+                index++
+            }
+            if (!found) throw NoSuchElementException("${f.doc.collection.capitalize()} contains no ${f.doc.element} matching the predicate.")
+            @Suppress("UNCHECKED_CAST")
+            return single as T
+            """
+        }
     }
 
     val f_singleOrNull_predicate = fn("singleOrNull(predicate: (T) -> Boolean)") {
@@ -1000,6 +1092,25 @@ object Elements : TemplateGroupBase() {
                     single = element
                     found = true
                 }
+            }
+            if (!found) return null
+            return single
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var single: T? = null
+            var found = false
+            var index = 0
+            while (index < size) {
+                val element = this[index]
+                if (predicate(element)) {
+                    if (found) return null
+                    single = element
+                    found = true
+                }
+                index++
             }
             if (!found) return null
             return single

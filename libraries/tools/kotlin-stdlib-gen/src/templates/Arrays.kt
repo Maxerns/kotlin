@@ -1215,6 +1215,20 @@ object ArrayOps : TemplateGroupBase() {
                 $returnStmt
                 """
         }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+                $newSizeCheck
+                val oldSize = size
+                val copy = copyOf(newSize)
+                var idx = oldSize
+                while (idx < newSize) {
+                    copy[idx] = init(idx)
+                    idx++
+                }
+                return copy
+                """
+        }
     }
 
     val f_sort = fn("sort()") {

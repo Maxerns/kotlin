@@ -525,8 +525,10 @@ public fun UShortArray.minWith(comparator: Comparator<in UShort>): UShort? {
 @kotlin.internal.InlineOnly
 public inline fun UIntArray.sumOf(selector: (UInt) -> java.math.BigDecimal): java.math.BigDecimal {
     var sum: java.math.BigDecimal = 0.toBigDecimal()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -543,8 +545,10 @@ public inline fun UIntArray.sumOf(selector: (UInt) -> java.math.BigDecimal): jav
 @kotlin.internal.InlineOnly
 public inline fun ULongArray.sumOf(selector: (ULong) -> java.math.BigDecimal): java.math.BigDecimal {
     var sum: java.math.BigDecimal = 0.toBigDecimal()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -561,8 +565,10 @@ public inline fun ULongArray.sumOf(selector: (ULong) -> java.math.BigDecimal): j
 @kotlin.internal.InlineOnly
 public inline fun UByteArray.sumOf(selector: (UByte) -> java.math.BigDecimal): java.math.BigDecimal {
     var sum: java.math.BigDecimal = 0.toBigDecimal()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -579,8 +585,10 @@ public inline fun UByteArray.sumOf(selector: (UByte) -> java.math.BigDecimal): j
 @kotlin.internal.InlineOnly
 public inline fun UShortArray.sumOf(selector: (UShort) -> java.math.BigDecimal): java.math.BigDecimal {
     var sum: java.math.BigDecimal = 0.toBigDecimal()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -597,8 +605,10 @@ public inline fun UShortArray.sumOf(selector: (UShort) -> java.math.BigDecimal):
 @kotlin.internal.InlineOnly
 public inline fun UIntArray.sumOf(selector: (UInt) -> java.math.BigInteger): java.math.BigInteger {
     var sum: java.math.BigInteger = 0.toBigInteger()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -615,8 +625,10 @@ public inline fun UIntArray.sumOf(selector: (UInt) -> java.math.BigInteger): jav
 @kotlin.internal.InlineOnly
 public inline fun ULongArray.sumOf(selector: (ULong) -> java.math.BigInteger): java.math.BigInteger {
     var sum: java.math.BigInteger = 0.toBigInteger()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -633,8 +645,10 @@ public inline fun ULongArray.sumOf(selector: (ULong) -> java.math.BigInteger): j
 @kotlin.internal.InlineOnly
 public inline fun UByteArray.sumOf(selector: (UByte) -> java.math.BigInteger): java.math.BigInteger {
     var sum: java.math.BigInteger = 0.toBigInteger()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -651,8 +665,10 @@ public inline fun UByteArray.sumOf(selector: (UByte) -> java.math.BigInteger): j
 @kotlin.internal.InlineOnly
 public inline fun UShortArray.sumOf(selector: (UShort) -> java.math.BigInteger): java.math.BigInteger {
     var sum: java.math.BigInteger = 0.toBigInteger()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }

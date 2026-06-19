@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.backend.common.lower.loops.handlers
 
 import org.jetbrains.kotlin.backend.common.CommonBackendContext
+import org.jetbrains.kotlin.backend.common.compilationException
 import org.jetbrains.kotlin.backend.common.lower.createIrBuilder
 import org.jetbrains.kotlin.backend.common.lower.loops.*
 import org.jetbrains.kotlin.ir.builders.irCall

@@ -1080,6 +1080,19 @@ object Generators : TemplateGroupBase() {
             return list
             """
         }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            val size = minOf(size, other.size)
+            val list = ArrayList<V>(size)
+            var i = 0
+            while (i < size) {
+                list.add(transform(this[i], other[i]))
+                i++
+            }
+            return list
+            """
+        }
 
     }
 
@@ -1105,6 +1118,19 @@ object Generators : TemplateGroupBase() {
             val list = ArrayList<V>(size)
             for (i in 0 until size) {
                 list.add(transform(this[i], other[i]))
+            }
+            return list
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            val size = minOf(size, other.size)
+            val list = ArrayList<V>(size)
+            var i = 0
+            while (i < size) {
+                list.add(transform(this[i], other[i]))
+                i++
             }
             return list
             """

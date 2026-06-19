@@ -293,6 +293,18 @@ object ComparableOps : TemplateGroupBase() {
             return min
             """
         }
+        // Workaround for KT-87083: avoid for-loops over the unsigned vararg array.
+        body(Unsigned) {
+            """
+            var min = a
+            var i = 0
+            while (i < other.size) {
+                min = minOf(min, other[i])
+                i++
+            }
+            return min
+            """
+        }
         specialFor(Generic, Primitives) {
             on(Platform.JS) { /* just to make expect, KT-22520 */ }
         }
@@ -490,6 +502,18 @@ object ComparableOps : TemplateGroupBase() {
             """
             var max = a
             for (e in other) max = maxOf(max, e)
+            return max
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the unsigned vararg array.
+        body(Unsigned) {
+            """
+            var max = a
+            var i = 0
+            while (i < other.size) {
+                max = maxOf(max, other[i])
+                i++
+            }
             return max
             """
         }

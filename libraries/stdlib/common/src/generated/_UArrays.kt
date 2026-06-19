@@ -368,7 +368,7 @@ public inline fun UIntArray.elementAtOrElse(index: Int, defaultValue: (Int) -> U
     contract {
         callsInPlace(defaultValue, InvocationKind.AT_MOST_ONCE)
     }
-    return if (index in indices) get(index) else defaultValue(index)
+    return if (index >= 0 && index < size) get(index) else defaultValue(index)
 }
 
 /**
@@ -383,7 +383,7 @@ public inline fun ULongArray.elementAtOrElse(index: Int, defaultValue: (Int) -> 
     contract {
         callsInPlace(defaultValue, InvocationKind.AT_MOST_ONCE)
     }
-    return if (index in indices) get(index) else defaultValue(index)
+    return if (index >= 0 && index < size) get(index) else defaultValue(index)
 }
 
 /**
@@ -398,7 +398,7 @@ public inline fun UByteArray.elementAtOrElse(index: Int, defaultValue: (Int) -> 
     contract {
         callsInPlace(defaultValue, InvocationKind.AT_MOST_ONCE)
     }
-    return if (index in indices) get(index) else defaultValue(index)
+    return if (index >= 0 && index < size) get(index) else defaultValue(index)
 }
 
 /**
@@ -413,7 +413,7 @@ public inline fun UShortArray.elementAtOrElse(index: Int, defaultValue: (Int) ->
     contract {
         callsInPlace(defaultValue, InvocationKind.AT_MOST_ONCE)
     }
-    return if (index in indices) get(index) else defaultValue(index)
+    return if (index >= 0 && index < size) get(index) else defaultValue(index)
 }
 
 /**
@@ -616,7 +616,12 @@ public inline fun UShortArray.first(): UShort {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UIntArray.first(predicate: (UInt) -> Boolean): UInt {
-    for (element in this) if (predicate(element)) return element
+    var index = 0
+    while (index < size) {
+        val element = this[index]
+        if (predicate(element)) return element
+        index++
+    }
     throw NoSuchElementException("Array contains no element matching the predicate.")
 }
 
@@ -628,7 +633,12 @@ public inline fun UIntArray.first(predicate: (UInt) -> Boolean): UInt {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun ULongArray.first(predicate: (ULong) -> Boolean): ULong {
-    for (element in this) if (predicate(element)) return element
+    var index = 0
+    while (index < size) {
+        val element = this[index]
+        if (predicate(element)) return element
+        index++
+    }
     throw NoSuchElementException("Array contains no element matching the predicate.")
 }
 
@@ -640,7 +650,12 @@ public inline fun ULongArray.first(predicate: (ULong) -> Boolean): ULong {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UByteArray.first(predicate: (UByte) -> Boolean): UByte {
-    for (element in this) if (predicate(element)) return element
+    var index = 0
+    while (index < size) {
+        val element = this[index]
+        if (predicate(element)) return element
+        index++
+    }
     throw NoSuchElementException("Array contains no element matching the predicate.")
 }
 
@@ -652,7 +667,12 @@ public inline fun UByteArray.first(predicate: (UByte) -> Boolean): UByte {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UShortArray.first(predicate: (UShort) -> Boolean): UShort {
-    for (element in this) if (predicate(element)) return element
+    var index = 0
+    while (index < size) {
+        val element = this[index]
+        if (predicate(element)) return element
+        index++
+    }
     throw NoSuchElementException("Array contains no element matching the predicate.")
 }
 
@@ -699,7 +719,12 @@ public fun UShortArray.firstOrNull(): UShort? {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UIntArray.firstOrNull(predicate: (UInt) -> Boolean): UInt? {
-    for (element in this) if (predicate(element)) return element
+    var index = 0
+    while (index < size) {
+        val element = this[index]
+        if (predicate(element)) return element
+        index++
+    }
     return null
 }
 
@@ -710,7 +735,12 @@ public inline fun UIntArray.firstOrNull(predicate: (UInt) -> Boolean): UInt? {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun ULongArray.firstOrNull(predicate: (ULong) -> Boolean): ULong? {
-    for (element in this) if (predicate(element)) return element
+    var index = 0
+    while (index < size) {
+        val element = this[index]
+        if (predicate(element)) return element
+        index++
+    }
     return null
 }
 
@@ -721,7 +751,12 @@ public inline fun ULongArray.firstOrNull(predicate: (ULong) -> Boolean): ULong? 
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UByteArray.firstOrNull(predicate: (UByte) -> Boolean): UByte? {
-    for (element in this) if (predicate(element)) return element
+    var index = 0
+    while (index < size) {
+        val element = this[index]
+        if (predicate(element)) return element
+        index++
+    }
     return null
 }
 
@@ -732,7 +767,12 @@ public inline fun UByteArray.firstOrNull(predicate: (UByte) -> Boolean): UByte? 
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UShortArray.firstOrNull(predicate: (UShort) -> Boolean): UShort? {
-    for (element in this) if (predicate(element)) return element
+    var index = 0
+    while (index < size) {
+        val element = this[index]
+        if (predicate(element)) return element
+        index++
+    }
     return null
 }
 
@@ -748,7 +788,7 @@ public inline fun UIntArray.getOrElse(index: Int, defaultValue: (Int) -> UInt): 
     contract {
         callsInPlace(defaultValue, InvocationKind.AT_MOST_ONCE)
     }
-    return if (index in indices) get(index) else defaultValue(index)
+    return if (index >= 0 && index < size) get(index) else defaultValue(index)
 }
 
 /**
@@ -763,7 +803,7 @@ public inline fun ULongArray.getOrElse(index: Int, defaultValue: (Int) -> ULong)
     contract {
         callsInPlace(defaultValue, InvocationKind.AT_MOST_ONCE)
     }
-    return if (index in indices) get(index) else defaultValue(index)
+    return if (index >= 0 && index < size) get(index) else defaultValue(index)
 }
 
 /**
@@ -778,7 +818,7 @@ public inline fun UByteArray.getOrElse(index: Int, defaultValue: (Int) -> UByte)
     contract {
         callsInPlace(defaultValue, InvocationKind.AT_MOST_ONCE)
     }
-    return if (index in indices) get(index) else defaultValue(index)
+    return if (index >= 0 && index < size) get(index) else defaultValue(index)
 }
 
 /**
@@ -793,7 +833,7 @@ public inline fun UShortArray.getOrElse(index: Int, defaultValue: (Int) -> UShor
     contract {
         callsInPlace(defaultValue, InvocationKind.AT_MOST_ONCE)
     }
-    return if (index in indices) get(index) else defaultValue(index)
+    return if (index >= 0 && index < size) get(index) else defaultValue(index)
 }
 
 /**
@@ -804,7 +844,7 @@ public inline fun UShortArray.getOrElse(index: Int, defaultValue: (Int) -> UShor
 @SinceKotlin("1.3")
 @ExperimentalUnsignedTypes
 public fun UIntArray.getOrNull(index: Int): UInt? {
-    return if (index in indices) get(index) else null
+    return if (index >= 0 && index < size) get(index) else null
 }
 
 /**
@@ -815,7 +855,7 @@ public fun UIntArray.getOrNull(index: Int): UInt? {
 @SinceKotlin("1.3")
 @ExperimentalUnsignedTypes
 public fun ULongArray.getOrNull(index: Int): ULong? {
-    return if (index in indices) get(index) else null
+    return if (index >= 0 && index < size) get(index) else null
 }
 
 /**
@@ -826,7 +866,7 @@ public fun ULongArray.getOrNull(index: Int): ULong? {
 @SinceKotlin("1.3")
 @ExperimentalUnsignedTypes
 public fun UByteArray.getOrNull(index: Int): UByte? {
-    return if (index in indices) get(index) else null
+    return if (index >= 0 && index < size) get(index) else null
 }
 
 /**
@@ -837,7 +877,7 @@ public fun UByteArray.getOrNull(index: Int): UByte? {
 @SinceKotlin("1.3")
 @ExperimentalUnsignedTypes
 public fun UShortArray.getOrNull(index: Int): UShort? {
-    return if (index in indices) get(index) else null
+    return if (index >= 0 && index < size) get(index) else null
 }
 
 /**
@@ -1027,9 +1067,11 @@ public inline fun UShortArray.last(): UShort {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UIntArray.last(predicate: (UInt) -> Boolean): UInt {
-    for (index in this.indices.reversed()) {
+    var index = size - 1
+    while (index >= 0) {
         val element = this[index]
         if (predicate(element)) return element
+        index--
     }
     throw NoSuchElementException("Array contains no element matching the predicate.")
 }
@@ -1045,9 +1087,11 @@ public inline fun UIntArray.last(predicate: (UInt) -> Boolean): UInt {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun ULongArray.last(predicate: (ULong) -> Boolean): ULong {
-    for (index in this.indices.reversed()) {
+    var index = size - 1
+    while (index >= 0) {
         val element = this[index]
         if (predicate(element)) return element
+        index--
     }
     throw NoSuchElementException("Array contains no element matching the predicate.")
 }
@@ -1063,9 +1107,11 @@ public inline fun ULongArray.last(predicate: (ULong) -> Boolean): ULong {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UByteArray.last(predicate: (UByte) -> Boolean): UByte {
-    for (index in this.indices.reversed()) {
+    var index = size - 1
+    while (index >= 0) {
         val element = this[index]
         if (predicate(element)) return element
+        index--
     }
     throw NoSuchElementException("Array contains no element matching the predicate.")
 }
@@ -1081,9 +1127,11 @@ public inline fun UByteArray.last(predicate: (UByte) -> Boolean): UByte {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UShortArray.last(predicate: (UShort) -> Boolean): UShort {
-    for (index in this.indices.reversed()) {
+    var index = size - 1
+    while (index >= 0) {
         val element = this[index]
         if (predicate(element)) return element
+        index--
     }
     throw NoSuchElementException("Array contains no element matching the predicate.")
 }
@@ -1181,9 +1229,11 @@ public fun UShortArray.lastOrNull(): UShort? {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UIntArray.lastOrNull(predicate: (UInt) -> Boolean): UInt? {
-    for (index in this.indices.reversed()) {
+    var index = size - 1
+    while (index >= 0) {
         val element = this[index]
         if (predicate(element)) return element
+        index--
     }
     return null
 }
@@ -1197,9 +1247,11 @@ public inline fun UIntArray.lastOrNull(predicate: (UInt) -> Boolean): UInt? {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun ULongArray.lastOrNull(predicate: (ULong) -> Boolean): ULong? {
-    for (index in this.indices.reversed()) {
+    var index = size - 1
+    while (index >= 0) {
         val element = this[index]
         if (predicate(element)) return element
+        index--
     }
     return null
 }
@@ -1213,9 +1265,11 @@ public inline fun ULongArray.lastOrNull(predicate: (ULong) -> Boolean): ULong? {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UByteArray.lastOrNull(predicate: (UByte) -> Boolean): UByte? {
-    for (index in this.indices.reversed()) {
+    var index = size - 1
+    while (index >= 0) {
         val element = this[index]
         if (predicate(element)) return element
+        index--
     }
     return null
 }
@@ -1229,9 +1283,11 @@ public inline fun UByteArray.lastOrNull(predicate: (UByte) -> Boolean): UByte? {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UShortArray.lastOrNull(predicate: (UShort) -> Boolean): UShort? {
-    for (index in this.indices.reversed()) {
+    var index = size - 1
+    while (index >= 0) {
         val element = this[index]
         if (predicate(element)) return element
+        index--
     }
     return null
 }
@@ -1469,12 +1525,15 @@ public inline fun UShortArray.single(): UShort {
 public inline fun UIntArray.single(predicate: (UInt) -> Boolean): UInt {
     var single: UInt? = null
     var found = false
-    for (element in this) {
+    var index = 0
+    while (index < size) {
+        val element = this[index]
         if (predicate(element)) {
             if (found) throw IllegalArgumentException("Array contains more than one matching element.")
             single = element
             found = true
         }
+        index++
     }
     if (!found) throw NoSuchElementException("Array contains no element matching the predicate.")
     @Suppress("UNCHECKED_CAST")
@@ -1490,12 +1549,15 @@ public inline fun UIntArray.single(predicate: (UInt) -> Boolean): UInt {
 public inline fun ULongArray.single(predicate: (ULong) -> Boolean): ULong {
     var single: ULong? = null
     var found = false
-    for (element in this) {
+    var index = 0
+    while (index < size) {
+        val element = this[index]
         if (predicate(element)) {
             if (found) throw IllegalArgumentException("Array contains more than one matching element.")
             single = element
             found = true
         }
+        index++
     }
     if (!found) throw NoSuchElementException("Array contains no element matching the predicate.")
     @Suppress("UNCHECKED_CAST")
@@ -1511,12 +1573,15 @@ public inline fun ULongArray.single(predicate: (ULong) -> Boolean): ULong {
 public inline fun UByteArray.single(predicate: (UByte) -> Boolean): UByte {
     var single: UByte? = null
     var found = false
-    for (element in this) {
+    var index = 0
+    while (index < size) {
+        val element = this[index]
         if (predicate(element)) {
             if (found) throw IllegalArgumentException("Array contains more than one matching element.")
             single = element
             found = true
         }
+        index++
     }
     if (!found) throw NoSuchElementException("Array contains no element matching the predicate.")
     @Suppress("UNCHECKED_CAST")
@@ -1532,12 +1597,15 @@ public inline fun UByteArray.single(predicate: (UByte) -> Boolean): UByte {
 public inline fun UShortArray.single(predicate: (UShort) -> Boolean): UShort {
     var single: UShort? = null
     var found = false
-    for (element in this) {
+    var index = 0
+    while (index < size) {
+        val element = this[index]
         if (predicate(element)) {
             if (found) throw IllegalArgumentException("Array contains more than one matching element.")
             single = element
             found = true
         }
+        index++
     }
     if (!found) throw NoSuchElementException("Array contains no element matching the predicate.")
     @Suppress("UNCHECKED_CAST")
@@ -1589,12 +1657,15 @@ public fun UShortArray.singleOrNull(): UShort? {
 public inline fun UIntArray.singleOrNull(predicate: (UInt) -> Boolean): UInt? {
     var single: UInt? = null
     var found = false
-    for (element in this) {
+    var index = 0
+    while (index < size) {
+        val element = this[index]
         if (predicate(element)) {
             if (found) return null
             single = element
             found = true
         }
+        index++
     }
     if (!found) return null
     return single
@@ -1609,12 +1680,15 @@ public inline fun UIntArray.singleOrNull(predicate: (UInt) -> Boolean): UInt? {
 public inline fun ULongArray.singleOrNull(predicate: (ULong) -> Boolean): ULong? {
     var single: ULong? = null
     var found = false
-    for (element in this) {
+    var index = 0
+    while (index < size) {
+        val element = this[index]
         if (predicate(element)) {
             if (found) return null
             single = element
             found = true
         }
+        index++
     }
     if (!found) return null
     return single
@@ -1629,12 +1703,15 @@ public inline fun ULongArray.singleOrNull(predicate: (ULong) -> Boolean): ULong?
 public inline fun UByteArray.singleOrNull(predicate: (UByte) -> Boolean): UByte? {
     var single: UByte? = null
     var found = false
-    for (element in this) {
+    var index = 0
+    while (index < size) {
+        val element = this[index]
         if (predicate(element)) {
             if (found) return null
             single = element
             found = true
         }
+        index++
     }
     if (!found) return null
     return single
@@ -1649,12 +1726,15 @@ public inline fun UByteArray.singleOrNull(predicate: (UByte) -> Boolean): UByte?
 public inline fun UShortArray.singleOrNull(predicate: (UShort) -> Boolean): UShort? {
     var single: UShort? = null
     var found = false
-    for (element in this) {
+    var index = 0
+    while (index < size) {
+        val element = this[index]
         if (predicate(element)) {
             if (found) return null
             single = element
             found = true
         }
+        index++
     }
     if (!found) return null
     return single
@@ -1781,10 +1861,12 @@ public fun UShortArray.dropLast(n: Int): List<UShort> {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UIntArray.dropLastWhile(predicate: (UInt) -> Boolean): List<UInt> {
-    for (index in lastIndex downTo 0) {
+    var index = lastIndex
+    while (index >= 0) {
         if (!predicate(this[index])) {
             return take(index + 1)
         }
+        index--
     }
     return emptyList()
 }
@@ -1798,10 +1880,12 @@ public inline fun UIntArray.dropLastWhile(predicate: (UInt) -> Boolean): List<UI
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun ULongArray.dropLastWhile(predicate: (ULong) -> Boolean): List<ULong> {
-    for (index in lastIndex downTo 0) {
+    var index = lastIndex
+    while (index >= 0) {
         if (!predicate(this[index])) {
             return take(index + 1)
         }
+        index--
     }
     return emptyList()
 }
@@ -1815,10 +1899,12 @@ public inline fun ULongArray.dropLastWhile(predicate: (ULong) -> Boolean): List<
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UByteArray.dropLastWhile(predicate: (UByte) -> Boolean): List<UByte> {
-    for (index in lastIndex downTo 0) {
+    var index = lastIndex
+    while (index >= 0) {
         if (!predicate(this[index])) {
             return take(index + 1)
         }
+        index--
     }
     return emptyList()
 }
@@ -1832,10 +1918,12 @@ public inline fun UByteArray.dropLastWhile(predicate: (UByte) -> Boolean): List<
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UShortArray.dropLastWhile(predicate: (UShort) -> Boolean): List<UShort> {
-    for (index in lastIndex downTo 0) {
+    var index = lastIndex
+    while (index >= 0) {
         if (!predicate(this[index])) {
             return take(index + 1)
         }
+        index--
     }
     return emptyList()
 }
@@ -1851,13 +1939,17 @@ public inline fun UShortArray.dropLastWhile(predicate: (UShort) -> Boolean): Lis
 public inline fun UIntArray.dropWhile(predicate: (UInt) -> Boolean): List<UInt> {
     var yielding = false
     val list = ArrayList<UInt>()
-    for (item in this)
+    var index = 0
+    while (index < size) {
+        val item = this[index]
         if (yielding)
             list.add(item)
         else if (!predicate(item)) {
             list.add(item)
             yielding = true
         }
+        index++
+    }
     return list
 }
 
@@ -1872,13 +1964,17 @@ public inline fun UIntArray.dropWhile(predicate: (UInt) -> Boolean): List<UInt> 
 public inline fun ULongArray.dropWhile(predicate: (ULong) -> Boolean): List<ULong> {
     var yielding = false
     val list = ArrayList<ULong>()
-    for (item in this)
+    var index = 0
+    while (index < size) {
+        val item = this[index]
         if (yielding)
             list.add(item)
         else if (!predicate(item)) {
             list.add(item)
             yielding = true
         }
+        index++
+    }
     return list
 }
 
@@ -1893,13 +1989,17 @@ public inline fun ULongArray.dropWhile(predicate: (ULong) -> Boolean): List<ULon
 public inline fun UByteArray.dropWhile(predicate: (UByte) -> Boolean): List<UByte> {
     var yielding = false
     val list = ArrayList<UByte>()
-    for (item in this)
+    var index = 0
+    while (index < size) {
+        val item = this[index]
         if (yielding)
             list.add(item)
         else if (!predicate(item)) {
             list.add(item)
             yielding = true
         }
+        index++
+    }
     return list
 }
 
@@ -1914,13 +2014,17 @@ public inline fun UByteArray.dropWhile(predicate: (UByte) -> Boolean): List<UByt
 public inline fun UShortArray.dropWhile(predicate: (UShort) -> Boolean): List<UShort> {
     var yielding = false
     val list = ArrayList<UShort>()
-    for (item in this)
+    var index = 0
+    while (index < size) {
+        val item = this[index]
         if (yielding)
             list.add(item)
         else if (!predicate(item)) {
             list.add(item)
             yielding = true
         }
+        index++
+    }
     return list
 }
 
@@ -2158,7 +2262,12 @@ public inline fun UShortArray.filterNot(predicate: (UShort) -> Boolean): List<US
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <C : MutableCollection<in UInt>> UIntArray.filterNotTo(destination: C, predicate: (UInt) -> Boolean): C {
-    for (element in this) if (!predicate(element)) destination.add(element)
+    var index = 0
+    while (index < size) {
+        val element = this[index]
+        if (!predicate(element)) destination.add(element)
+        index++
+    }
     return destination
 }
 
@@ -2172,7 +2281,12 @@ public inline fun <C : MutableCollection<in UInt>> UIntArray.filterNotTo(destina
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <C : MutableCollection<in ULong>> ULongArray.filterNotTo(destination: C, predicate: (ULong) -> Boolean): C {
-    for (element in this) if (!predicate(element)) destination.add(element)
+    var index = 0
+    while (index < size) {
+        val element = this[index]
+        if (!predicate(element)) destination.add(element)
+        index++
+    }
     return destination
 }
 
@@ -2186,7 +2300,12 @@ public inline fun <C : MutableCollection<in ULong>> ULongArray.filterNotTo(desti
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <C : MutableCollection<in UByte>> UByteArray.filterNotTo(destination: C, predicate: (UByte) -> Boolean): C {
-    for (element in this) if (!predicate(element)) destination.add(element)
+    var index = 0
+    while (index < size) {
+        val element = this[index]
+        if (!predicate(element)) destination.add(element)
+        index++
+    }
     return destination
 }
 
@@ -2200,7 +2319,12 @@ public inline fun <C : MutableCollection<in UByte>> UByteArray.filterNotTo(desti
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <C : MutableCollection<in UShort>> UShortArray.filterNotTo(destination: C, predicate: (UShort) -> Boolean): C {
-    for (element in this) if (!predicate(element)) destination.add(element)
+    var index = 0
+    while (index < size) {
+        val element = this[index]
+        if (!predicate(element)) destination.add(element)
+        index++
+    }
     return destination
 }
 
@@ -2214,7 +2338,12 @@ public inline fun <C : MutableCollection<in UShort>> UShortArray.filterNotTo(des
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <C : MutableCollection<in UInt>> UIntArray.filterTo(destination: C, predicate: (UInt) -> Boolean): C {
-    for (element in this) if (predicate(element)) destination.add(element)
+    var index = 0
+    while (index < size) {
+        val element = this[index]
+        if (predicate(element)) destination.add(element)
+        index++
+    }
     return destination
 }
 
@@ -2228,7 +2357,12 @@ public inline fun <C : MutableCollection<in UInt>> UIntArray.filterTo(destinatio
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <C : MutableCollection<in ULong>> ULongArray.filterTo(destination: C, predicate: (ULong) -> Boolean): C {
-    for (element in this) if (predicate(element)) destination.add(element)
+    var index = 0
+    while (index < size) {
+        val element = this[index]
+        if (predicate(element)) destination.add(element)
+        index++
+    }
     return destination
 }
 
@@ -2242,7 +2376,12 @@ public inline fun <C : MutableCollection<in ULong>> ULongArray.filterTo(destinat
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <C : MutableCollection<in UByte>> UByteArray.filterTo(destination: C, predicate: (UByte) -> Boolean): C {
-    for (element in this) if (predicate(element)) destination.add(element)
+    var index = 0
+    while (index < size) {
+        val element = this[index]
+        if (predicate(element)) destination.add(element)
+        index++
+    }
     return destination
 }
 
@@ -2256,7 +2395,12 @@ public inline fun <C : MutableCollection<in UByte>> UByteArray.filterTo(destinat
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <C : MutableCollection<in UShort>> UShortArray.filterTo(destination: C, predicate: (UShort) -> Boolean): C {
-    for (element in this) if (predicate(element)) destination.add(element)
+    var index = 0
+    while (index < size) {
+        val element = this[index]
+        if (predicate(element)) destination.add(element)
+        index++
+    }
     return destination
 }
 
@@ -2446,12 +2590,11 @@ public fun UIntArray.take(n: Int): List<UInt> {
     if (n == 0) return emptyList()
     if (n >= size) return toList()
     if (n == 1) return listOf(this[0])
-    var count = 0
     val list = ArrayList<UInt>(n)
-    for (item in this) {
-        list.add(item)
-        if (++count == n)
-            break
+    var index = 0
+    while (index < n) {
+        list.add(this[index])
+        index++
     }
     return list
 }
@@ -2470,12 +2613,11 @@ public fun ULongArray.take(n: Int): List<ULong> {
     if (n == 0) return emptyList()
     if (n >= size) return toList()
     if (n == 1) return listOf(this[0])
-    var count = 0
     val list = ArrayList<ULong>(n)
-    for (item in this) {
-        list.add(item)
-        if (++count == n)
-            break
+    var index = 0
+    while (index < n) {
+        list.add(this[index])
+        index++
     }
     return list
 }
@@ -2494,12 +2636,11 @@ public fun UByteArray.take(n: Int): List<UByte> {
     if (n == 0) return emptyList()
     if (n >= size) return toList()
     if (n == 1) return listOf(this[0])
-    var count = 0
     val list = ArrayList<UByte>(n)
-    for (item in this) {
-        list.add(item)
-        if (++count == n)
-            break
+    var index = 0
+    while (index < n) {
+        list.add(this[index])
+        index++
     }
     return list
 }
@@ -2518,12 +2659,11 @@ public fun UShortArray.take(n: Int): List<UShort> {
     if (n == 0) return emptyList()
     if (n >= size) return toList()
     if (n == 1) return listOf(this[0])
-    var count = 0
     val list = ArrayList<UShort>(n)
-    for (item in this) {
-        list.add(item)
-        if (++count == n)
-            break
+    var index = 0
+    while (index < n) {
+        list.add(this[index])
+        index++
     }
     return list
 }
@@ -2544,8 +2684,11 @@ public fun UIntArray.takeLast(n: Int): List<UInt> {
     if (n >= size) return toList()
     if (n == 1) return listOf(this[size - 1])
     val list = ArrayList<UInt>(n)
-    for (index in size - n until size)
+    var index = size - n
+    while (index < size) {
         list.add(this[index])
+        index++
+    }
     return list
 }
 
@@ -2565,8 +2708,11 @@ public fun ULongArray.takeLast(n: Int): List<ULong> {
     if (n >= size) return toList()
     if (n == 1) return listOf(this[size - 1])
     val list = ArrayList<ULong>(n)
-    for (index in size - n until size)
+    var index = size - n
+    while (index < size) {
         list.add(this[index])
+        index++
+    }
     return list
 }
 
@@ -2586,8 +2732,11 @@ public fun UByteArray.takeLast(n: Int): List<UByte> {
     if (n >= size) return toList()
     if (n == 1) return listOf(this[size - 1])
     val list = ArrayList<UByte>(n)
-    for (index in size - n until size)
+    var index = size - n
+    while (index < size) {
         list.add(this[index])
+        index++
+    }
     return list
 }
 
@@ -2607,8 +2756,11 @@ public fun UShortArray.takeLast(n: Int): List<UShort> {
     if (n >= size) return toList()
     if (n == 1) return listOf(this[size - 1])
     val list = ArrayList<UShort>(n)
-    for (index in size - n until size)
+    var index = size - n
+    while (index < size) {
         list.add(this[index])
+        index++
+    }
     return list
 }
 
@@ -2621,10 +2773,12 @@ public fun UShortArray.takeLast(n: Int): List<UShort> {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UIntArray.takeLastWhile(predicate: (UInt) -> Boolean): List<UInt> {
-    for (index in lastIndex downTo 0) {
+    var index = lastIndex
+    while (index >= 0) {
         if (!predicate(this[index])) {
             return drop(index + 1)
         }
+        index--
     }
     return toList()
 }
@@ -2638,10 +2792,12 @@ public inline fun UIntArray.takeLastWhile(predicate: (UInt) -> Boolean): List<UI
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun ULongArray.takeLastWhile(predicate: (ULong) -> Boolean): List<ULong> {
-    for (index in lastIndex downTo 0) {
+    var index = lastIndex
+    while (index >= 0) {
         if (!predicate(this[index])) {
             return drop(index + 1)
         }
+        index--
     }
     return toList()
 }
@@ -2655,10 +2811,12 @@ public inline fun ULongArray.takeLastWhile(predicate: (ULong) -> Boolean): List<
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UByteArray.takeLastWhile(predicate: (UByte) -> Boolean): List<UByte> {
-    for (index in lastIndex downTo 0) {
+    var index = lastIndex
+    while (index >= 0) {
         if (!predicate(this[index])) {
             return drop(index + 1)
         }
+        index--
     }
     return toList()
 }
@@ -2672,10 +2830,12 @@ public inline fun UByteArray.takeLastWhile(predicate: (UByte) -> Boolean): List<
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UShortArray.takeLastWhile(predicate: (UShort) -> Boolean): List<UShort> {
-    for (index in lastIndex downTo 0) {
+    var index = lastIndex
+    while (index >= 0) {
         if (!predicate(this[index])) {
             return drop(index + 1)
         }
+        index--
     }
     return toList()
 }
@@ -2690,10 +2850,13 @@ public inline fun UShortArray.takeLastWhile(predicate: (UShort) -> Boolean): Lis
 @kotlin.internal.InlineOnly
 public inline fun UIntArray.takeWhile(predicate: (UInt) -> Boolean): List<UInt> {
     val list = ArrayList<UInt>()
-    for (item in this) {
+    var index = 0
+    while (index < size) {
+        val item = this[index]
         if (!predicate(item))
             break
         list.add(item)
+        index++
     }
     return list
 }
@@ -2708,10 +2871,13 @@ public inline fun UIntArray.takeWhile(predicate: (UInt) -> Boolean): List<UInt> 
 @kotlin.internal.InlineOnly
 public inline fun ULongArray.takeWhile(predicate: (ULong) -> Boolean): List<ULong> {
     val list = ArrayList<ULong>()
-    for (item in this) {
+    var index = 0
+    while (index < size) {
+        val item = this[index]
         if (!predicate(item))
             break
         list.add(item)
+        index++
     }
     return list
 }
@@ -2726,10 +2892,13 @@ public inline fun ULongArray.takeWhile(predicate: (ULong) -> Boolean): List<ULon
 @kotlin.internal.InlineOnly
 public inline fun UByteArray.takeWhile(predicate: (UByte) -> Boolean): List<UByte> {
     val list = ArrayList<UByte>()
-    for (item in this) {
+    var index = 0
+    while (index < size) {
+        val item = this[index]
         if (!predicate(item))
             break
         list.add(item)
+        index++
     }
     return list
 }
@@ -2744,10 +2913,13 @@ public inline fun UByteArray.takeWhile(predicate: (UByte) -> Boolean): List<UByt
 @kotlin.internal.InlineOnly
 public inline fun UShortArray.takeWhile(predicate: (UShort) -> Boolean): List<UShort> {
     val list = ArrayList<UShort>()
-    for (item in this) {
+    var index = 0
+    while (index < size) {
+        val item = this[index]
         if (!predicate(item))
             break
         list.add(item)
+        index++
     }
     return list
 }
@@ -2767,8 +2939,10 @@ public inline fun UShortArray.takeWhile(predicate: (UShort) -> Boolean): List<US
 @SinceKotlin("2.4")
 @ExperimentalUnsignedTypes
 public fun UIntArray.isSorted(): Boolean {
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         if (this[i - 1] > this[i]) return false
+        i++
     }
     return true
 }
@@ -2788,8 +2962,10 @@ public fun UIntArray.isSorted(): Boolean {
 @SinceKotlin("2.4")
 @ExperimentalUnsignedTypes
 public fun ULongArray.isSorted(): Boolean {
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         if (this[i - 1] > this[i]) return false
+        i++
     }
     return true
 }
@@ -2809,8 +2985,10 @@ public fun ULongArray.isSorted(): Boolean {
 @SinceKotlin("2.4")
 @ExperimentalUnsignedTypes
 public fun UByteArray.isSorted(): Boolean {
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         if (this[i - 1] > this[i]) return false
+        i++
     }
     return true
 }
@@ -2830,8 +3008,10 @@ public fun UByteArray.isSorted(): Boolean {
 @SinceKotlin("2.4")
 @ExperimentalUnsignedTypes
 public fun UShortArray.isSorted(): Boolean {
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         if (this[i - 1] > this[i]) return false
+        i++
     }
     return true
 }
@@ -2856,10 +3036,12 @@ public fun UShortArray.isSorted(): Boolean {
 public inline fun <R : Comparable<R>> UIntArray.isSortedBy(selector: (UInt) -> R?): Boolean {
     if (size < 2) return true
     var previousValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val currentValue = selector(this[i])
         if (compareValues(previousValue, currentValue) > 0) return false
         previousValue = currentValue
+        i++
     }
     return true
 }
@@ -2884,10 +3066,12 @@ public inline fun <R : Comparable<R>> UIntArray.isSortedBy(selector: (UInt) -> R
 public inline fun <R : Comparable<R>> ULongArray.isSortedBy(selector: (ULong) -> R?): Boolean {
     if (size < 2) return true
     var previousValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val currentValue = selector(this[i])
         if (compareValues(previousValue, currentValue) > 0) return false
         previousValue = currentValue
+        i++
     }
     return true
 }
@@ -2912,10 +3096,12 @@ public inline fun <R : Comparable<R>> ULongArray.isSortedBy(selector: (ULong) ->
 public inline fun <R : Comparable<R>> UByteArray.isSortedBy(selector: (UByte) -> R?): Boolean {
     if (size < 2) return true
     var previousValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val currentValue = selector(this[i])
         if (compareValues(previousValue, currentValue) > 0) return false
         previousValue = currentValue
+        i++
     }
     return true
 }
@@ -2940,10 +3126,12 @@ public inline fun <R : Comparable<R>> UByteArray.isSortedBy(selector: (UByte) ->
 public inline fun <R : Comparable<R>> UShortArray.isSortedBy(selector: (UShort) -> R?): Boolean {
     if (size < 2) return true
     var previousValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val currentValue = selector(this[i])
         if (compareValues(previousValue, currentValue) > 0) return false
         previousValue = currentValue
+        i++
     }
     return true
 }
@@ -2969,10 +3157,12 @@ public inline fun <R : Comparable<R>> UShortArray.isSortedBy(selector: (UShort) 
 public inline fun <R : Comparable<R>> UIntArray.isSortedByDescending(selector: (UInt) -> R?): Boolean {
     if (size < 2) return true
     var previousValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val currentValue = selector(this[i])
         if (compareValues(previousValue, currentValue) < 0) return false
         previousValue = currentValue
+        i++
     }
     return true
 }
@@ -2998,10 +3188,12 @@ public inline fun <R : Comparable<R>> UIntArray.isSortedByDescending(selector: (
 public inline fun <R : Comparable<R>> ULongArray.isSortedByDescending(selector: (ULong) -> R?): Boolean {
     if (size < 2) return true
     var previousValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val currentValue = selector(this[i])
         if (compareValues(previousValue, currentValue) < 0) return false
         previousValue = currentValue
+        i++
     }
     return true
 }
@@ -3027,10 +3219,12 @@ public inline fun <R : Comparable<R>> ULongArray.isSortedByDescending(selector: 
 public inline fun <R : Comparable<R>> UByteArray.isSortedByDescending(selector: (UByte) -> R?): Boolean {
     if (size < 2) return true
     var previousValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val currentValue = selector(this[i])
         if (compareValues(previousValue, currentValue) < 0) return false
         previousValue = currentValue
+        i++
     }
     return true
 }
@@ -3056,10 +3250,12 @@ public inline fun <R : Comparable<R>> UByteArray.isSortedByDescending(selector: 
 public inline fun <R : Comparable<R>> UShortArray.isSortedByDescending(selector: (UShort) -> R?): Boolean {
     if (size < 2) return true
     var previousValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val currentValue = selector(this[i])
         if (compareValues(previousValue, currentValue) < 0) return false
         previousValue = currentValue
+        i++
     }
     return true
 }
@@ -3079,8 +3275,10 @@ public inline fun <R : Comparable<R>> UShortArray.isSortedByDescending(selector:
 @SinceKotlin("2.4")
 @ExperimentalUnsignedTypes
 public fun UIntArray.isSortedDescending(): Boolean {
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         if (this[i - 1] < this[i]) return false
+        i++
     }
     return true
 }
@@ -3100,8 +3298,10 @@ public fun UIntArray.isSortedDescending(): Boolean {
 @SinceKotlin("2.4")
 @ExperimentalUnsignedTypes
 public fun ULongArray.isSortedDescending(): Boolean {
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         if (this[i - 1] < this[i]) return false
+        i++
     }
     return true
 }
@@ -3121,8 +3321,10 @@ public fun ULongArray.isSortedDescending(): Boolean {
 @SinceKotlin("2.4")
 @ExperimentalUnsignedTypes
 public fun UByteArray.isSortedDescending(): Boolean {
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         if (this[i - 1] < this[i]) return false
+        i++
     }
     return true
 }
@@ -3142,8 +3344,10 @@ public fun UByteArray.isSortedDescending(): Boolean {
 @SinceKotlin("2.4")
 @ExperimentalUnsignedTypes
 public fun UShortArray.isSortedDescending(): Boolean {
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         if (this[i - 1] < this[i]) return false
+        i++
     }
     return true
 }
@@ -3163,8 +3367,10 @@ public fun UShortArray.isSortedDescending(): Boolean {
 @SinceKotlin("2.4")
 @ExperimentalUnsignedTypes
 public fun UIntArray.isSortedWith(comparator: Comparator<in UInt>): Boolean {
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         if (comparator.compare(this[i - 1], this[i]) > 0) return false
+        i++
     }
     return true
 }
@@ -3184,8 +3390,10 @@ public fun UIntArray.isSortedWith(comparator: Comparator<in UInt>): Boolean {
 @SinceKotlin("2.4")
 @ExperimentalUnsignedTypes
 public fun ULongArray.isSortedWith(comparator: Comparator<in ULong>): Boolean {
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         if (comparator.compare(this[i - 1], this[i]) > 0) return false
+        i++
     }
     return true
 }
@@ -3205,8 +3413,10 @@ public fun ULongArray.isSortedWith(comparator: Comparator<in ULong>): Boolean {
 @SinceKotlin("2.4")
 @ExperimentalUnsignedTypes
 public fun UByteArray.isSortedWith(comparator: Comparator<in UByte>): Boolean {
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         if (comparator.compare(this[i - 1], this[i]) > 0) return false
+        i++
     }
     return true
 }
@@ -3226,8 +3436,10 @@ public fun UByteArray.isSortedWith(comparator: Comparator<in UByte>): Boolean {
 @SinceKotlin("2.4")
 @ExperimentalUnsignedTypes
 public fun UShortArray.isSortedWith(comparator: Comparator<in UShort>): Boolean {
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         if (comparator.compare(this[i - 1], this[i]) > 0) return false
+        i++
     }
     return true
 }
@@ -3484,11 +3696,13 @@ public fun UShortArray.shuffle(): Unit {
 @SinceKotlin("1.4")
 @ExperimentalUnsignedTypes
 public fun UIntArray.shuffle(random: Random): Unit {
-    for (i in lastIndex downTo 1) {
+    var i = lastIndex
+    while (i >= 1) {
         val j = random.nextInt(i + 1)
         val copy = this[i]
         this[i] = this[j]
         this[j] = copy
+        i--
     }
 }
 
@@ -3500,11 +3714,13 @@ public fun UIntArray.shuffle(random: Random): Unit {
 @SinceKotlin("1.4")
 @ExperimentalUnsignedTypes
 public fun ULongArray.shuffle(random: Random): Unit {
-    for (i in lastIndex downTo 1) {
+    var i = lastIndex
+    while (i >= 1) {
         val j = random.nextInt(i + 1)
         val copy = this[i]
         this[i] = this[j]
         this[j] = copy
+        i--
     }
 }
 
@@ -3516,11 +3732,13 @@ public fun ULongArray.shuffle(random: Random): Unit {
 @SinceKotlin("1.4")
 @ExperimentalUnsignedTypes
 public fun UByteArray.shuffle(random: Random): Unit {
-    for (i in lastIndex downTo 1) {
+    var i = lastIndex
+    while (i >= 1) {
         val j = random.nextInt(i + 1)
         val copy = this[i]
         this[i] = this[j]
         this[j] = copy
+        i--
     }
 }
 
@@ -3532,11 +3750,13 @@ public fun UByteArray.shuffle(random: Random): Unit {
 @SinceKotlin("1.4")
 @ExperimentalUnsignedTypes
 public fun UShortArray.shuffle(random: Random): Unit {
-    for (i in lastIndex downTo 1) {
+    var i = lastIndex
+    while (i >= 1) {
         val j = random.nextInt(i + 1)
         val copy = this[i]
         this[i] = this[j]
         this[j] = copy
+        i--
     }
 }
 
@@ -4266,8 +4486,10 @@ public inline fun UIntArray.copyOf(newSize: Int, init: (Int) -> UInt): UIntArray
     require(newSize >= 0) { "Invalid new array size: $newSize." }
     val oldSize = size
     val copy = copyOf(newSize)
-    for (idx in oldSize until newSize) {
+    var idx = oldSize
+    while (idx < newSize) {
         copy[idx] = init(idx)
+        idx++
     }
     return copy
 }
@@ -4294,8 +4516,10 @@ public inline fun ULongArray.copyOf(newSize: Int, init: (Int) -> ULong): ULongAr
     require(newSize >= 0) { "Invalid new array size: $newSize." }
     val oldSize = size
     val copy = copyOf(newSize)
-    for (idx in oldSize until newSize) {
+    var idx = oldSize
+    while (idx < newSize) {
         copy[idx] = init(idx)
+        idx++
     }
     return copy
 }
@@ -4322,8 +4546,10 @@ public inline fun UByteArray.copyOf(newSize: Int, init: (Int) -> UByte): UByteAr
     require(newSize >= 0) { "Invalid new array size: $newSize." }
     val oldSize = size
     val copy = copyOf(newSize)
-    for (idx in oldSize until newSize) {
+    var idx = oldSize
+    while (idx < newSize) {
         copy[idx] = init(idx)
+        idx++
     }
     return copy
 }
@@ -4350,8 +4576,10 @@ public inline fun UShortArray.copyOf(newSize: Int, init: (Int) -> UShort): UShor
     require(newSize >= 0) { "Invalid new array size: $newSize." }
     val oldSize = size
     val copy = copyOf(newSize)
-    for (idx in oldSize until newSize) {
+    var idx = oldSize
+    while (idx < newSize) {
         copy[idx] = init(idx)
+        idx++
     }
     return copy
 }
@@ -5101,8 +5329,11 @@ public inline fun <V> UShortArray.associateWith(valueSelector: (UShort) -> V): M
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <V, M : MutableMap<in UInt, in V>> UIntArray.associateWithTo(destination: M, valueSelector: (UInt) -> V): M {
-    for (element in this) {
+    var index = 0
+    while (index < size) {
+        val element = this[index]
         destination.put(element, valueSelector(element))
+        index++
     }
     return destination
 }
@@ -5120,8 +5351,11 @@ public inline fun <V, M : MutableMap<in UInt, in V>> UIntArray.associateWithTo(d
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <V, M : MutableMap<in ULong, in V>> ULongArray.associateWithTo(destination: M, valueSelector: (ULong) -> V): M {
-    for (element in this) {
+    var index = 0
+    while (index < size) {
+        val element = this[index]
         destination.put(element, valueSelector(element))
+        index++
     }
     return destination
 }
@@ -5139,8 +5373,11 @@ public inline fun <V, M : MutableMap<in ULong, in V>> ULongArray.associateWithTo
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <V, M : MutableMap<in UByte, in V>> UByteArray.associateWithTo(destination: M, valueSelector: (UByte) -> V): M {
-    for (element in this) {
+    var index = 0
+    while (index < size) {
+        val element = this[index]
         destination.put(element, valueSelector(element))
+        index++
     }
     return destination
 }
@@ -5158,8 +5395,11 @@ public inline fun <V, M : MutableMap<in UByte, in V>> UByteArray.associateWithTo
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <V, M : MutableMap<in UShort, in V>> UShortArray.associateWithTo(destination: M, valueSelector: (UShort) -> V): M {
-    for (element in this) {
+    var index = 0
+    while (index < size) {
+        val element = this[index]
         destination.put(element, valueSelector(element))
+        index++
     }
     return destination
 }
@@ -5284,9 +5524,10 @@ public inline fun <R> UShortArray.flatMapIndexed(transform: (index: Int, UShort)
 @kotlin.internal.InlineOnly
 public inline fun <R, C : MutableCollection<in R>> UIntArray.flatMapIndexedTo(destination: C, transform: (index: Int, UInt) -> Iterable<R>): C {
     var index = 0
-    for (element in this) {
-        val list = transform(index++, element)
+    while (index < size) {
+        val list = transform(index, this[index])
         destination.addAll(list)
+        index++
     }
     return destination
 }
@@ -5303,9 +5544,10 @@ public inline fun <R, C : MutableCollection<in R>> UIntArray.flatMapIndexedTo(de
 @kotlin.internal.InlineOnly
 public inline fun <R, C : MutableCollection<in R>> ULongArray.flatMapIndexedTo(destination: C, transform: (index: Int, ULong) -> Iterable<R>): C {
     var index = 0
-    for (element in this) {
-        val list = transform(index++, element)
+    while (index < size) {
+        val list = transform(index, this[index])
         destination.addAll(list)
+        index++
     }
     return destination
 }
@@ -5322,9 +5564,10 @@ public inline fun <R, C : MutableCollection<in R>> ULongArray.flatMapIndexedTo(d
 @kotlin.internal.InlineOnly
 public inline fun <R, C : MutableCollection<in R>> UByteArray.flatMapIndexedTo(destination: C, transform: (index: Int, UByte) -> Iterable<R>): C {
     var index = 0
-    for (element in this) {
-        val list = transform(index++, element)
+    while (index < size) {
+        val list = transform(index, this[index])
         destination.addAll(list)
+        index++
     }
     return destination
 }
@@ -5341,9 +5584,10 @@ public inline fun <R, C : MutableCollection<in R>> UByteArray.flatMapIndexedTo(d
 @kotlin.internal.InlineOnly
 public inline fun <R, C : MutableCollection<in R>> UShortArray.flatMapIndexedTo(destination: C, transform: (index: Int, UShort) -> Iterable<R>): C {
     var index = 0
-    for (element in this) {
-        val list = transform(index++, element)
+    while (index < size) {
+        val list = transform(index, this[index])
         destination.addAll(list)
+        index++
     }
     return destination
 }
@@ -5356,9 +5600,11 @@ public inline fun <R, C : MutableCollection<in R>> UShortArray.flatMapIndexedTo(
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <R, C : MutableCollection<in R>> UIntArray.flatMapTo(destination: C, transform: (UInt) -> Iterable<R>): C {
-    for (element in this) {
-        val list = transform(element)
+    var index = 0
+    while (index < size) {
+        val list = transform(this[index])
         destination.addAll(list)
+        index++
     }
     return destination
 }
@@ -5371,9 +5617,11 @@ public inline fun <R, C : MutableCollection<in R>> UIntArray.flatMapTo(destinati
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <R, C : MutableCollection<in R>> ULongArray.flatMapTo(destination: C, transform: (ULong) -> Iterable<R>): C {
-    for (element in this) {
-        val list = transform(element)
+    var index = 0
+    while (index < size) {
+        val list = transform(this[index])
         destination.addAll(list)
+        index++
     }
     return destination
 }
@@ -5386,9 +5634,11 @@ public inline fun <R, C : MutableCollection<in R>> ULongArray.flatMapTo(destinat
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <R, C : MutableCollection<in R>> UByteArray.flatMapTo(destination: C, transform: (UByte) -> Iterable<R>): C {
-    for (element in this) {
-        val list = transform(element)
+    var index = 0
+    while (index < size) {
+        val list = transform(this[index])
         destination.addAll(list)
+        index++
     }
     return destination
 }
@@ -5401,9 +5651,11 @@ public inline fun <R, C : MutableCollection<in R>> UByteArray.flatMapTo(destinat
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <R, C : MutableCollection<in R>> UShortArray.flatMapTo(destination: C, transform: (UShort) -> Iterable<R>): C {
-    for (element in this) {
-        val list = transform(element)
+    var index = 0
+    while (index < size) {
+        val list = transform(this[index])
         destination.addAll(list)
+        index++
     }
     return destination
 }
@@ -5545,10 +5797,13 @@ public inline fun <K, V> UShortArray.groupBy(keySelector: (UShort) -> K, valueTr
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <K, M : MutableMap<in K, MutableList<UInt>>> UIntArray.groupByTo(destination: M, keySelector: (UInt) -> K): M {
-    for (element in this) {
+    var index = 0
+    while (index < size) {
+        val element = this[index]
         val key = keySelector(element)
         val list = destination.getOrPut(key) { ArrayList<UInt>() }
         list.add(element)
+        index++
     }
     return destination
 }
@@ -5566,10 +5821,13 @@ public inline fun <K, M : MutableMap<in K, MutableList<UInt>>> UIntArray.groupBy
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <K, M : MutableMap<in K, MutableList<ULong>>> ULongArray.groupByTo(destination: M, keySelector: (ULong) -> K): M {
-    for (element in this) {
+    var index = 0
+    while (index < size) {
+        val element = this[index]
         val key = keySelector(element)
         val list = destination.getOrPut(key) { ArrayList<ULong>() }
         list.add(element)
+        index++
     }
     return destination
 }
@@ -5587,10 +5845,13 @@ public inline fun <K, M : MutableMap<in K, MutableList<ULong>>> ULongArray.group
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <K, M : MutableMap<in K, MutableList<UByte>>> UByteArray.groupByTo(destination: M, keySelector: (UByte) -> K): M {
-    for (element in this) {
+    var index = 0
+    while (index < size) {
+        val element = this[index]
         val key = keySelector(element)
         val list = destination.getOrPut(key) { ArrayList<UByte>() }
         list.add(element)
+        index++
     }
     return destination
 }
@@ -5608,10 +5869,13 @@ public inline fun <K, M : MutableMap<in K, MutableList<UByte>>> UByteArray.group
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <K, M : MutableMap<in K, MutableList<UShort>>> UShortArray.groupByTo(destination: M, keySelector: (UShort) -> K): M {
-    for (element in this) {
+    var index = 0
+    while (index < size) {
+        val element = this[index]
         val key = keySelector(element)
         val list = destination.getOrPut(key) { ArrayList<UShort>() }
         list.add(element)
+        index++
     }
     return destination
 }
@@ -5630,10 +5894,13 @@ public inline fun <K, M : MutableMap<in K, MutableList<UShort>>> UShortArray.gro
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <K, V, M : MutableMap<in K, MutableList<V>>> UIntArray.groupByTo(destination: M, keySelector: (UInt) -> K, valueTransform: (UInt) -> V): M {
-    for (element in this) {
+    var index = 0
+    while (index < size) {
+        val element = this[index]
         val key = keySelector(element)
         val list = destination.getOrPut(key) { ArrayList<V>() }
         list.add(valueTransform(element))
+        index++
     }
     return destination
 }
@@ -5652,10 +5919,13 @@ public inline fun <K, V, M : MutableMap<in K, MutableList<V>>> UIntArray.groupBy
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <K, V, M : MutableMap<in K, MutableList<V>>> ULongArray.groupByTo(destination: M, keySelector: (ULong) -> K, valueTransform: (ULong) -> V): M {
-    for (element in this) {
+    var index = 0
+    while (index < size) {
+        val element = this[index]
         val key = keySelector(element)
         val list = destination.getOrPut(key) { ArrayList<V>() }
         list.add(valueTransform(element))
+        index++
     }
     return destination
 }
@@ -5674,10 +5944,13 @@ public inline fun <K, V, M : MutableMap<in K, MutableList<V>>> ULongArray.groupB
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <K, V, M : MutableMap<in K, MutableList<V>>> UByteArray.groupByTo(destination: M, keySelector: (UByte) -> K, valueTransform: (UByte) -> V): M {
-    for (element in this) {
+    var index = 0
+    while (index < size) {
+        val element = this[index]
         val key = keySelector(element)
         val list = destination.getOrPut(key) { ArrayList<V>() }
         list.add(valueTransform(element))
+        index++
     }
     return destination
 }
@@ -5696,10 +5969,13 @@ public inline fun <K, V, M : MutableMap<in K, MutableList<V>>> UByteArray.groupB
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <K, V, M : MutableMap<in K, MutableList<V>>> UShortArray.groupByTo(destination: M, keySelector: (UShort) -> K, valueTransform: (UShort) -> V): M {
-    for (element in this) {
+    var index = 0
+    while (index < size) {
+        val element = this[index]
         val key = keySelector(element)
         val list = destination.getOrPut(key) { ArrayList<V>() }
         list.add(valueTransform(element))
+        index++
     }
     return destination
 }
@@ -5820,8 +6096,10 @@ public inline fun <R> UShortArray.mapIndexed(transform: (index: Int, UShort) -> 
 @kotlin.internal.InlineOnly
 public inline fun <R, C : MutableCollection<in R>> UIntArray.mapIndexedTo(destination: C, transform: (index: Int, UInt) -> R): C {
     var index = 0
-    for (item in this)
-        destination.add(transform(index++, item))
+    while (index < size) {
+        destination.add(transform(index, this[index]))
+        index++
+    }
     return destination
 }
 
@@ -5837,8 +6115,10 @@ public inline fun <R, C : MutableCollection<in R>> UIntArray.mapIndexedTo(destin
 @kotlin.internal.InlineOnly
 public inline fun <R, C : MutableCollection<in R>> ULongArray.mapIndexedTo(destination: C, transform: (index: Int, ULong) -> R): C {
     var index = 0
-    for (item in this)
-        destination.add(transform(index++, item))
+    while (index < size) {
+        destination.add(transform(index, this[index]))
+        index++
+    }
     return destination
 }
 
@@ -5854,8 +6134,10 @@ public inline fun <R, C : MutableCollection<in R>> ULongArray.mapIndexedTo(desti
 @kotlin.internal.InlineOnly
 public inline fun <R, C : MutableCollection<in R>> UByteArray.mapIndexedTo(destination: C, transform: (index: Int, UByte) -> R): C {
     var index = 0
-    for (item in this)
-        destination.add(transform(index++, item))
+    while (index < size) {
+        destination.add(transform(index, this[index]))
+        index++
+    }
     return destination
 }
 
@@ -5871,8 +6153,10 @@ public inline fun <R, C : MutableCollection<in R>> UByteArray.mapIndexedTo(desti
 @kotlin.internal.InlineOnly
 public inline fun <R, C : MutableCollection<in R>> UShortArray.mapIndexedTo(destination: C, transform: (index: Int, UShort) -> R): C {
     var index = 0
-    for (item in this)
-        destination.add(transform(index++, item))
+    while (index < size) {
+        destination.add(transform(index, this[index]))
+        index++
+    }
     return destination
 }
 
@@ -5885,8 +6169,11 @@ public inline fun <R, C : MutableCollection<in R>> UShortArray.mapIndexedTo(dest
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <R, C : MutableCollection<in R>> UIntArray.mapTo(destination: C, transform: (UInt) -> R): C {
-    for (item in this)
-        destination.add(transform(item))
+    var index = 0
+    while (index < size) {
+        destination.add(transform(this[index]))
+        index++
+    }
     return destination
 }
 
@@ -5899,8 +6186,11 @@ public inline fun <R, C : MutableCollection<in R>> UIntArray.mapTo(destination: 
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <R, C : MutableCollection<in R>> ULongArray.mapTo(destination: C, transform: (ULong) -> R): C {
-    for (item in this)
-        destination.add(transform(item))
+    var index = 0
+    while (index < size) {
+        destination.add(transform(this[index]))
+        index++
+    }
     return destination
 }
 
@@ -5913,8 +6203,11 @@ public inline fun <R, C : MutableCollection<in R>> ULongArray.mapTo(destination:
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <R, C : MutableCollection<in R>> UByteArray.mapTo(destination: C, transform: (UByte) -> R): C {
-    for (item in this)
-        destination.add(transform(item))
+    var index = 0
+    while (index < size) {
+        destination.add(transform(this[index]))
+        index++
+    }
     return destination
 }
 
@@ -5927,8 +6220,11 @@ public inline fun <R, C : MutableCollection<in R>> UByteArray.mapTo(destination:
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <R, C : MutableCollection<in R>> UShortArray.mapTo(destination: C, transform: (UShort) -> R): C {
-    for (item in this)
-        destination.add(transform(item))
+    var index = 0
+    while (index < size) {
+        destination.add(transform(this[index]))
+        index++
+    }
     return destination
 }
 
@@ -5985,7 +6281,11 @@ public fun UShortArray.withIndex(): Iterable<IndexedValue<UShort>> {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UIntArray.all(predicate: (UInt) -> Boolean): Boolean {
-    for (element in this) if (!predicate(element)) return false
+    var index = 0
+    while (index < size) {
+        if (!predicate(this[index])) return false
+        index++
+    }
     return true
 }
 
@@ -6002,7 +6302,11 @@ public inline fun UIntArray.all(predicate: (UInt) -> Boolean): Boolean {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun ULongArray.all(predicate: (ULong) -> Boolean): Boolean {
-    for (element in this) if (!predicate(element)) return false
+    var index = 0
+    while (index < size) {
+        if (!predicate(this[index])) return false
+        index++
+    }
     return true
 }
 
@@ -6019,7 +6323,11 @@ public inline fun ULongArray.all(predicate: (ULong) -> Boolean): Boolean {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UByteArray.all(predicate: (UByte) -> Boolean): Boolean {
-    for (element in this) if (!predicate(element)) return false
+    var index = 0
+    while (index < size) {
+        if (!predicate(this[index])) return false
+        index++
+    }
     return true
 }
 
@@ -6036,7 +6344,11 @@ public inline fun UByteArray.all(predicate: (UByte) -> Boolean): Boolean {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UShortArray.all(predicate: (UShort) -> Boolean): Boolean {
-    for (element in this) if (!predicate(element)) return false
+    var index = 0
+    while (index < size) {
+        if (!predicate(this[index])) return false
+        index++
+    }
     return true
 }
 
@@ -6257,8 +6569,10 @@ public inline fun <K> UShortArray.allDistinctBy(selector: (UShort) -> K): Boolea
 public fun UIntArray.allEqual(): Boolean {
     if (size < 2) return true
     val first = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         if (first != this[i]) return false
+        i++
     }
     return true
 }
@@ -6280,8 +6594,10 @@ public fun UIntArray.allEqual(): Boolean {
 public fun ULongArray.allEqual(): Boolean {
     if (size < 2) return true
     val first = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         if (first != this[i]) return false
+        i++
     }
     return true
 }
@@ -6303,8 +6619,10 @@ public fun ULongArray.allEqual(): Boolean {
 public fun UByteArray.allEqual(): Boolean {
     if (size < 2) return true
     val first = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         if (first != this[i]) return false
+        i++
     }
     return true
 }
@@ -6326,8 +6644,10 @@ public fun UByteArray.allEqual(): Boolean {
 public fun UShortArray.allEqual(): Boolean {
     if (size < 2) return true
     val first = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         if (first != this[i]) return false
+        i++
     }
     return true
 }
@@ -6353,11 +6673,13 @@ public fun UShortArray.allEqual(): Boolean {
 public inline fun <K> UIntArray.allEqualBy(selector: (UInt) -> K): Boolean {
     if (size < 2) return true
     val firstKey = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val key = selector(this[i])
         // Workaround for KT-86678 (revert in KT-86680): `==` on boxed Double/Float is wrong for NaN on Native.
         val equal = firstKey?.equals(key) ?: (key == null)
         if (!equal) return false
+        i++
     }
     return true
 }
@@ -6383,11 +6705,13 @@ public inline fun <K> UIntArray.allEqualBy(selector: (UInt) -> K): Boolean {
 public inline fun <K> ULongArray.allEqualBy(selector: (ULong) -> K): Boolean {
     if (size < 2) return true
     val firstKey = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val key = selector(this[i])
         // Workaround for KT-86678 (revert in KT-86680): `==` on boxed Double/Float is wrong for NaN on Native.
         val equal = firstKey?.equals(key) ?: (key == null)
         if (!equal) return false
+        i++
     }
     return true
 }
@@ -6413,11 +6737,13 @@ public inline fun <K> ULongArray.allEqualBy(selector: (ULong) -> K): Boolean {
 public inline fun <K> UByteArray.allEqualBy(selector: (UByte) -> K): Boolean {
     if (size < 2) return true
     val firstKey = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val key = selector(this[i])
         // Workaround for KT-86678 (revert in KT-86680): `==` on boxed Double/Float is wrong for NaN on Native.
         val equal = firstKey?.equals(key) ?: (key == null)
         if (!equal) return false
+        i++
     }
     return true
 }
@@ -6443,11 +6769,13 @@ public inline fun <K> UByteArray.allEqualBy(selector: (UByte) -> K): Boolean {
 public inline fun <K> UShortArray.allEqualBy(selector: (UShort) -> K): Boolean {
     if (size < 2) return true
     val firstKey = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val key = selector(this[i])
         // Workaround for KT-86678 (revert in KT-86680): `==` on boxed Double/Float is wrong for NaN on Native.
         val equal = firstKey?.equals(key) ?: (key == null)
         if (!equal) return false
+        i++
     }
     return true
 }
@@ -6509,7 +6837,11 @@ public inline fun UShortArray.any(): Boolean {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UIntArray.any(predicate: (UInt) -> Boolean): Boolean {
-    for (element in this) if (predicate(element)) return true
+    var index = 0
+    while (index < size) {
+        if (predicate(this[index])) return true
+        index++
+    }
     return false
 }
 
@@ -6522,7 +6854,11 @@ public inline fun UIntArray.any(predicate: (UInt) -> Boolean): Boolean {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun ULongArray.any(predicate: (ULong) -> Boolean): Boolean {
-    for (element in this) if (predicate(element)) return true
+    var index = 0
+    while (index < size) {
+        if (predicate(this[index])) return true
+        index++
+    }
     return false
 }
 
@@ -6535,7 +6871,11 @@ public inline fun ULongArray.any(predicate: (ULong) -> Boolean): Boolean {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UByteArray.any(predicate: (UByte) -> Boolean): Boolean {
-    for (element in this) if (predicate(element)) return true
+    var index = 0
+    while (index < size) {
+        if (predicate(this[index])) return true
+        index++
+    }
     return false
 }
 
@@ -6548,7 +6888,11 @@ public inline fun UByteArray.any(predicate: (UByte) -> Boolean): Boolean {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UShortArray.any(predicate: (UShort) -> Boolean): Boolean {
-    for (element in this) if (predicate(element)) return true
+    var index = 0
+    while (index < size) {
+        if (predicate(this[index])) return true
+        index++
+    }
     return false
 }
 
@@ -6560,7 +6904,11 @@ public inline fun UShortArray.any(predicate: (UShort) -> Boolean): Boolean {
 @kotlin.internal.InlineOnly
 public inline fun UIntArray.count(predicate: (UInt) -> Boolean): Int {
     var count = 0
-    for (element in this) if (predicate(element)) ++count
+    var index = 0
+    while (index < size) {
+        if (predicate(this[index])) ++count
+        index++
+    }
     return count
 }
 
@@ -6572,7 +6920,11 @@ public inline fun UIntArray.count(predicate: (UInt) -> Boolean): Int {
 @kotlin.internal.InlineOnly
 public inline fun ULongArray.count(predicate: (ULong) -> Boolean): Int {
     var count = 0
-    for (element in this) if (predicate(element)) ++count
+    var index = 0
+    while (index < size) {
+        if (predicate(this[index])) ++count
+        index++
+    }
     return count
 }
 
@@ -6584,7 +6936,11 @@ public inline fun ULongArray.count(predicate: (ULong) -> Boolean): Int {
 @kotlin.internal.InlineOnly
 public inline fun UByteArray.count(predicate: (UByte) -> Boolean): Int {
     var count = 0
-    for (element in this) if (predicate(element)) ++count
+    var index = 0
+    while (index < size) {
+        if (predicate(this[index])) ++count
+        index++
+    }
     return count
 }
 
@@ -6596,7 +6952,11 @@ public inline fun UByteArray.count(predicate: (UByte) -> Boolean): Int {
 @kotlin.internal.InlineOnly
 public inline fun UShortArray.count(predicate: (UShort) -> Boolean): Int {
     var count = 0
-    for (element in this) if (predicate(element)) ++count
+    var index = 0
+    while (index < size) {
+        if (predicate(this[index])) ++count
+        index++
+    }
     return count
 }
 
@@ -6613,7 +6973,11 @@ public inline fun UShortArray.count(predicate: (UShort) -> Boolean): Int {
 @kotlin.internal.InlineOnly
 public inline fun <R> UIntArray.fold(initial: R, operation: (acc: R, UInt) -> R): R {
     var accumulator = initial
-    for (element in this) accumulator = operation(accumulator, element)
+    var index = 0
+    while (index < size) {
+        accumulator = operation(accumulator, this[index])
+        index++
+    }
     return accumulator
 }
 
@@ -6630,7 +6994,11 @@ public inline fun <R> UIntArray.fold(initial: R, operation: (acc: R, UInt) -> R)
 @kotlin.internal.InlineOnly
 public inline fun <R> ULongArray.fold(initial: R, operation: (acc: R, ULong) -> R): R {
     var accumulator = initial
-    for (element in this) accumulator = operation(accumulator, element)
+    var index = 0
+    while (index < size) {
+        accumulator = operation(accumulator, this[index])
+        index++
+    }
     return accumulator
 }
 
@@ -6647,7 +7015,11 @@ public inline fun <R> ULongArray.fold(initial: R, operation: (acc: R, ULong) -> 
 @kotlin.internal.InlineOnly
 public inline fun <R> UByteArray.fold(initial: R, operation: (acc: R, UByte) -> R): R {
     var accumulator = initial
-    for (element in this) accumulator = operation(accumulator, element)
+    var index = 0
+    while (index < size) {
+        accumulator = operation(accumulator, this[index])
+        index++
+    }
     return accumulator
 }
 
@@ -6664,7 +7036,11 @@ public inline fun <R> UByteArray.fold(initial: R, operation: (acc: R, UByte) -> 
 @kotlin.internal.InlineOnly
 public inline fun <R> UShortArray.fold(initial: R, operation: (acc: R, UShort) -> R): R {
     var accumulator = initial
-    for (element in this) accumulator = operation(accumulator, element)
+    var index = 0
+    while (index < size) {
+        accumulator = operation(accumulator, this[index])
+        index++
+    }
     return accumulator
 }
 
@@ -6681,9 +7057,12 @@ public inline fun <R> UShortArray.fold(initial: R, operation: (acc: R, UShort) -
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <R> UIntArray.foldIndexed(initial: R, operation: (index: Int, acc: R, UInt) -> R): R {
-    var index = 0
     var accumulator = initial
-    for (element in this) accumulator = operation(index++, accumulator, element)
+    var index = 0
+    while (index < size) {
+        accumulator = operation(index, accumulator, this[index])
+        index++
+    }
     return accumulator
 }
 
@@ -6700,9 +7079,12 @@ public inline fun <R> UIntArray.foldIndexed(initial: R, operation: (index: Int, 
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <R> ULongArray.foldIndexed(initial: R, operation: (index: Int, acc: R, ULong) -> R): R {
-    var index = 0
     var accumulator = initial
-    for (element in this) accumulator = operation(index++, accumulator, element)
+    var index = 0
+    while (index < size) {
+        accumulator = operation(index, accumulator, this[index])
+        index++
+    }
     return accumulator
 }
 
@@ -6719,9 +7101,12 @@ public inline fun <R> ULongArray.foldIndexed(initial: R, operation: (index: Int,
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <R> UByteArray.foldIndexed(initial: R, operation: (index: Int, acc: R, UByte) -> R): R {
-    var index = 0
     var accumulator = initial
-    for (element in this) accumulator = operation(index++, accumulator, element)
+    var index = 0
+    while (index < size) {
+        accumulator = operation(index, accumulator, this[index])
+        index++
+    }
     return accumulator
 }
 
@@ -6738,9 +7123,12 @@ public inline fun <R> UByteArray.foldIndexed(initial: R, operation: (index: Int,
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun <R> UShortArray.foldIndexed(initial: R, operation: (index: Int, acc: R, UShort) -> R): R {
-    var index = 0
     var accumulator = initial
-    for (element in this) accumulator = operation(index++, accumulator, element)
+    var index = 0
+    while (index < size) {
+        accumulator = operation(index, accumulator, this[index])
+        index++
+    }
     return accumulator
 }
 
@@ -6919,7 +7307,11 @@ public inline fun <R> UShortArray.foldRightIndexed(initial: R, operation: (index
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UIntArray.forEach(action: (UInt) -> Unit): Unit {
-    for (element in this) action(element)
+    var index = 0
+    while (index < size) {
+        action(this[index])
+        index++
+    }
 }
 
 /**
@@ -6929,7 +7321,11 @@ public inline fun UIntArray.forEach(action: (UInt) -> Unit): Unit {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun ULongArray.forEach(action: (ULong) -> Unit): Unit {
-    for (element in this) action(element)
+    var index = 0
+    while (index < size) {
+        action(this[index])
+        index++
+    }
 }
 
 /**
@@ -6939,7 +7335,11 @@ public inline fun ULongArray.forEach(action: (ULong) -> Unit): Unit {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UByteArray.forEach(action: (UByte) -> Unit): Unit {
-    for (element in this) action(element)
+    var index = 0
+    while (index < size) {
+        action(this[index])
+        index++
+    }
 }
 
 /**
@@ -6949,7 +7349,11 @@ public inline fun UByteArray.forEach(action: (UByte) -> Unit): Unit {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UShortArray.forEach(action: (UShort) -> Unit): Unit {
-    for (element in this) action(element)
+    var index = 0
+    while (index < size) {
+        action(this[index])
+        index++
+    }
 }
 
 /**
@@ -6962,7 +7366,10 @@ public inline fun UShortArray.forEach(action: (UShort) -> Unit): Unit {
 @kotlin.internal.InlineOnly
 public inline fun UIntArray.forEachIndexed(action: (index: Int, UInt) -> Unit): Unit {
     var index = 0
-    for (item in this) action(index++, item)
+    while (index < size) {
+        action(index, this[index])
+        index++
+    }
 }
 
 /**
@@ -6975,7 +7382,10 @@ public inline fun UIntArray.forEachIndexed(action: (index: Int, UInt) -> Unit): 
 @kotlin.internal.InlineOnly
 public inline fun ULongArray.forEachIndexed(action: (index: Int, ULong) -> Unit): Unit {
     var index = 0
-    for (item in this) action(index++, item)
+    while (index < size) {
+        action(index, this[index])
+        index++
+    }
 }
 
 /**
@@ -6988,7 +7398,10 @@ public inline fun ULongArray.forEachIndexed(action: (index: Int, ULong) -> Unit)
 @kotlin.internal.InlineOnly
 public inline fun UByteArray.forEachIndexed(action: (index: Int, UByte) -> Unit): Unit {
     var index = 0
-    for (item in this) action(index++, item)
+    while (index < size) {
+        action(index, this[index])
+        index++
+    }
 }
 
 /**
@@ -7001,7 +7414,10 @@ public inline fun UByteArray.forEachIndexed(action: (index: Int, UByte) -> Unit)
 @kotlin.internal.InlineOnly
 public inline fun UShortArray.forEachIndexed(action: (index: Int, UShort) -> Unit): Unit {
     var index = 0
-    for (item in this) action(index++, item)
+    while (index < size) {
+        action(index, this[index])
+        index++
+    }
 }
 
 /**
@@ -7018,9 +7434,11 @@ public inline fun UShortArray.forEachIndexed(action: (index: Int, UShort) -> Uni
 public fun UIntArray.max(): UInt {
     if (isEmpty()) throw NoSuchElementException()
     var max = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (max < e) max = e
+        i++
     }
     return max
 }
@@ -7039,9 +7457,11 @@ public fun UIntArray.max(): UInt {
 public fun ULongArray.max(): ULong {
     if (isEmpty()) throw NoSuchElementException()
     var max = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (max < e) max = e
+        i++
     }
     return max
 }
@@ -7060,9 +7480,11 @@ public fun ULongArray.max(): ULong {
 public fun UByteArray.max(): UByte {
     if (isEmpty()) throw NoSuchElementException()
     var max = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (max < e) max = e
+        i++
     }
     return max
 }
@@ -7081,9 +7503,11 @@ public fun UByteArray.max(): UByte {
 public fun UShortArray.max(): UShort {
     if (isEmpty()) throw NoSuchElementException()
     var max = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (max < e) max = e
+        i++
     }
     return max
 }
@@ -7113,13 +7537,15 @@ public inline fun <R : Comparable<R>> UIntArray.maxBy(selector: (UInt) -> R): UI
     val lastIndex = this.lastIndex
     if (lastIndex == 0) return maxElem
     var maxValue = selector(maxElem)
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         val v = selector(e)
         if (maxValue < v) {
             maxElem = e
             maxValue = v
         }
+        i++
     }
     return maxElem
 }
@@ -7149,13 +7575,15 @@ public inline fun <R : Comparable<R>> ULongArray.maxBy(selector: (ULong) -> R): 
     val lastIndex = this.lastIndex
     if (lastIndex == 0) return maxElem
     var maxValue = selector(maxElem)
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         val v = selector(e)
         if (maxValue < v) {
             maxElem = e
             maxValue = v
         }
+        i++
     }
     return maxElem
 }
@@ -7185,13 +7613,15 @@ public inline fun <R : Comparable<R>> UByteArray.maxBy(selector: (UByte) -> R): 
     val lastIndex = this.lastIndex
     if (lastIndex == 0) return maxElem
     var maxValue = selector(maxElem)
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         val v = selector(e)
         if (maxValue < v) {
             maxElem = e
             maxValue = v
         }
+        i++
     }
     return maxElem
 }
@@ -7221,13 +7651,15 @@ public inline fun <R : Comparable<R>> UShortArray.maxBy(selector: (UShort) -> R)
     val lastIndex = this.lastIndex
     if (lastIndex == 0) return maxElem
     var maxValue = selector(maxElem)
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         val v = selector(e)
         if (maxValue < v) {
             maxElem = e
             maxValue = v
         }
+        i++
     }
     return maxElem
 }
@@ -7253,13 +7685,15 @@ public inline fun <R : Comparable<R>> UIntArray.maxByOrNull(selector: (UInt) -> 
     val lastIndex = this.lastIndex
     if (lastIndex == 0) return maxElem
     var maxValue = selector(maxElem)
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         val v = selector(e)
         if (maxValue < v) {
             maxElem = e
             maxValue = v
         }
+        i++
     }
     return maxElem
 }
@@ -7285,13 +7719,15 @@ public inline fun <R : Comparable<R>> ULongArray.maxByOrNull(selector: (ULong) -
     val lastIndex = this.lastIndex
     if (lastIndex == 0) return maxElem
     var maxValue = selector(maxElem)
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         val v = selector(e)
         if (maxValue < v) {
             maxElem = e
             maxValue = v
         }
+        i++
     }
     return maxElem
 }
@@ -7317,13 +7753,15 @@ public inline fun <R : Comparable<R>> UByteArray.maxByOrNull(selector: (UByte) -
     val lastIndex = this.lastIndex
     if (lastIndex == 0) return maxElem
     var maxValue = selector(maxElem)
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         val v = selector(e)
         if (maxValue < v) {
             maxElem = e
             maxValue = v
         }
+        i++
     }
     return maxElem
 }
@@ -7349,13 +7787,15 @@ public inline fun <R : Comparable<R>> UShortArray.maxByOrNull(selector: (UShort)
     val lastIndex = this.lastIndex
     if (lastIndex == 0) return maxElem
     var maxValue = selector(maxElem)
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         val v = selector(e)
         if (maxValue < v) {
             maxElem = e
             maxValue = v
         }
+        i++
     }
     return maxElem
 }
@@ -7378,9 +7818,11 @@ public inline fun <R : Comparable<R>> UShortArray.maxByOrNull(selector: (UShort)
 public inline fun UIntArray.maxOf(selector: (UInt) -> Double): Double {
     if (isEmpty()) throw NoSuchElementException()
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         maxValue = maxOf(maxValue, v)
+        i++
     }
     return maxValue
 }
@@ -7403,9 +7845,11 @@ public inline fun UIntArray.maxOf(selector: (UInt) -> Double): Double {
 public inline fun ULongArray.maxOf(selector: (ULong) -> Double): Double {
     if (isEmpty()) throw NoSuchElementException()
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         maxValue = maxOf(maxValue, v)
+        i++
     }
     return maxValue
 }
@@ -7428,9 +7872,11 @@ public inline fun ULongArray.maxOf(selector: (ULong) -> Double): Double {
 public inline fun UByteArray.maxOf(selector: (UByte) -> Double): Double {
     if (isEmpty()) throw NoSuchElementException()
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         maxValue = maxOf(maxValue, v)
+        i++
     }
     return maxValue
 }
@@ -7453,9 +7899,11 @@ public inline fun UByteArray.maxOf(selector: (UByte) -> Double): Double {
 public inline fun UShortArray.maxOf(selector: (UShort) -> Double): Double {
     if (isEmpty()) throw NoSuchElementException()
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         maxValue = maxOf(maxValue, v)
+        i++
     }
     return maxValue
 }
@@ -7478,9 +7926,11 @@ public inline fun UShortArray.maxOf(selector: (UShort) -> Double): Double {
 public inline fun UIntArray.maxOf(selector: (UInt) -> Float): Float {
     if (isEmpty()) throw NoSuchElementException()
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         maxValue = maxOf(maxValue, v)
+        i++
     }
     return maxValue
 }
@@ -7503,9 +7953,11 @@ public inline fun UIntArray.maxOf(selector: (UInt) -> Float): Float {
 public inline fun ULongArray.maxOf(selector: (ULong) -> Float): Float {
     if (isEmpty()) throw NoSuchElementException()
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         maxValue = maxOf(maxValue, v)
+        i++
     }
     return maxValue
 }
@@ -7528,9 +7980,11 @@ public inline fun ULongArray.maxOf(selector: (ULong) -> Float): Float {
 public inline fun UByteArray.maxOf(selector: (UByte) -> Float): Float {
     if (isEmpty()) throw NoSuchElementException()
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         maxValue = maxOf(maxValue, v)
+        i++
     }
     return maxValue
 }
@@ -7553,9 +8007,11 @@ public inline fun UByteArray.maxOf(selector: (UByte) -> Float): Float {
 public inline fun UShortArray.maxOf(selector: (UShort) -> Float): Float {
     if (isEmpty()) throw NoSuchElementException()
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         maxValue = maxOf(maxValue, v)
+        i++
     }
     return maxValue
 }
@@ -7578,11 +8034,13 @@ public inline fun UShortArray.maxOf(selector: (UShort) -> Float): Float {
 public inline fun <R : Comparable<R>> UIntArray.maxOf(selector: (UInt) -> R): R {
     if (isEmpty()) throw NoSuchElementException()
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (maxValue < v) {
             maxValue = v
         }
+        i++
     }
     return maxValue
 }
@@ -7605,11 +8063,13 @@ public inline fun <R : Comparable<R>> UIntArray.maxOf(selector: (UInt) -> R): R 
 public inline fun <R : Comparable<R>> ULongArray.maxOf(selector: (ULong) -> R): R {
     if (isEmpty()) throw NoSuchElementException()
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (maxValue < v) {
             maxValue = v
         }
+        i++
     }
     return maxValue
 }
@@ -7632,11 +8092,13 @@ public inline fun <R : Comparable<R>> ULongArray.maxOf(selector: (ULong) -> R): 
 public inline fun <R : Comparable<R>> UByteArray.maxOf(selector: (UByte) -> R): R {
     if (isEmpty()) throw NoSuchElementException()
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (maxValue < v) {
             maxValue = v
         }
+        i++
     }
     return maxValue
 }
@@ -7659,11 +8121,13 @@ public inline fun <R : Comparable<R>> UByteArray.maxOf(selector: (UByte) -> R): 
 public inline fun <R : Comparable<R>> UShortArray.maxOf(selector: (UShort) -> R): R {
     if (isEmpty()) throw NoSuchElementException()
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (maxValue < v) {
             maxValue = v
         }
+        i++
     }
     return maxValue
 }
@@ -7684,9 +8148,11 @@ public inline fun <R : Comparable<R>> UShortArray.maxOf(selector: (UShort) -> R)
 public inline fun UIntArray.maxOfOrNull(selector: (UInt) -> Double): Double? {
     if (isEmpty()) return null
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         maxValue = maxOf(maxValue, v)
+        i++
     }
     return maxValue
 }
@@ -7707,9 +8173,11 @@ public inline fun UIntArray.maxOfOrNull(selector: (UInt) -> Double): Double? {
 public inline fun ULongArray.maxOfOrNull(selector: (ULong) -> Double): Double? {
     if (isEmpty()) return null
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         maxValue = maxOf(maxValue, v)
+        i++
     }
     return maxValue
 }
@@ -7730,9 +8198,11 @@ public inline fun ULongArray.maxOfOrNull(selector: (ULong) -> Double): Double? {
 public inline fun UByteArray.maxOfOrNull(selector: (UByte) -> Double): Double? {
     if (isEmpty()) return null
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         maxValue = maxOf(maxValue, v)
+        i++
     }
     return maxValue
 }
@@ -7753,9 +8223,11 @@ public inline fun UByteArray.maxOfOrNull(selector: (UByte) -> Double): Double? {
 public inline fun UShortArray.maxOfOrNull(selector: (UShort) -> Double): Double? {
     if (isEmpty()) return null
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         maxValue = maxOf(maxValue, v)
+        i++
     }
     return maxValue
 }
@@ -7776,9 +8248,11 @@ public inline fun UShortArray.maxOfOrNull(selector: (UShort) -> Double): Double?
 public inline fun UIntArray.maxOfOrNull(selector: (UInt) -> Float): Float? {
     if (isEmpty()) return null
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         maxValue = maxOf(maxValue, v)
+        i++
     }
     return maxValue
 }
@@ -7799,9 +8273,11 @@ public inline fun UIntArray.maxOfOrNull(selector: (UInt) -> Float): Float? {
 public inline fun ULongArray.maxOfOrNull(selector: (ULong) -> Float): Float? {
     if (isEmpty()) return null
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         maxValue = maxOf(maxValue, v)
+        i++
     }
     return maxValue
 }
@@ -7822,9 +8298,11 @@ public inline fun ULongArray.maxOfOrNull(selector: (ULong) -> Float): Float? {
 public inline fun UByteArray.maxOfOrNull(selector: (UByte) -> Float): Float? {
     if (isEmpty()) return null
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         maxValue = maxOf(maxValue, v)
+        i++
     }
     return maxValue
 }
@@ -7845,9 +8323,11 @@ public inline fun UByteArray.maxOfOrNull(selector: (UByte) -> Float): Float? {
 public inline fun UShortArray.maxOfOrNull(selector: (UShort) -> Float): Float? {
     if (isEmpty()) return null
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         maxValue = maxOf(maxValue, v)
+        i++
     }
     return maxValue
 }
@@ -7868,11 +8348,13 @@ public inline fun UShortArray.maxOfOrNull(selector: (UShort) -> Float): Float? {
 public inline fun <R : Comparable<R>> UIntArray.maxOfOrNull(selector: (UInt) -> R): R? {
     if (isEmpty()) return null
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (maxValue < v) {
             maxValue = v
         }
+        i++
     }
     return maxValue
 }
@@ -7893,11 +8375,13 @@ public inline fun <R : Comparable<R>> UIntArray.maxOfOrNull(selector: (UInt) -> 
 public inline fun <R : Comparable<R>> ULongArray.maxOfOrNull(selector: (ULong) -> R): R? {
     if (isEmpty()) return null
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (maxValue < v) {
             maxValue = v
         }
+        i++
     }
     return maxValue
 }
@@ -7918,11 +8402,13 @@ public inline fun <R : Comparable<R>> ULongArray.maxOfOrNull(selector: (ULong) -
 public inline fun <R : Comparable<R>> UByteArray.maxOfOrNull(selector: (UByte) -> R): R? {
     if (isEmpty()) return null
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (maxValue < v) {
             maxValue = v
         }
+        i++
     }
     return maxValue
 }
@@ -7943,11 +8429,13 @@ public inline fun <R : Comparable<R>> UByteArray.maxOfOrNull(selector: (UByte) -
 public inline fun <R : Comparable<R>> UShortArray.maxOfOrNull(selector: (UShort) -> R): R? {
     if (isEmpty()) return null
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (maxValue < v) {
             maxValue = v
         }
+        i++
     }
     return maxValue
 }
@@ -7970,11 +8458,13 @@ public inline fun <R : Comparable<R>> UShortArray.maxOfOrNull(selector: (UShort)
 public inline fun <R> UIntArray.maxOfWith(comparator: Comparator<in R>, selector: (UInt) -> R): R {
     if (isEmpty()) throw NoSuchElementException()
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (comparator.compare(maxValue, v) < 0) {
             maxValue = v
         }
+        i++
     }
     return maxValue
 }
@@ -7997,11 +8487,13 @@ public inline fun <R> UIntArray.maxOfWith(comparator: Comparator<in R>, selector
 public inline fun <R> ULongArray.maxOfWith(comparator: Comparator<in R>, selector: (ULong) -> R): R {
     if (isEmpty()) throw NoSuchElementException()
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (comparator.compare(maxValue, v) < 0) {
             maxValue = v
         }
+        i++
     }
     return maxValue
 }
@@ -8024,11 +8516,13 @@ public inline fun <R> ULongArray.maxOfWith(comparator: Comparator<in R>, selecto
 public inline fun <R> UByteArray.maxOfWith(comparator: Comparator<in R>, selector: (UByte) -> R): R {
     if (isEmpty()) throw NoSuchElementException()
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (comparator.compare(maxValue, v) < 0) {
             maxValue = v
         }
+        i++
     }
     return maxValue
 }
@@ -8051,11 +8545,13 @@ public inline fun <R> UByteArray.maxOfWith(comparator: Comparator<in R>, selecto
 public inline fun <R> UShortArray.maxOfWith(comparator: Comparator<in R>, selector: (UShort) -> R): R {
     if (isEmpty()) throw NoSuchElementException()
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (comparator.compare(maxValue, v) < 0) {
             maxValue = v
         }
+        i++
     }
     return maxValue
 }
@@ -8076,11 +8572,13 @@ public inline fun <R> UShortArray.maxOfWith(comparator: Comparator<in R>, select
 public inline fun <R> UIntArray.maxOfWithOrNull(comparator: Comparator<in R>, selector: (UInt) -> R): R? {
     if (isEmpty()) return null
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (comparator.compare(maxValue, v) < 0) {
             maxValue = v
         }
+        i++
     }
     return maxValue
 }
@@ -8101,11 +8599,13 @@ public inline fun <R> UIntArray.maxOfWithOrNull(comparator: Comparator<in R>, se
 public inline fun <R> ULongArray.maxOfWithOrNull(comparator: Comparator<in R>, selector: (ULong) -> R): R? {
     if (isEmpty()) return null
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (comparator.compare(maxValue, v) < 0) {
             maxValue = v
         }
+        i++
     }
     return maxValue
 }
@@ -8126,11 +8626,13 @@ public inline fun <R> ULongArray.maxOfWithOrNull(comparator: Comparator<in R>, s
 public inline fun <R> UByteArray.maxOfWithOrNull(comparator: Comparator<in R>, selector: (UByte) -> R): R? {
     if (isEmpty()) return null
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (comparator.compare(maxValue, v) < 0) {
             maxValue = v
         }
+        i++
     }
     return maxValue
 }
@@ -8151,11 +8653,13 @@ public inline fun <R> UByteArray.maxOfWithOrNull(comparator: Comparator<in R>, s
 public inline fun <R> UShortArray.maxOfWithOrNull(comparator: Comparator<in R>, selector: (UShort) -> R): R? {
     if (isEmpty()) return null
     var maxValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (comparator.compare(maxValue, v) < 0) {
             maxValue = v
         }
+        i++
     }
     return maxValue
 }
@@ -8170,9 +8674,11 @@ public inline fun <R> UShortArray.maxOfWithOrNull(comparator: Comparator<in R>, 
 public fun UIntArray.maxOrNull(): UInt? {
     if (isEmpty()) return null
     var max = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (max < e) max = e
+        i++
     }
     return max
 }
@@ -8187,9 +8693,11 @@ public fun UIntArray.maxOrNull(): UInt? {
 public fun ULongArray.maxOrNull(): ULong? {
     if (isEmpty()) return null
     var max = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (max < e) max = e
+        i++
     }
     return max
 }
@@ -8204,9 +8712,11 @@ public fun ULongArray.maxOrNull(): ULong? {
 public fun UByteArray.maxOrNull(): UByte? {
     if (isEmpty()) return null
     var max = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (max < e) max = e
+        i++
     }
     return max
 }
@@ -8221,9 +8731,11 @@ public fun UByteArray.maxOrNull(): UByte? {
 public fun UShortArray.maxOrNull(): UShort? {
     if (isEmpty()) return null
     var max = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (max < e) max = e
+        i++
     }
     return max
 }
@@ -8240,9 +8752,11 @@ public fun UShortArray.maxOrNull(): UShort? {
 public fun UIntArray.maxWith(comparator: Comparator<in UInt>): UInt {
     if (isEmpty()) throw NoSuchElementException()
     var max = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (comparator.compare(max, e) < 0) max = e
+        i++
     }
     return max
 }
@@ -8259,9 +8773,11 @@ public fun UIntArray.maxWith(comparator: Comparator<in UInt>): UInt {
 public fun ULongArray.maxWith(comparator: Comparator<in ULong>): ULong {
     if (isEmpty()) throw NoSuchElementException()
     var max = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (comparator.compare(max, e) < 0) max = e
+        i++
     }
     return max
 }
@@ -8278,9 +8794,11 @@ public fun ULongArray.maxWith(comparator: Comparator<in ULong>): ULong {
 public fun UByteArray.maxWith(comparator: Comparator<in UByte>): UByte {
     if (isEmpty()) throw NoSuchElementException()
     var max = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (comparator.compare(max, e) < 0) max = e
+        i++
     }
     return max
 }
@@ -8297,9 +8815,11 @@ public fun UByteArray.maxWith(comparator: Comparator<in UByte>): UByte {
 public fun UShortArray.maxWith(comparator: Comparator<in UShort>): UShort {
     if (isEmpty()) throw NoSuchElementException()
     var max = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (comparator.compare(max, e) < 0) max = e
+        i++
     }
     return max
 }
@@ -8312,9 +8832,11 @@ public fun UShortArray.maxWith(comparator: Comparator<in UShort>): UShort {
 public fun UIntArray.maxWithOrNull(comparator: Comparator<in UInt>): UInt? {
     if (isEmpty()) return null
     var max = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (comparator.compare(max, e) < 0) max = e
+        i++
     }
     return max
 }
@@ -8327,9 +8849,11 @@ public fun UIntArray.maxWithOrNull(comparator: Comparator<in UInt>): UInt? {
 public fun ULongArray.maxWithOrNull(comparator: Comparator<in ULong>): ULong? {
     if (isEmpty()) return null
     var max = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (comparator.compare(max, e) < 0) max = e
+        i++
     }
     return max
 }
@@ -8342,9 +8866,11 @@ public fun ULongArray.maxWithOrNull(comparator: Comparator<in ULong>): ULong? {
 public fun UByteArray.maxWithOrNull(comparator: Comparator<in UByte>): UByte? {
     if (isEmpty()) return null
     var max = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (comparator.compare(max, e) < 0) max = e
+        i++
     }
     return max
 }
@@ -8357,9 +8883,11 @@ public fun UByteArray.maxWithOrNull(comparator: Comparator<in UByte>): UByte? {
 public fun UShortArray.maxWithOrNull(comparator: Comparator<in UShort>): UShort? {
     if (isEmpty()) return null
     var max = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (comparator.compare(max, e) < 0) max = e
+        i++
     }
     return max
 }
@@ -8378,9 +8906,11 @@ public fun UShortArray.maxWithOrNull(comparator: Comparator<in UShort>): UShort?
 public fun UIntArray.min(): UInt {
     if (isEmpty()) throw NoSuchElementException()
     var min = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (min > e) min = e
+        i++
     }
     return min
 }
@@ -8399,9 +8929,11 @@ public fun UIntArray.min(): UInt {
 public fun ULongArray.min(): ULong {
     if (isEmpty()) throw NoSuchElementException()
     var min = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (min > e) min = e
+        i++
     }
     return min
 }
@@ -8420,9 +8952,11 @@ public fun ULongArray.min(): ULong {
 public fun UByteArray.min(): UByte {
     if (isEmpty()) throw NoSuchElementException()
     var min = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (min > e) min = e
+        i++
     }
     return min
 }
@@ -8441,9 +8975,11 @@ public fun UByteArray.min(): UByte {
 public fun UShortArray.min(): UShort {
     if (isEmpty()) throw NoSuchElementException()
     var min = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (min > e) min = e
+        i++
     }
     return min
 }
@@ -8473,13 +9009,15 @@ public inline fun <R : Comparable<R>> UIntArray.minBy(selector: (UInt) -> R): UI
     val lastIndex = this.lastIndex
     if (lastIndex == 0) return minElem
     var minValue = selector(minElem)
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         val v = selector(e)
         if (minValue > v) {
             minElem = e
             minValue = v
         }
+        i++
     }
     return minElem
 }
@@ -8509,13 +9047,15 @@ public inline fun <R : Comparable<R>> ULongArray.minBy(selector: (ULong) -> R): 
     val lastIndex = this.lastIndex
     if (lastIndex == 0) return minElem
     var minValue = selector(minElem)
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         val v = selector(e)
         if (minValue > v) {
             minElem = e
             minValue = v
         }
+        i++
     }
     return minElem
 }
@@ -8545,13 +9085,15 @@ public inline fun <R : Comparable<R>> UByteArray.minBy(selector: (UByte) -> R): 
     val lastIndex = this.lastIndex
     if (lastIndex == 0) return minElem
     var minValue = selector(minElem)
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         val v = selector(e)
         if (minValue > v) {
             minElem = e
             minValue = v
         }
+        i++
     }
     return minElem
 }
@@ -8581,13 +9123,15 @@ public inline fun <R : Comparable<R>> UShortArray.minBy(selector: (UShort) -> R)
     val lastIndex = this.lastIndex
     if (lastIndex == 0) return minElem
     var minValue = selector(minElem)
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         val v = selector(e)
         if (minValue > v) {
             minElem = e
             minValue = v
         }
+        i++
     }
     return minElem
 }
@@ -8613,13 +9157,15 @@ public inline fun <R : Comparable<R>> UIntArray.minByOrNull(selector: (UInt) -> 
     val lastIndex = this.lastIndex
     if (lastIndex == 0) return minElem
     var minValue = selector(minElem)
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         val v = selector(e)
         if (minValue > v) {
             minElem = e
             minValue = v
         }
+        i++
     }
     return minElem
 }
@@ -8645,13 +9191,15 @@ public inline fun <R : Comparable<R>> ULongArray.minByOrNull(selector: (ULong) -
     val lastIndex = this.lastIndex
     if (lastIndex == 0) return minElem
     var minValue = selector(minElem)
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         val v = selector(e)
         if (minValue > v) {
             minElem = e
             minValue = v
         }
+        i++
     }
     return minElem
 }
@@ -8677,13 +9225,15 @@ public inline fun <R : Comparable<R>> UByteArray.minByOrNull(selector: (UByte) -
     val lastIndex = this.lastIndex
     if (lastIndex == 0) return minElem
     var minValue = selector(minElem)
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         val v = selector(e)
         if (minValue > v) {
             minElem = e
             minValue = v
         }
+        i++
     }
     return minElem
 }
@@ -8709,13 +9259,15 @@ public inline fun <R : Comparable<R>> UShortArray.minByOrNull(selector: (UShort)
     val lastIndex = this.lastIndex
     if (lastIndex == 0) return minElem
     var minValue = selector(minElem)
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         val v = selector(e)
         if (minValue > v) {
             minElem = e
             minValue = v
         }
+        i++
     }
     return minElem
 }
@@ -8738,9 +9290,11 @@ public inline fun <R : Comparable<R>> UShortArray.minByOrNull(selector: (UShort)
 public inline fun UIntArray.minOf(selector: (UInt) -> Double): Double {
     if (isEmpty()) throw NoSuchElementException()
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         minValue = minOf(minValue, v)
+        i++
     }
     return minValue
 }
@@ -8763,9 +9317,11 @@ public inline fun UIntArray.minOf(selector: (UInt) -> Double): Double {
 public inline fun ULongArray.minOf(selector: (ULong) -> Double): Double {
     if (isEmpty()) throw NoSuchElementException()
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         minValue = minOf(minValue, v)
+        i++
     }
     return minValue
 }
@@ -8788,9 +9344,11 @@ public inline fun ULongArray.minOf(selector: (ULong) -> Double): Double {
 public inline fun UByteArray.minOf(selector: (UByte) -> Double): Double {
     if (isEmpty()) throw NoSuchElementException()
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         minValue = minOf(minValue, v)
+        i++
     }
     return minValue
 }
@@ -8813,9 +9371,11 @@ public inline fun UByteArray.minOf(selector: (UByte) -> Double): Double {
 public inline fun UShortArray.minOf(selector: (UShort) -> Double): Double {
     if (isEmpty()) throw NoSuchElementException()
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         minValue = minOf(minValue, v)
+        i++
     }
     return minValue
 }
@@ -8838,9 +9398,11 @@ public inline fun UShortArray.minOf(selector: (UShort) -> Double): Double {
 public inline fun UIntArray.minOf(selector: (UInt) -> Float): Float {
     if (isEmpty()) throw NoSuchElementException()
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         minValue = minOf(minValue, v)
+        i++
     }
     return minValue
 }
@@ -8863,9 +9425,11 @@ public inline fun UIntArray.minOf(selector: (UInt) -> Float): Float {
 public inline fun ULongArray.minOf(selector: (ULong) -> Float): Float {
     if (isEmpty()) throw NoSuchElementException()
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         minValue = minOf(minValue, v)
+        i++
     }
     return minValue
 }
@@ -8888,9 +9452,11 @@ public inline fun ULongArray.minOf(selector: (ULong) -> Float): Float {
 public inline fun UByteArray.minOf(selector: (UByte) -> Float): Float {
     if (isEmpty()) throw NoSuchElementException()
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         minValue = minOf(minValue, v)
+        i++
     }
     return minValue
 }
@@ -8913,9 +9479,11 @@ public inline fun UByteArray.minOf(selector: (UByte) -> Float): Float {
 public inline fun UShortArray.minOf(selector: (UShort) -> Float): Float {
     if (isEmpty()) throw NoSuchElementException()
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         minValue = minOf(minValue, v)
+        i++
     }
     return minValue
 }
@@ -8938,11 +9506,13 @@ public inline fun UShortArray.minOf(selector: (UShort) -> Float): Float {
 public inline fun <R : Comparable<R>> UIntArray.minOf(selector: (UInt) -> R): R {
     if (isEmpty()) throw NoSuchElementException()
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (minValue > v) {
             minValue = v
         }
+        i++
     }
     return minValue
 }
@@ -8965,11 +9535,13 @@ public inline fun <R : Comparable<R>> UIntArray.minOf(selector: (UInt) -> R): R 
 public inline fun <R : Comparable<R>> ULongArray.minOf(selector: (ULong) -> R): R {
     if (isEmpty()) throw NoSuchElementException()
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (minValue > v) {
             minValue = v
         }
+        i++
     }
     return minValue
 }
@@ -8992,11 +9564,13 @@ public inline fun <R : Comparable<R>> ULongArray.minOf(selector: (ULong) -> R): 
 public inline fun <R : Comparable<R>> UByteArray.minOf(selector: (UByte) -> R): R {
     if (isEmpty()) throw NoSuchElementException()
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (minValue > v) {
             minValue = v
         }
+        i++
     }
     return minValue
 }
@@ -9019,11 +9593,13 @@ public inline fun <R : Comparable<R>> UByteArray.minOf(selector: (UByte) -> R): 
 public inline fun <R : Comparable<R>> UShortArray.minOf(selector: (UShort) -> R): R {
     if (isEmpty()) throw NoSuchElementException()
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (minValue > v) {
             minValue = v
         }
+        i++
     }
     return minValue
 }
@@ -9044,9 +9620,11 @@ public inline fun <R : Comparable<R>> UShortArray.minOf(selector: (UShort) -> R)
 public inline fun UIntArray.minOfOrNull(selector: (UInt) -> Double): Double? {
     if (isEmpty()) return null
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         minValue = minOf(minValue, v)
+        i++
     }
     return minValue
 }
@@ -9067,9 +9645,11 @@ public inline fun UIntArray.minOfOrNull(selector: (UInt) -> Double): Double? {
 public inline fun ULongArray.minOfOrNull(selector: (ULong) -> Double): Double? {
     if (isEmpty()) return null
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         minValue = minOf(minValue, v)
+        i++
     }
     return minValue
 }
@@ -9090,9 +9670,11 @@ public inline fun ULongArray.minOfOrNull(selector: (ULong) -> Double): Double? {
 public inline fun UByteArray.minOfOrNull(selector: (UByte) -> Double): Double? {
     if (isEmpty()) return null
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         minValue = minOf(minValue, v)
+        i++
     }
     return minValue
 }
@@ -9113,9 +9695,11 @@ public inline fun UByteArray.minOfOrNull(selector: (UByte) -> Double): Double? {
 public inline fun UShortArray.minOfOrNull(selector: (UShort) -> Double): Double? {
     if (isEmpty()) return null
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         minValue = minOf(minValue, v)
+        i++
     }
     return minValue
 }
@@ -9136,9 +9720,11 @@ public inline fun UShortArray.minOfOrNull(selector: (UShort) -> Double): Double?
 public inline fun UIntArray.minOfOrNull(selector: (UInt) -> Float): Float? {
     if (isEmpty()) return null
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         minValue = minOf(minValue, v)
+        i++
     }
     return minValue
 }
@@ -9159,9 +9745,11 @@ public inline fun UIntArray.minOfOrNull(selector: (UInt) -> Float): Float? {
 public inline fun ULongArray.minOfOrNull(selector: (ULong) -> Float): Float? {
     if (isEmpty()) return null
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         minValue = minOf(minValue, v)
+        i++
     }
     return minValue
 }
@@ -9182,9 +9770,11 @@ public inline fun ULongArray.minOfOrNull(selector: (ULong) -> Float): Float? {
 public inline fun UByteArray.minOfOrNull(selector: (UByte) -> Float): Float? {
     if (isEmpty()) return null
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         minValue = minOf(minValue, v)
+        i++
     }
     return minValue
 }
@@ -9205,9 +9795,11 @@ public inline fun UByteArray.minOfOrNull(selector: (UByte) -> Float): Float? {
 public inline fun UShortArray.minOfOrNull(selector: (UShort) -> Float): Float? {
     if (isEmpty()) return null
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         minValue = minOf(minValue, v)
+        i++
     }
     return minValue
 }
@@ -9228,11 +9820,13 @@ public inline fun UShortArray.minOfOrNull(selector: (UShort) -> Float): Float? {
 public inline fun <R : Comparable<R>> UIntArray.minOfOrNull(selector: (UInt) -> R): R? {
     if (isEmpty()) return null
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (minValue > v) {
             minValue = v
         }
+        i++
     }
     return minValue
 }
@@ -9253,11 +9847,13 @@ public inline fun <R : Comparable<R>> UIntArray.minOfOrNull(selector: (UInt) -> 
 public inline fun <R : Comparable<R>> ULongArray.minOfOrNull(selector: (ULong) -> R): R? {
     if (isEmpty()) return null
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (minValue > v) {
             minValue = v
         }
+        i++
     }
     return minValue
 }
@@ -9278,11 +9874,13 @@ public inline fun <R : Comparable<R>> ULongArray.minOfOrNull(selector: (ULong) -
 public inline fun <R : Comparable<R>> UByteArray.minOfOrNull(selector: (UByte) -> R): R? {
     if (isEmpty()) return null
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (minValue > v) {
             minValue = v
         }
+        i++
     }
     return minValue
 }
@@ -9303,11 +9901,13 @@ public inline fun <R : Comparable<R>> UByteArray.minOfOrNull(selector: (UByte) -
 public inline fun <R : Comparable<R>> UShortArray.minOfOrNull(selector: (UShort) -> R): R? {
     if (isEmpty()) return null
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (minValue > v) {
             minValue = v
         }
+        i++
     }
     return minValue
 }
@@ -9330,11 +9930,13 @@ public inline fun <R : Comparable<R>> UShortArray.minOfOrNull(selector: (UShort)
 public inline fun <R> UIntArray.minOfWith(comparator: Comparator<in R>, selector: (UInt) -> R): R {
     if (isEmpty()) throw NoSuchElementException()
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (comparator.compare(minValue, v) > 0) {
             minValue = v
         }
+        i++
     }
     return minValue
 }
@@ -9357,11 +9959,13 @@ public inline fun <R> UIntArray.minOfWith(comparator: Comparator<in R>, selector
 public inline fun <R> ULongArray.minOfWith(comparator: Comparator<in R>, selector: (ULong) -> R): R {
     if (isEmpty()) throw NoSuchElementException()
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (comparator.compare(minValue, v) > 0) {
             minValue = v
         }
+        i++
     }
     return minValue
 }
@@ -9384,11 +9988,13 @@ public inline fun <R> ULongArray.minOfWith(comparator: Comparator<in R>, selecto
 public inline fun <R> UByteArray.minOfWith(comparator: Comparator<in R>, selector: (UByte) -> R): R {
     if (isEmpty()) throw NoSuchElementException()
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (comparator.compare(minValue, v) > 0) {
             minValue = v
         }
+        i++
     }
     return minValue
 }
@@ -9411,11 +10017,13 @@ public inline fun <R> UByteArray.minOfWith(comparator: Comparator<in R>, selecto
 public inline fun <R> UShortArray.minOfWith(comparator: Comparator<in R>, selector: (UShort) -> R): R {
     if (isEmpty()) throw NoSuchElementException()
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (comparator.compare(minValue, v) > 0) {
             minValue = v
         }
+        i++
     }
     return minValue
 }
@@ -9436,11 +10044,13 @@ public inline fun <R> UShortArray.minOfWith(comparator: Comparator<in R>, select
 public inline fun <R> UIntArray.minOfWithOrNull(comparator: Comparator<in R>, selector: (UInt) -> R): R? {
     if (isEmpty()) return null
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (comparator.compare(minValue, v) > 0) {
             minValue = v
         }
+        i++
     }
     return minValue
 }
@@ -9461,11 +10071,13 @@ public inline fun <R> UIntArray.minOfWithOrNull(comparator: Comparator<in R>, se
 public inline fun <R> ULongArray.minOfWithOrNull(comparator: Comparator<in R>, selector: (ULong) -> R): R? {
     if (isEmpty()) return null
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (comparator.compare(minValue, v) > 0) {
             minValue = v
         }
+        i++
     }
     return minValue
 }
@@ -9486,11 +10098,13 @@ public inline fun <R> ULongArray.minOfWithOrNull(comparator: Comparator<in R>, s
 public inline fun <R> UByteArray.minOfWithOrNull(comparator: Comparator<in R>, selector: (UByte) -> R): R? {
     if (isEmpty()) return null
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (comparator.compare(minValue, v) > 0) {
             minValue = v
         }
+        i++
     }
     return minValue
 }
@@ -9511,11 +10125,13 @@ public inline fun <R> UByteArray.minOfWithOrNull(comparator: Comparator<in R>, s
 public inline fun <R> UShortArray.minOfWithOrNull(comparator: Comparator<in R>, selector: (UShort) -> R): R? {
     if (isEmpty()) return null
     var minValue = selector(this[0])
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val v = selector(this[i])
         if (comparator.compare(minValue, v) > 0) {
             minValue = v
         }
+        i++
     }
     return minValue
 }
@@ -9530,9 +10146,11 @@ public inline fun <R> UShortArray.minOfWithOrNull(comparator: Comparator<in R>, 
 public fun UIntArray.minOrNull(): UInt? {
     if (isEmpty()) return null
     var min = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (min > e) min = e
+        i++
     }
     return min
 }
@@ -9547,9 +10165,11 @@ public fun UIntArray.minOrNull(): UInt? {
 public fun ULongArray.minOrNull(): ULong? {
     if (isEmpty()) return null
     var min = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (min > e) min = e
+        i++
     }
     return min
 }
@@ -9564,9 +10184,11 @@ public fun ULongArray.minOrNull(): ULong? {
 public fun UByteArray.minOrNull(): UByte? {
     if (isEmpty()) return null
     var min = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (min > e) min = e
+        i++
     }
     return min
 }
@@ -9581,9 +10203,11 @@ public fun UByteArray.minOrNull(): UByte? {
 public fun UShortArray.minOrNull(): UShort? {
     if (isEmpty()) return null
     var min = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (min > e) min = e
+        i++
     }
     return min
 }
@@ -9600,9 +10224,11 @@ public fun UShortArray.minOrNull(): UShort? {
 public fun UIntArray.minWith(comparator: Comparator<in UInt>): UInt {
     if (isEmpty()) throw NoSuchElementException()
     var min = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (comparator.compare(min, e) > 0) min = e
+        i++
     }
     return min
 }
@@ -9619,9 +10245,11 @@ public fun UIntArray.minWith(comparator: Comparator<in UInt>): UInt {
 public fun ULongArray.minWith(comparator: Comparator<in ULong>): ULong {
     if (isEmpty()) throw NoSuchElementException()
     var min = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (comparator.compare(min, e) > 0) min = e
+        i++
     }
     return min
 }
@@ -9638,9 +10266,11 @@ public fun ULongArray.minWith(comparator: Comparator<in ULong>): ULong {
 public fun UByteArray.minWith(comparator: Comparator<in UByte>): UByte {
     if (isEmpty()) throw NoSuchElementException()
     var min = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (comparator.compare(min, e) > 0) min = e
+        i++
     }
     return min
 }
@@ -9657,9 +10287,11 @@ public fun UByteArray.minWith(comparator: Comparator<in UByte>): UByte {
 public fun UShortArray.minWith(comparator: Comparator<in UShort>): UShort {
     if (isEmpty()) throw NoSuchElementException()
     var min = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (comparator.compare(min, e) > 0) min = e
+        i++
     }
     return min
 }
@@ -9672,9 +10304,11 @@ public fun UShortArray.minWith(comparator: Comparator<in UShort>): UShort {
 public fun UIntArray.minWithOrNull(comparator: Comparator<in UInt>): UInt? {
     if (isEmpty()) return null
     var min = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (comparator.compare(min, e) > 0) min = e
+        i++
     }
     return min
 }
@@ -9687,9 +10321,11 @@ public fun UIntArray.minWithOrNull(comparator: Comparator<in UInt>): UInt? {
 public fun ULongArray.minWithOrNull(comparator: Comparator<in ULong>): ULong? {
     if (isEmpty()) return null
     var min = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (comparator.compare(min, e) > 0) min = e
+        i++
     }
     return min
 }
@@ -9702,9 +10338,11 @@ public fun ULongArray.minWithOrNull(comparator: Comparator<in ULong>): ULong? {
 public fun UByteArray.minWithOrNull(comparator: Comparator<in UByte>): UByte? {
     if (isEmpty()) return null
     var min = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (comparator.compare(min, e) > 0) min = e
+        i++
     }
     return min
 }
@@ -9717,9 +10355,11 @@ public fun UByteArray.minWithOrNull(comparator: Comparator<in UByte>): UByte? {
 public fun UShortArray.minWithOrNull(comparator: Comparator<in UShort>): UShort? {
     if (isEmpty()) return null
     var min = this[0]
-    for (i in 1..lastIndex) {
+    var i = 1
+    while (i <= lastIndex) {
         val e = this[i]
         if (comparator.compare(min, e) > 0) min = e
+        i++
     }
     return min
 }
@@ -9781,7 +10421,11 @@ public inline fun UShortArray.none(): Boolean {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UIntArray.none(predicate: (UInt) -> Boolean): Boolean {
-    for (element in this) if (predicate(element)) return false
+    var index = 0
+    while (index < size) {
+        if (predicate(this[index])) return false
+        index++
+    }
     return true
 }
 
@@ -9794,7 +10438,11 @@ public inline fun UIntArray.none(predicate: (UInt) -> Boolean): Boolean {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun ULongArray.none(predicate: (ULong) -> Boolean): Boolean {
-    for (element in this) if (predicate(element)) return false
+    var index = 0
+    while (index < size) {
+        if (predicate(this[index])) return false
+        index++
+    }
     return true
 }
 
@@ -9807,7 +10455,11 @@ public inline fun ULongArray.none(predicate: (ULong) -> Boolean): Boolean {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UByteArray.none(predicate: (UByte) -> Boolean): Boolean {
-    for (element in this) if (predicate(element)) return false
+    var index = 0
+    while (index < size) {
+        if (predicate(this[index])) return false
+        index++
+    }
     return true
 }
 
@@ -9820,7 +10472,11 @@ public inline fun UByteArray.none(predicate: (UByte) -> Boolean): Boolean {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UShortArray.none(predicate: (UShort) -> Boolean): Boolean {
-    for (element in this) if (predicate(element)) return false
+    var index = 0
+    while (index < size) {
+        if (predicate(this[index])) return false
+        index++
+    }
     return true
 }
 
@@ -9831,7 +10487,13 @@ public inline fun UShortArray.none(predicate: (UShort) -> Boolean): Boolean {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UIntArray.onEach(action: (UInt) -> Unit): UIntArray {
-    return apply { for (element in this) action(element) }
+    return apply {
+        var index = 0
+        while (index < size) {
+            action(this[index])
+            index++
+        }
+    }
 }
 
 /**
@@ -9841,7 +10503,13 @@ public inline fun UIntArray.onEach(action: (UInt) -> Unit): UIntArray {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun ULongArray.onEach(action: (ULong) -> Unit): ULongArray {
-    return apply { for (element in this) action(element) }
+    return apply {
+        var index = 0
+        while (index < size) {
+            action(this[index])
+            index++
+        }
+    }
 }
 
 /**
@@ -9851,7 +10519,13 @@ public inline fun ULongArray.onEach(action: (ULong) -> Unit): ULongArray {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UByteArray.onEach(action: (UByte) -> Unit): UByteArray {
-    return apply { for (element in this) action(element) }
+    return apply {
+        var index = 0
+        while (index < size) {
+            action(this[index])
+            index++
+        }
+    }
 }
 
 /**
@@ -9861,7 +10535,13 @@ public inline fun UByteArray.onEach(action: (UByte) -> Unit): UByteArray {
 @ExperimentalUnsignedTypes
 @kotlin.internal.InlineOnly
 public inline fun UShortArray.onEach(action: (UShort) -> Unit): UShortArray {
-    return apply { for (element in this) action(element) }
+    return apply {
+        var index = 0
+        while (index < size) {
+            action(this[index])
+            index++
+        }
+    }
 }
 
 /**
@@ -9935,8 +10615,10 @@ public inline fun UIntArray.reduce(operation: (acc: UInt, UInt) -> UInt): UInt {
     if (isEmpty())
         throw UnsupportedOperationException("Empty array can't be reduced.")
     var accumulator = this[0]
-    for (index in 1..lastIndex) {
+    var index = 1
+    while (index <= lastIndex) {
         accumulator = operation(accumulator, this[index])
+        index++
     }
     return accumulator
 }
@@ -9960,8 +10642,10 @@ public inline fun ULongArray.reduce(operation: (acc: ULong, ULong) -> ULong): UL
     if (isEmpty())
         throw UnsupportedOperationException("Empty array can't be reduced.")
     var accumulator = this[0]
-    for (index in 1..lastIndex) {
+    var index = 1
+    while (index <= lastIndex) {
         accumulator = operation(accumulator, this[index])
+        index++
     }
     return accumulator
 }
@@ -9985,8 +10669,10 @@ public inline fun UByteArray.reduce(operation: (acc: UByte, UByte) -> UByte): UB
     if (isEmpty())
         throw UnsupportedOperationException("Empty array can't be reduced.")
     var accumulator = this[0]
-    for (index in 1..lastIndex) {
+    var index = 1
+    while (index <= lastIndex) {
         accumulator = operation(accumulator, this[index])
+        index++
     }
     return accumulator
 }
@@ -10010,8 +10696,10 @@ public inline fun UShortArray.reduce(operation: (acc: UShort, UShort) -> UShort)
     if (isEmpty())
         throw UnsupportedOperationException("Empty array can't be reduced.")
     var accumulator = this[0]
-    for (index in 1..lastIndex) {
+    var index = 1
+    while (index <= lastIndex) {
         accumulator = operation(accumulator, this[index])
+        index++
     }
     return accumulator
 }
@@ -10035,8 +10723,10 @@ public inline fun UIntArray.reduceIndexed(operation: (index: Int, acc: UInt, UIn
     if (isEmpty())
         throw UnsupportedOperationException("Empty array can't be reduced.")
     var accumulator = this[0]
-    for (index in 1..lastIndex) {
+    var index = 1
+    while (index <= lastIndex) {
         accumulator = operation(index, accumulator, this[index])
+        index++
     }
     return accumulator
 }
@@ -10060,8 +10750,10 @@ public inline fun ULongArray.reduceIndexed(operation: (index: Int, acc: ULong, U
     if (isEmpty())
         throw UnsupportedOperationException("Empty array can't be reduced.")
     var accumulator = this[0]
-    for (index in 1..lastIndex) {
+    var index = 1
+    while (index <= lastIndex) {
         accumulator = operation(index, accumulator, this[index])
+        index++
     }
     return accumulator
 }
@@ -10085,8 +10777,10 @@ public inline fun UByteArray.reduceIndexed(operation: (index: Int, acc: UByte, U
     if (isEmpty())
         throw UnsupportedOperationException("Empty array can't be reduced.")
     var accumulator = this[0]
-    for (index in 1..lastIndex) {
+    var index = 1
+    while (index <= lastIndex) {
         accumulator = operation(index, accumulator, this[index])
+        index++
     }
     return accumulator
 }
@@ -10110,8 +10804,10 @@ public inline fun UShortArray.reduceIndexed(operation: (index: Int, acc: UShort,
     if (isEmpty())
         throw UnsupportedOperationException("Empty array can't be reduced.")
     var accumulator = this[0]
-    for (index in 1..lastIndex) {
+    var index = 1
+    while (index <= lastIndex) {
         accumulator = operation(index, accumulator, this[index])
+        index++
     }
     return accumulator
 }
@@ -10134,8 +10830,10 @@ public inline fun UIntArray.reduceIndexedOrNull(operation: (index: Int, acc: UIn
     if (isEmpty())
         return null
     var accumulator = this[0]
-    for (index in 1..lastIndex) {
+    var index = 1
+    while (index <= lastIndex) {
         accumulator = operation(index, accumulator, this[index])
+        index++
     }
     return accumulator
 }
@@ -10158,8 +10856,10 @@ public inline fun ULongArray.reduceIndexedOrNull(operation: (index: Int, acc: UL
     if (isEmpty())
         return null
     var accumulator = this[0]
-    for (index in 1..lastIndex) {
+    var index = 1
+    while (index <= lastIndex) {
         accumulator = operation(index, accumulator, this[index])
+        index++
     }
     return accumulator
 }
@@ -10182,8 +10882,10 @@ public inline fun UByteArray.reduceIndexedOrNull(operation: (index: Int, acc: UB
     if (isEmpty())
         return null
     var accumulator = this[0]
-    for (index in 1..lastIndex) {
+    var index = 1
+    while (index <= lastIndex) {
         accumulator = operation(index, accumulator, this[index])
+        index++
     }
     return accumulator
 }
@@ -10206,8 +10908,10 @@ public inline fun UShortArray.reduceIndexedOrNull(operation: (index: Int, acc: U
     if (isEmpty())
         return null
     var accumulator = this[0]
-    for (index in 1..lastIndex) {
+    var index = 1
+    while (index <= lastIndex) {
         accumulator = operation(index, accumulator, this[index])
+        index++
     }
     return accumulator
 }
@@ -10230,8 +10934,10 @@ public inline fun UIntArray.reduceOrNull(operation: (acc: UInt, UInt) -> UInt): 
     if (isEmpty())
         return null
     var accumulator = this[0]
-    for (index in 1..lastIndex) {
+    var index = 1
+    while (index <= lastIndex) {
         accumulator = operation(accumulator, this[index])
+        index++
     }
     return accumulator
 }
@@ -10254,8 +10960,10 @@ public inline fun ULongArray.reduceOrNull(operation: (acc: ULong, ULong) -> ULon
     if (isEmpty())
         return null
     var accumulator = this[0]
-    for (index in 1..lastIndex) {
+    var index = 1
+    while (index <= lastIndex) {
         accumulator = operation(accumulator, this[index])
+        index++
     }
     return accumulator
 }
@@ -10278,8 +10986,10 @@ public inline fun UByteArray.reduceOrNull(operation: (acc: UByte, UByte) -> UByt
     if (isEmpty())
         return null
     var accumulator = this[0]
-    for (index in 1..lastIndex) {
+    var index = 1
+    while (index <= lastIndex) {
         accumulator = operation(accumulator, this[index])
+        index++
     }
     return accumulator
 }
@@ -10302,8 +11012,10 @@ public inline fun UShortArray.reduceOrNull(operation: (acc: UShort, UShort) -> U
     if (isEmpty())
         return null
     var accumulator = this[0]
-    for (index in 1..lastIndex) {
+    var index = 1
+    while (index <= lastIndex) {
         accumulator = operation(accumulator, this[index])
+        index++
     }
     return accumulator
 }
@@ -10726,9 +11438,11 @@ public inline fun <R> UIntArray.runningFold(initial: R, operation: (acc: R, UInt
     if (isEmpty()) return listOf(initial)
     val result = ArrayList<R>(size + 1).apply { add(initial) }
     var accumulator = initial
-    for (element in this) {
-        accumulator = operation(accumulator, element)
+    var index = 0
+    while (index < size) {
+        accumulator = operation(accumulator, this[index])
         result.add(accumulator)
+        index++
     }
     return result
 }
@@ -10751,9 +11465,11 @@ public inline fun <R> ULongArray.runningFold(initial: R, operation: (acc: R, ULo
     if (isEmpty()) return listOf(initial)
     val result = ArrayList<R>(size + 1).apply { add(initial) }
     var accumulator = initial
-    for (element in this) {
-        accumulator = operation(accumulator, element)
+    var index = 0
+    while (index < size) {
+        accumulator = operation(accumulator, this[index])
         result.add(accumulator)
+        index++
     }
     return result
 }
@@ -10776,9 +11492,11 @@ public inline fun <R> UByteArray.runningFold(initial: R, operation: (acc: R, UBy
     if (isEmpty()) return listOf(initial)
     val result = ArrayList<R>(size + 1).apply { add(initial) }
     var accumulator = initial
-    for (element in this) {
-        accumulator = operation(accumulator, element)
+    var index = 0
+    while (index < size) {
+        accumulator = operation(accumulator, this[index])
         result.add(accumulator)
+        index++
     }
     return result
 }
@@ -10801,9 +11519,11 @@ public inline fun <R> UShortArray.runningFold(initial: R, operation: (acc: R, US
     if (isEmpty()) return listOf(initial)
     val result = ArrayList<R>(size + 1).apply { add(initial) }
     var accumulator = initial
-    for (element in this) {
-        accumulator = operation(accumulator, element)
+    var index = 0
+    while (index < size) {
+        accumulator = operation(accumulator, this[index])
         result.add(accumulator)
+        index++
     }
     return result
 }
@@ -10827,9 +11547,11 @@ public inline fun <R> UIntArray.runningFoldIndexed(initial: R, operation: (index
     if (isEmpty()) return listOf(initial)
     val result = ArrayList<R>(size + 1).apply { add(initial) }
     var accumulator = initial
-    for (index in indices) {
+    var index = 0
+    while (index < size) {
         accumulator = operation(index, accumulator, this[index])
         result.add(accumulator)
+        index++
     }
     return result
 }
@@ -10853,9 +11575,11 @@ public inline fun <R> ULongArray.runningFoldIndexed(initial: R, operation: (inde
     if (isEmpty()) return listOf(initial)
     val result = ArrayList<R>(size + 1).apply { add(initial) }
     var accumulator = initial
-    for (index in indices) {
+    var index = 0
+    while (index < size) {
         accumulator = operation(index, accumulator, this[index])
         result.add(accumulator)
+        index++
     }
     return result
 }
@@ -10879,9 +11603,11 @@ public inline fun <R> UByteArray.runningFoldIndexed(initial: R, operation: (inde
     if (isEmpty()) return listOf(initial)
     val result = ArrayList<R>(size + 1).apply { add(initial) }
     var accumulator = initial
-    for (index in indices) {
+    var index = 0
+    while (index < size) {
         accumulator = operation(index, accumulator, this[index])
         result.add(accumulator)
+        index++
     }
     return result
 }
@@ -10905,9 +11631,11 @@ public inline fun <R> UShortArray.runningFoldIndexed(initial: R, operation: (ind
     if (isEmpty()) return listOf(initial)
     val result = ArrayList<R>(size + 1).apply { add(initial) }
     var accumulator = initial
-    for (index in indices) {
+    var index = 0
+    while (index < size) {
         accumulator = operation(index, accumulator, this[index])
         result.add(accumulator)
+        index++
     }
     return result
 }
@@ -10930,9 +11658,11 @@ public inline fun UIntArray.runningReduce(operation: (acc: UInt, UInt) -> UInt):
     if (isEmpty()) return emptyList()
     var accumulator = this[0]
     val result = ArrayList<UInt>(size).apply { add(accumulator) }
-    for (index in 1 until size) {
+    var index = 1
+    while (index < size) {
         accumulator = operation(accumulator, this[index])
         result.add(accumulator)
+        index++
     }
     return result
 }
@@ -10955,9 +11685,11 @@ public inline fun ULongArray.runningReduce(operation: (acc: ULong, ULong) -> ULo
     if (isEmpty()) return emptyList()
     var accumulator = this[0]
     val result = ArrayList<ULong>(size).apply { add(accumulator) }
-    for (index in 1 until size) {
+    var index = 1
+    while (index < size) {
         accumulator = operation(accumulator, this[index])
         result.add(accumulator)
+        index++
     }
     return result
 }
@@ -10980,9 +11712,11 @@ public inline fun UByteArray.runningReduce(operation: (acc: UByte, UByte) -> UBy
     if (isEmpty()) return emptyList()
     var accumulator = this[0]
     val result = ArrayList<UByte>(size).apply { add(accumulator) }
-    for (index in 1 until size) {
+    var index = 1
+    while (index < size) {
         accumulator = operation(accumulator, this[index])
         result.add(accumulator)
+        index++
     }
     return result
 }
@@ -11005,9 +11739,11 @@ public inline fun UShortArray.runningReduce(operation: (acc: UShort, UShort) -> 
     if (isEmpty()) return emptyList()
     var accumulator = this[0]
     val result = ArrayList<UShort>(size).apply { add(accumulator) }
-    for (index in 1 until size) {
+    var index = 1
+    while (index < size) {
         accumulator = operation(accumulator, this[index])
         result.add(accumulator)
+        index++
     }
     return result
 }
@@ -11031,9 +11767,11 @@ public inline fun UIntArray.runningReduceIndexed(operation: (index: Int, acc: UI
     if (isEmpty()) return emptyList()
     var accumulator = this[0]
     val result = ArrayList<UInt>(size).apply { add(accumulator) }
-    for (index in 1 until size) {
+    var index = 1
+    while (index < size) {
         accumulator = operation(index, accumulator, this[index])
         result.add(accumulator)
+        index++
     }
     return result
 }
@@ -11057,9 +11795,11 @@ public inline fun ULongArray.runningReduceIndexed(operation: (index: Int, acc: U
     if (isEmpty()) return emptyList()
     var accumulator = this[0]
     val result = ArrayList<ULong>(size).apply { add(accumulator) }
-    for (index in 1 until size) {
+    var index = 1
+    while (index < size) {
         accumulator = operation(index, accumulator, this[index])
         result.add(accumulator)
+        index++
     }
     return result
 }
@@ -11083,9 +11823,11 @@ public inline fun UByteArray.runningReduceIndexed(operation: (index: Int, acc: U
     if (isEmpty()) return emptyList()
     var accumulator = this[0]
     val result = ArrayList<UByte>(size).apply { add(accumulator) }
-    for (index in 1 until size) {
+    var index = 1
+    while (index < size) {
         accumulator = operation(index, accumulator, this[index])
         result.add(accumulator)
+        index++
     }
     return result
 }
@@ -11109,9 +11851,11 @@ public inline fun UShortArray.runningReduceIndexed(operation: (index: Int, acc: 
     if (isEmpty()) return emptyList()
     var accumulator = this[0]
     val result = ArrayList<UShort>(size).apply { add(accumulator) }
-    for (index in 1 until size) {
+    var index = 1
+    while (index < size) {
         accumulator = operation(index, accumulator, this[index])
         result.add(accumulator)
+        index++
     }
     return result
 }
@@ -11274,8 +12018,10 @@ public inline fun <R> UShortArray.scanIndexed(initial: R, operation: (index: Int
 @kotlin.internal.InlineOnly
 public inline fun UIntArray.sumBy(selector: (UInt) -> UInt): UInt {
     var sum: UInt = 0u
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11290,8 +12036,10 @@ public inline fun UIntArray.sumBy(selector: (UInt) -> UInt): UInt {
 @kotlin.internal.InlineOnly
 public inline fun ULongArray.sumBy(selector: (ULong) -> UInt): UInt {
     var sum: UInt = 0u
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11306,8 +12054,10 @@ public inline fun ULongArray.sumBy(selector: (ULong) -> UInt): UInt {
 @kotlin.internal.InlineOnly
 public inline fun UByteArray.sumBy(selector: (UByte) -> UInt): UInt {
     var sum: UInt = 0u
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11322,8 +12072,10 @@ public inline fun UByteArray.sumBy(selector: (UByte) -> UInt): UInt {
 @kotlin.internal.InlineOnly
 public inline fun UShortArray.sumBy(selector: (UShort) -> UInt): UInt {
     var sum: UInt = 0u
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11338,8 +12090,10 @@ public inline fun UShortArray.sumBy(selector: (UShort) -> UInt): UInt {
 @kotlin.internal.InlineOnly
 public inline fun UIntArray.sumByDouble(selector: (UInt) -> Double): Double {
     var sum: Double = 0.0
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11354,8 +12108,10 @@ public inline fun UIntArray.sumByDouble(selector: (UInt) -> Double): Double {
 @kotlin.internal.InlineOnly
 public inline fun ULongArray.sumByDouble(selector: (ULong) -> Double): Double {
     var sum: Double = 0.0
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11370,8 +12126,10 @@ public inline fun ULongArray.sumByDouble(selector: (ULong) -> Double): Double {
 @kotlin.internal.InlineOnly
 public inline fun UByteArray.sumByDouble(selector: (UByte) -> Double): Double {
     var sum: Double = 0.0
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11386,8 +12144,10 @@ public inline fun UByteArray.sumByDouble(selector: (UByte) -> Double): Double {
 @kotlin.internal.InlineOnly
 public inline fun UShortArray.sumByDouble(selector: (UShort) -> Double): Double {
     var sum: Double = 0.0
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11404,8 +12164,10 @@ public inline fun UShortArray.sumByDouble(selector: (UShort) -> Double): Double 
 @kotlin.internal.InlineOnly
 public inline fun UIntArray.sumOf(selector: (UInt) -> Double): Double {
     var sum: Double = 0.toDouble()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11422,8 +12184,10 @@ public inline fun UIntArray.sumOf(selector: (UInt) -> Double): Double {
 @kotlin.internal.InlineOnly
 public inline fun ULongArray.sumOf(selector: (ULong) -> Double): Double {
     var sum: Double = 0.toDouble()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11440,8 +12204,10 @@ public inline fun ULongArray.sumOf(selector: (ULong) -> Double): Double {
 @kotlin.internal.InlineOnly
 public inline fun UByteArray.sumOf(selector: (UByte) -> Double): Double {
     var sum: Double = 0.toDouble()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11458,8 +12224,10 @@ public inline fun UByteArray.sumOf(selector: (UByte) -> Double): Double {
 @kotlin.internal.InlineOnly
 public inline fun UShortArray.sumOf(selector: (UShort) -> Double): Double {
     var sum: Double = 0.toDouble()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11474,8 +12242,10 @@ public inline fun UShortArray.sumOf(selector: (UShort) -> Double): Double {
 @kotlin.internal.InlineOnly
 public inline fun UIntArray.sumOf(selector: (UInt) -> Int): Int {
     var sum: Int = 0.toInt()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11490,8 +12260,10 @@ public inline fun UIntArray.sumOf(selector: (UInt) -> Int): Int {
 @kotlin.internal.InlineOnly
 public inline fun ULongArray.sumOf(selector: (ULong) -> Int): Int {
     var sum: Int = 0.toInt()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11506,8 +12278,10 @@ public inline fun ULongArray.sumOf(selector: (ULong) -> Int): Int {
 @kotlin.internal.InlineOnly
 public inline fun UByteArray.sumOf(selector: (UByte) -> Int): Int {
     var sum: Int = 0.toInt()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11522,8 +12296,10 @@ public inline fun UByteArray.sumOf(selector: (UByte) -> Int): Int {
 @kotlin.internal.InlineOnly
 public inline fun UShortArray.sumOf(selector: (UShort) -> Int): Int {
     var sum: Int = 0.toInt()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11540,8 +12316,10 @@ public inline fun UShortArray.sumOf(selector: (UShort) -> Int): Int {
 @kotlin.internal.InlineOnly
 public inline fun UIntArray.sumOf(selector: (UInt) -> Long): Long {
     var sum: Long = 0.toLong()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11558,8 +12336,10 @@ public inline fun UIntArray.sumOf(selector: (UInt) -> Long): Long {
 @kotlin.internal.InlineOnly
 public inline fun ULongArray.sumOf(selector: (ULong) -> Long): Long {
     var sum: Long = 0.toLong()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11576,8 +12356,10 @@ public inline fun ULongArray.sumOf(selector: (ULong) -> Long): Long {
 @kotlin.internal.InlineOnly
 public inline fun UByteArray.sumOf(selector: (UByte) -> Long): Long {
     var sum: Long = 0.toLong()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11594,8 +12376,10 @@ public inline fun UByteArray.sumOf(selector: (UByte) -> Long): Long {
 @kotlin.internal.InlineOnly
 public inline fun UShortArray.sumOf(selector: (UShort) -> Long): Long {
     var sum: Long = 0.toLong()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11610,8 +12394,10 @@ public inline fun UShortArray.sumOf(selector: (UShort) -> Long): Long {
 @kotlin.internal.InlineOnly
 public inline fun UIntArray.sumOf(selector: (UInt) -> UInt): UInt {
     var sum: UInt = 0.toUInt()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11626,8 +12412,10 @@ public inline fun UIntArray.sumOf(selector: (UInt) -> UInt): UInt {
 @kotlin.internal.InlineOnly
 public inline fun ULongArray.sumOf(selector: (ULong) -> UInt): UInt {
     var sum: UInt = 0.toUInt()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11642,8 +12430,10 @@ public inline fun ULongArray.sumOf(selector: (ULong) -> UInt): UInt {
 @kotlin.internal.InlineOnly
 public inline fun UByteArray.sumOf(selector: (UByte) -> UInt): UInt {
     var sum: UInt = 0.toUInt()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11658,8 +12448,10 @@ public inline fun UByteArray.sumOf(selector: (UByte) -> UInt): UInt {
 @kotlin.internal.InlineOnly
 public inline fun UShortArray.sumOf(selector: (UShort) -> UInt): UInt {
     var sum: UInt = 0.toUInt()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11676,8 +12468,10 @@ public inline fun UShortArray.sumOf(selector: (UShort) -> UInt): UInt {
 @kotlin.internal.InlineOnly
 public inline fun UIntArray.sumOf(selector: (UInt) -> ULong): ULong {
     var sum: ULong = 0.toULong()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11694,8 +12488,10 @@ public inline fun UIntArray.sumOf(selector: (UInt) -> ULong): ULong {
 @kotlin.internal.InlineOnly
 public inline fun ULongArray.sumOf(selector: (ULong) -> ULong): ULong {
     var sum: ULong = 0.toULong()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11712,8 +12508,10 @@ public inline fun ULongArray.sumOf(selector: (ULong) -> ULong): ULong {
 @kotlin.internal.InlineOnly
 public inline fun UByteArray.sumOf(selector: (UByte) -> ULong): ULong {
     var sum: ULong = 0.toULong()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11730,8 +12528,10 @@ public inline fun UByteArray.sumOf(selector: (UByte) -> ULong): ULong {
 @kotlin.internal.InlineOnly
 public inline fun UShortArray.sumOf(selector: (UShort) -> ULong): ULong {
     var sum: ULong = 0.toULong()
-    for (element in this) {
-        sum += selector(element)
+    var index = 0
+    while (index < size) {
+        sum += selector(this[index])
+        index++
     }
     return sum
 }
@@ -11797,8 +12597,10 @@ public infix fun <R> UShortArray.zip(other: Array<out R>): List<Pair<UShort, R>>
 public inline fun <R, V> UIntArray.zip(other: Array<out R>, transform: (a: UInt, b: R) -> V): List<V> {
     val size = minOf(size, other.size)
     val list = ArrayList<V>(size)
-    for (i in 0 until size) {
+    var i = 0
+    while (i < size) {
         list.add(transform(this[i], other[i]))
+        i++
     }
     return list
 }
@@ -11816,8 +12618,10 @@ public inline fun <R, V> UIntArray.zip(other: Array<out R>, transform: (a: UInt,
 public inline fun <R, V> ULongArray.zip(other: Array<out R>, transform: (a: ULong, b: R) -> V): List<V> {
     val size = minOf(size, other.size)
     val list = ArrayList<V>(size)
-    for (i in 0 until size) {
+    var i = 0
+    while (i < size) {
         list.add(transform(this[i], other[i]))
+        i++
     }
     return list
 }
@@ -11835,8 +12639,10 @@ public inline fun <R, V> ULongArray.zip(other: Array<out R>, transform: (a: ULon
 public inline fun <R, V> UByteArray.zip(other: Array<out R>, transform: (a: UByte, b: R) -> V): List<V> {
     val size = minOf(size, other.size)
     val list = ArrayList<V>(size)
-    for (i in 0 until size) {
+    var i = 0
+    while (i < size) {
         list.add(transform(this[i], other[i]))
+        i++
     }
     return list
 }
@@ -11854,8 +12660,10 @@ public inline fun <R, V> UByteArray.zip(other: Array<out R>, transform: (a: UByt
 public inline fun <R, V> UShortArray.zip(other: Array<out R>, transform: (a: UShort, b: R) -> V): List<V> {
     val size = minOf(size, other.size)
     val list = ArrayList<V>(size)
-    for (i in 0 until size) {
+    var i = 0
+    while (i < size) {
         list.add(transform(this[i], other[i]))
+        i++
     }
     return list
 }
@@ -12053,8 +12861,10 @@ public infix fun UShortArray.zip(other: UShortArray): List<Pair<UShort, UShort>>
 public inline fun <V> UIntArray.zip(other: UIntArray, transform: (a: UInt, b: UInt) -> V): List<V> {
     val size = minOf(size, other.size)
     val list = ArrayList<V>(size)
-    for (i in 0 until size) {
+    var i = 0
+    while (i < size) {
         list.add(transform(this[i], other[i]))
+        i++
     }
     return list
 }
@@ -12072,8 +12882,10 @@ public inline fun <V> UIntArray.zip(other: UIntArray, transform: (a: UInt, b: UI
 public inline fun <V> ULongArray.zip(other: ULongArray, transform: (a: ULong, b: ULong) -> V): List<V> {
     val size = minOf(size, other.size)
     val list = ArrayList<V>(size)
-    for (i in 0 until size) {
+    var i = 0
+    while (i < size) {
         list.add(transform(this[i], other[i]))
+        i++
     }
     return list
 }
@@ -12091,8 +12903,10 @@ public inline fun <V> ULongArray.zip(other: ULongArray, transform: (a: ULong, b:
 public inline fun <V> UByteArray.zip(other: UByteArray, transform: (a: UByte, b: UByte) -> V): List<V> {
     val size = minOf(size, other.size)
     val list = ArrayList<V>(size)
-    for (i in 0 until size) {
+    var i = 0
+    while (i < size) {
         list.add(transform(this[i], other[i]))
+        i++
     }
     return list
 }
@@ -12110,8 +12924,10 @@ public inline fun <V> UByteArray.zip(other: UByteArray, transform: (a: UByte, b:
 public inline fun <V> UShortArray.zip(other: UShortArray, transform: (a: UShort, b: UShort) -> V): List<V> {
     val size = minOf(size, other.size)
     val list = ArrayList<V>(size)
-    for (i in 0 until size) {
+    var i = 0
+    while (i < size) {
         list.add(transform(this[i], other[i]))
+        i++
     }
     return list
 }

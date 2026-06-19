@@ -55,6 +55,17 @@ object Aggregates : TemplateGroupBase() {
             return true
             """
         }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var index = 0
+            while (index < size) {
+                if (!predicate(this[index])) return false
+                index++
+            }
+            return true
+            """
+        }
 
         specialFor(CharSequences) {
             sample("samples.text.Strings.allWithPredicate")
@@ -83,6 +94,17 @@ object Aggregates : TemplateGroupBase() {
                 else -> ""
             }}
             for (element in this) if (predicate(element)) return false
+            return true
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var index = 0
+            while (index < size) {
+                if (predicate(this[index])) return false
+                index++
+            }
             return true
             """
         }
@@ -148,6 +170,17 @@ object Aggregates : TemplateGroupBase() {
                 else -> ""
             }}
             for (element in this) if (predicate(element)) return true
+            return false
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var index = 0
+            while (index < size) {
+                if (predicate(this[index])) return true
+                index++
+            }
             return false
             """
         }
@@ -284,6 +317,19 @@ object Aggregates : TemplateGroupBase() {
             return true
             """
         }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            if (size < 2) return true
+            val first = this[0]
+            var i = 1
+            while (i <= lastIndex) {
+                if (first != this[i]) return false
+                i++
+            }
+            return true
+            """
+        }
     }
 
     val f_allEqualBy = fn("allEqualBy(selector: (T) -> K)") {
@@ -334,6 +380,22 @@ object Aggregates : TemplateGroupBase() {
                 // Workaround for KT-86678 (revert in KT-86680): `==` on boxed Double/Float is wrong for NaN on Native.
                 val equal = firstKey?.equals(key) ?: (key == null)
                 if (!equal) return false
+            }
+            return true
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            if (size < 2) return true
+            val firstKey = selector(this[0])
+            var i = 1
+            while (i <= lastIndex) {
+                val key = selector(this[i])
+                // Workaround for KT-86678 (revert in KT-86680): `==` on boxed Double/Float is wrong for NaN on Native.
+                val equal = firstKey?.equals(key) ?: (key == null)
+                if (!equal) return false
+                i++
             }
             return true
             """
@@ -500,6 +562,18 @@ object Aggregates : TemplateGroupBase() {
             return count
             """
         }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var count = 0
+            var index = 0
+            while (index < size) {
+                if (predicate(this[index])) ++count
+                index++
+            }
+            return count
+            """
+        }
     }
 
     val f_count = fn("count()") {
@@ -552,11 +626,14 @@ object Aggregates : TemplateGroupBase() {
             inlineOnly()
             signature("sumBy(selector: (T) -> UInt)")
             returns("UInt")
+            // Workaround for KT-87083: avoid for-loops over the receiver array.
             body {
                 """
                 var sum: UInt = 0u
-                for (element in this) {
-                    sum += selector(element)
+                var index = 0
+                while (index < size) {
+                    sum += selector(this[index])
+                    index++
                 }
                 return sum
                 """
@@ -599,6 +676,18 @@ object Aggregates : TemplateGroupBase() {
                 return sum
                 """
             }
+            // Workaround for KT-87083: avoid for-loops over the receiver array.
+            body(ArraysOfUnsigned) {
+                """
+                var sum: $selectorType = 0.to$typeShortName()
+                var index = 0
+                while (index < size) {
+                    sum += selector(this[index])
+                    index++
+                }
+                return sum
+                """
+            }
         }
     }
 
@@ -618,6 +707,18 @@ object Aggregates : TemplateGroupBase() {
             var sum: Double = 0.0
             for (element in this) {
                 sum += selector(element)
+            }
+            return sum
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var sum: Double = 0.0
+            var index = 0
+            while (index < size) {
+                sum += selector(this[index])
+                index++
             }
             return sum
             """
@@ -714,6 +815,20 @@ object Aggregates : TemplateGroupBase() {
                     return $acc
                     """
                 }
+                // Workaround for KT-87083: avoid for-loops over the receiver array.
+                body(ArraysOfUnsigned) {
+                    """
+                    if (isEmpty()) $doOnEmpty
+                    var $acc = this[0]
+                    var i = 1
+                    while (i <= lastIndex) {
+                        val e = this[i]
+                        $cmpBlock
+                        i++
+                    }
+                    return $acc
+                    """
+                }
             }
 
         for (op in listOf("min", "max")) {
@@ -793,7 +908,7 @@ object Aggregates : TemplateGroupBase() {
                 body(CharSequences, ArraysOfObjects, ArraysOfPrimitives, ArraysOfUnsigned) {
                     """
                     if (isEmpty()) $doOnEmpty
-        
+
                     var $elem = this[0]
                     val lastIndex = this.lastIndex
                     if (lastIndex == 0) return $elem
@@ -805,6 +920,28 @@ object Aggregates : TemplateGroupBase() {
                             $elem = e
                             $value = v
                         }
+                    }
+                    return $elem
+                    """
+                }
+                // Workaround for KT-87083: avoid for-loops over the receiver array.
+                body(ArraysOfUnsigned) {
+                    """
+                    if (isEmpty()) $doOnEmpty
+
+                    var $elem = this[0]
+                    val lastIndex = this.lastIndex
+                    if (lastIndex == 0) return $elem
+                    var $value = selector($elem)
+                    var i = 1
+                    while (i <= lastIndex) {
+                        val e = this[i]
+                        val v = selector(e)
+                        if ($value $cmp v) {
+                            $elem = e
+                            $value = v
+                        }
+                        i++
                     }
                     return $elem
                     """
@@ -869,6 +1006,20 @@ object Aggregates : TemplateGroupBase() {
                     for (i in 1..lastIndex) {
                         val e = this[i]
                         if (comparator.compare($acc, e) $cmp 0) $acc = e
+                    }
+                    return $acc
+                    """
+                }
+                // Workaround for KT-87083: avoid for-loops over the receiver array.
+                body(ArraysOfUnsigned) {
+                    """
+                    if (isEmpty()) $doOnEmpty
+                    var $acc = this[0]
+                    var i = 1
+                    while (i <= lastIndex) {
+                        val e = this[i]
+                        if (comparator.compare($acc, e) $cmp 0) $acc = e
+                        i++
                     }
                     return $acc
                     """
@@ -945,11 +1096,26 @@ object Aggregates : TemplateGroupBase() {
                 body(CharSequences, ArraysOfObjects, ArraysOfPrimitives, ArraysOfUnsigned) {
                     """
                     if (isEmpty()) $doOnEmpty
-        
+
                     var $acc = selector(this[0])
                     for (i in 1..lastIndex) {
                         val v = selector(this[i])
                         $cmpBlock
+                    }
+                    return $acc
+                    """
+                }
+                // Workaround for KT-87083: avoid for-loops over the receiver array.
+                body(ArraysOfUnsigned) {
+                    """
+                    if (isEmpty()) $doOnEmpty
+
+                    var $acc = selector(this[0])
+                    var i = 1
+                    while (i <= lastIndex) {
+                        val v = selector(this[i])
+                        $cmpBlock
+                        i++
                     }
                     return $acc
                     """
@@ -1017,13 +1183,30 @@ object Aggregates : TemplateGroupBase() {
                 body(CharSequences, ArraysOfObjects, ArraysOfPrimitives, ArraysOfUnsigned) {
                     """
                     if (isEmpty()) $doOnEmpty
-        
+
                     var $acc = selector(this[0])
                     for (i in 1..lastIndex) {
                         val v = selector(this[i])
                         if (comparator.compare($acc, v) $cmp 0) {
                             $acc = v
                         }
+                    }
+                    return $acc
+                    """
+                }
+                // Workaround for KT-87083: avoid for-loops over the receiver array.
+                body(ArraysOfUnsigned) {
+                    """
+                    if (isEmpty()) $doOnEmpty
+
+                    var $acc = selector(this[0])
+                    var i = 1
+                    while (i <= lastIndex) {
+                        val v = selector(this[i])
+                        if (comparator.compare($acc, v) $cmp 0) {
+                            $acc = v
+                        }
+                        i++
                     }
                     return $acc
                     """
@@ -1066,6 +1249,18 @@ object Aggregates : TemplateGroupBase() {
             var index = 0
             var accumulator = initial
             for (element in this) accumulator = operation(${checkOverflow("index++")}, accumulator, element)
+            return accumulator
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var accumulator = initial
+            var index = 0
+            while (index < size) {
+                accumulator = operation(index, accumulator, this[index])
+                index++
+            }
             return accumulator
             """
         }
@@ -1140,6 +1335,18 @@ object Aggregates : TemplateGroupBase() {
             """
             var accumulator = initial
             for (element in this) accumulator = operation(accumulator, element)
+            return accumulator
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var accumulator = initial
+            var index = 0
+            while (index < size) {
+                accumulator = operation(accumulator, this[index])
+                index++
+            }
             return accumulator
             """
         }
@@ -1242,6 +1449,21 @@ object Aggregates : TemplateGroupBase() {
             return accumulator
             """
         }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            if (isEmpty())
+                throw UnsupportedOperationException("Empty ${f.doc.collection} can't be reduced.")
+
+            var accumulator = this[0]
+            var index = 1
+            while (index <= lastIndex) {
+                accumulator = operation(index, accumulator, this[index])
+                index++
+            }
+            return accumulator
+            """
+        }
     }
 
     val f_reduceIndexedSuper = fn("reduceIndexed(operation: (index: Int, acc: S, T) -> S)") {
@@ -1300,6 +1522,21 @@ object Aggregates : TemplateGroupBase() {
             var accumulator = this[0]
             for (index in 1..lastIndex) {
                 accumulator = operation(index, accumulator, this[index])
+            }
+            return accumulator
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            if (isEmpty())
+                return null
+
+            var accumulator = this[0]
+            var index = 1
+            while (index <= lastIndex) {
+                accumulator = operation(index, accumulator, this[index])
+                index++
             }
             return accumulator
             """
@@ -1500,6 +1737,21 @@ object Aggregates : TemplateGroupBase() {
             return accumulator
             """
         }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            if (isEmpty())
+                throw UnsupportedOperationException("Empty ${f.doc.collection} can't be reduced.")
+
+            var accumulator = this[0]
+            var index = 1
+            while (index <= lastIndex) {
+                accumulator = operation(accumulator, this[index])
+                index++
+            }
+            return accumulator
+            """
+        }
     }
 
     val f_reduceSuper = fn("reduce(operation: (acc: S, T) -> S)") {
@@ -1556,6 +1808,21 @@ object Aggregates : TemplateGroupBase() {
             var accumulator = this[0]
             for (index in 1..lastIndex) {
                 accumulator = operation(accumulator, this[index])
+            }
+            return accumulator
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            if (isEmpty())
+                return null
+
+            var accumulator = this[0]
+            var index = 1
+            while (index <= lastIndex) {
+                accumulator = operation(accumulator, this[index])
+                index++
             }
             return accumulator
             """
@@ -1777,11 +2044,27 @@ object Aggregates : TemplateGroupBase() {
             return result
             """
         }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            if (isEmpty()) return listOf(initial)
+
+            val result = ArrayList<R>(size + 1).apply { add(initial) }
+            var accumulator = initial
+            var index = 0
+            while (index < size) {
+                accumulator = operation(accumulator, this[index])
+                result.add(accumulator)
+                index++
+            }
+            return result
+            """
+        }
         body(Iterables) {
             """
             val estimatedSize = collectionSizeOrDefault(9)
             if (estimatedSize == 0) return listOf(initial)
-            
+
             val result = ArrayList<R>(estimatedSize + 1).apply { add(initial) }
             var accumulator = initial
             for (element in this) {
@@ -1868,6 +2151,22 @@ object Aggregates : TemplateGroupBase() {
             for (index in indices) {
                 accumulator = operation(index, accumulator, this[index])
                 result.add(accumulator)
+            }
+            return result
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            if (isEmpty()) return listOf(initial)
+
+            val result = ArrayList<R>(size + 1).apply { add(initial) }
+            var accumulator = initial
+            var index = 0
+            while (index < size) {
+                accumulator = operation(index, accumulator, this[index])
+                result.add(accumulator)
+                index++
             }
             return result
             """
@@ -1964,6 +2263,22 @@ object Aggregates : TemplateGroupBase() {
             return result
             """
         }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            if (isEmpty()) return emptyList()
+
+            var accumulator = this[0]
+            val result = ArrayList<T>(size).apply { add(accumulator) }
+            var index = 1
+            while (index < size) {
+                accumulator = operation(accumulator, this[index])
+                result.add(accumulator)
+                index++
+            }
+            return result
+            """
+        }
     }
 
     val f_runningReduceIndexed = fn("runningReduceIndexed(operation: (index: Int, acc: T, T) -> T)") {
@@ -1996,6 +2311,22 @@ object Aggregates : TemplateGroupBase() {
             for (index in 1 until ${f.code.size}) {
                 accumulator = operation(index, accumulator, this[index])
                 result.add(accumulator)
+            }
+            return result
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            if (isEmpty()) return emptyList()
+
+            var accumulator = this[0]
+            val result = ArrayList<T>(size).apply { add(accumulator) }
+            var index = 1
+            while (index < size) {
+                accumulator = operation(index, accumulator, this[index])
+                result.add(accumulator)
+                index++
             }
             return result
             """
@@ -2154,6 +2485,18 @@ object Aggregates : TemplateGroupBase() {
             inlineOnly()
             returns("SELF")
             body { "return apply { for (element in this) action(element) }" }
+            // Workaround for KT-87083: avoid for-loops over the receiver array.
+            body(ArraysOfUnsigned) {
+                """
+                return apply {
+                    var index = 0
+                    while (index < size) {
+                        action(this[index])
+                        index++
+                    }
+                }
+                """
+            }
         }
 
         specialFor(Iterables, Maps, CharSequences) {
@@ -2255,6 +2598,16 @@ object Aggregates : TemplateGroupBase() {
             for (element in this) action(element)
             """
         }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var index = 0
+            while (index < size) {
+                action(this[index])
+                index++
+            }
+            """
+        }
     }
 
     val f_forEachIndexed = fn("forEachIndexed(action: (index: Int, T) -> Unit)") {
@@ -2276,6 +2629,16 @@ object Aggregates : TemplateGroupBase() {
             """
             var index = 0
             for (item in this) action(${checkOverflow("index++")}, item)
+            """
+        }
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            var index = 0
+            while (index < size) {
+                action(index, this[index])
+                index++
+            }
             """
         }
     }
