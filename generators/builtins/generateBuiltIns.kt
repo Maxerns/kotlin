@@ -136,8 +136,8 @@ fun generateBuiltIns(generate: (File, (PrintWriter) -> BuiltInsGenerator) -> Uni
 
     for (type in UnsignedType.entries) {
         // Common
-        generate(File(UNSIGNED_TYPES_DIR_COMMON, "${type.capitalized}.kt")) { CommonUnsignedTypeGenerator(type, it) }
-        generate(File(UNSIGNED_TYPES_DIR_COMMON, "${type.capitalized}Array.kt")) { CommonUnsignedArrayGenerator(type, it) }
+        generate(File(UNSIGNED_TYPES_DIR_COMMON, "${type.capitalized}Common.kt")) { CommonUnsignedTypeGenerator(type, it) }
+        generate(File(UNSIGNED_TYPES_DIR_COMMON, "${type.capitalized}ArrayCommon.kt")) { CommonUnsignedArrayGenerator(type, it) }
 
         // JVM
         generate(File(UNSIGNED_TYPES_DIR_JVM, "kotlin/${type.capitalized}.kt")) { JvmUnsignedTypeGenerator(type, it) }
