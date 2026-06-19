@@ -5,6 +5,8 @@
 
 package org.jetbrains.kotlin.gradle.android.externalAndroidTarget
 
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
+import org.gradle.kotlin.dsl.kotlin
 import org.gradle.util.GradleVersion
 import org.jetbrains.kotlin.cli.common.arguments.K2JVMCompilerArguments
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilerArgumentsProducer
@@ -33,7 +35,7 @@ class AndroidCompilerOptionsExternalAndroidTargetIT : KGPBaseTest() {
             androidVersion = androidVersion,
             jdkVersion = jdkVersion,
             namespace = "org.jetbrains.sample.options",
-            androidLibraryConfiguration = """
+            androidLibraryConfiguration = {
                 compilerOptions {
                     optIn.add("kotlin.RequiresOptIn")
                     freeCompilerArgs.add("-Xexpect-actual-classes")
@@ -41,7 +43,7 @@ class AndroidCompilerOptionsExternalAndroidTargetIT : KGPBaseTest() {
                     allWarningsAsErrors.set(true)
                     jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
                 }
-            """.trimIndent(),
+            },
         ) {
             buildScriptInjection {
                 kotlinMultiplatform.apply {
@@ -110,14 +112,14 @@ class AndroidCompilerOptionsExternalAndroidTargetIT : KGPBaseTest() {
             androidVersion = androidVersion,
             jdkVersion = jdkVersion,
             namespace = "org.jetbrains.sample.options",
-            androidLibraryConfiguration = """
+            androidLibraryConfiguration = {
                 compilations.getByName("main").compileTaskProvider.configure {
                     compilerOptions {
                         progressiveMode.set(true)
                         allWarningsAsErrors.set(true)
                     }
                 }
-            """.trimIndent(),
+            },
         ) {
             buildScriptInjection {
                 kotlinMultiplatform.apply {
@@ -146,7 +148,7 @@ class AndroidCompilerOptionsExternalAndroidTargetIT : KGPBaseTest() {
             androidVersion = androidVersion,
             jdkVersion = jdkVersion,
             namespace = "org.jetbrains.sample.options",
-            androidLibraryConfiguration = """
+            androidLibraryConfiguration = {
                 withHostTest {}
                 compilations.getByName("hostTest").compileTaskProvider.configure {
                     compilerOptions {
@@ -154,7 +156,7 @@ class AndroidCompilerOptionsExternalAndroidTargetIT : KGPBaseTest() {
                         allWarningsAsErrors.set(true)
                     }
                 }
-            """.trimIndent(),
+            },
         ) {
             buildScriptInjection {
                 kotlinMultiplatform.apply {
@@ -183,11 +185,11 @@ class AndroidCompilerOptionsExternalAndroidTargetIT : KGPBaseTest() {
             androidVersion = androidVersion,
             jdkVersion = jdkVersion,
             namespace = "org.jetbrains.sample.options",
-            androidLibraryConfiguration = """
+            androidLibraryConfiguration = {
                 compilerOptions {
                     allWarningsAsErrors.set(false)
                 }
-            """.trimIndent(),
+            },
         ) {
             buildScriptInjection {
                 kotlinMultiplatform.apply {
@@ -213,7 +215,7 @@ class AndroidCompilerOptionsExternalAndroidTargetIT : KGPBaseTest() {
         androidVersion: String,
         jdkVersion: JdkVersions.ProvidedJdk,
         namespace: String,
-        androidLibraryConfiguration: String = "",
+        androidLibraryConfiguration: KotlinMultiplatformAndroidLibraryTarget.() -> Unit = {},
         configureProject: TestProject.() -> Unit = {},
     ): TestProject = project(
         "empty",
@@ -221,23 +223,20 @@ class AndroidCompilerOptionsExternalAndroidTargetIT : KGPBaseTest() {
         buildOptions = defaultBuildOptions.copy(androidVersion = androidVersion),
         buildJdk = jdkVersion.location,
     ) {
-        buildGradle.toFile().delete()
-        buildGradleKts.toFile().writeText(
-            """
-            plugins {
-                kotlin("multiplatform")
-                id("com.android.kotlin.multiplatform.library")
-            }
-
-            kotlin {
-                androidLibrary {
-                    compileSdk = 34
-                    namespace = "$namespace"
-            ${androidLibraryConfiguration.trim().prependIndent("        ")}
+        plugins {
+            kotlin("multiplatform")
+            id("com.android.kotlin.multiplatform.library")
+        }
+        buildScriptInjection {
+            kotlinMultiplatform.apply {
+                targets.withType(KotlinMultiplatformAndroidLibraryTarget::class.java).configureEach { target ->
+                    target.compileSdk = 34
+                    target.namespace = namespace
+                    target.withJava()
+                    target.androidLibraryConfiguration()
                 }
             }
-            """.trimIndent()
-        )
+        }
         configureProject()
     }
 
