@@ -5,6 +5,11 @@
 
 package org.jetbrains.sir.lightclasses.nodes
 
+import org.jetbrains.kotlin.analysis.api.KaSession
+import org.jetbrains.kotlin.analysis.api.components.allOverriddenSymbols
+import org.jetbrains.kotlin.analysis.api.components.builtinTypes
+import org.jetbrains.kotlin.analysis.api.components.containingSymbol
+import org.jetbrains.kotlin.analysis.api.components.render
 import org.jetbrains.kotlin.analysis.api.export.utilities.isSuspend
 import org.jetbrains.kotlin.analysis.api.renderer.render
 import org.jetbrains.kotlin.analysis.api.renderer.types.impl.KaTypeRendererForSource
@@ -12,6 +17,7 @@ import org.jetbrains.kotlin.analysis.api.symbols.*
 import org.jetbrains.kotlin.analysis.api.symbols.markers.KaNamedSymbol
 import org.jetbrains.kotlin.analysis.api.types.builtinTypes
 import org.jetbrains.kotlin.sir.*
+import org.jetbrains.kotlin.sir.builder.buildFunctionCopy
 import org.jetbrains.kotlin.sir.providers.*
 import org.jetbrains.kotlin.sir.providers.impl.BridgeProvider.BridgeFunctionBuilder
 import org.jetbrains.kotlin.sir.providers.impl.BridgeProvider.BridgeFunctionProxy
@@ -135,18 +141,25 @@ internal open class SirFunctionFromKtSymbol(
         )
     }
 
-    override val bridges: List<SirBridge> by lazyWithSessions {
-        val forwardKotlinCall: BridgeFunctionBuilder.() -> String = {
-            val typeArgs = ktSymbol.typeParameters.map { it.upperBounds.singleOrNull() ?: builtinTypes.nullableAny }
-            val renderer = KaTypeRendererForSource.UPPER_BOUNDS_WITH_QUALIFIED_NAMES
-            val typesAsString = typeArgs.takeIf { it.isNotEmpty() }?.joinToString(prefix = "<", postfix = ">") {
-                it.render(renderer, position = Variance.INVARIANT)
-            } ?: ""
-            val actualArgs = argNames.drop(if (extensionReceiverParameter != null) 1 else 0).dropLast(contextParameters.size)
-            val argumentsString = actualArgs.joinToString()
+    /**
+     * The Kotlin-side call expression a forward bridge wraps, e.g. `(__self as Foo).bar(arg0)`.
+     * Shared by the virtual forward bridge, the non-virtual `_direct` forward bridge, and the
+     * [directDispatchProtocolWitnessOrNull] witness. Defined within a session scope so the lambda
+     * captures the [KaSession] it needs for `builtinTypes`/`render`.
+     */
+    context(_: KaSession, _: SirSession)
+    private fun buildForwardKotlinCall(): BridgeFunctionBuilder.() -> String = {
+        val typeArgs = ktSymbol.typeParameters.map { it.upperBounds.singleOrNull() ?: builtinTypes.nullableAny }
+        val renderer = KaTypeRendererForSource.UPPER_BOUNDS_WITH_QUALIFIED_NAMES
+        val typesAsString = typeArgs.takeIf { it.isNotEmpty() }?.joinToString(prefix = "<", postfix = ">") {
+            it.render(renderer, position = Variance.INVARIANT)
+        } ?: ""
+        val actualArgs = argNames.drop(if (extensionReceiverParameter != null) 1 else 0).dropLast(contextParameters.size)
+        buildCall("$typesAsString(${actualArgs.joinToString()})")
+    }
 
-            buildCall("$typesAsString($argumentsString)")
-        }
+    override val bridges: List<SirBridge> by lazyWithSessions {
+        val forwardKotlinCall = buildForwardKotlinCall()
 
         val forwardBridges = bridgeProxy?.let { proxy ->
             buildList {
@@ -273,4 +286,33 @@ internal open class SirFunctionFromKtSymbol(
                 add("}")
             })
         }
+
+    /**
+     * For a defaulted (non-abstract) interface method, produces a witness function destined for the
+     * UNCONSTRAINED protocol extension ([SirAuxiliaryProtocolDeclarationsFromKtSymbol]) whose body
+     * dispatches NON-VIRTUALLY into the Kotlin default implementation via a `<base>_direct` forward
+     * bridge. Swift selects this witness only for conformers that are not `__P` — i.e. a Swift class
+     * that inherits a Kotlin class and first-adopts this interface — whose backing itable is patched
+     * with the reverse trampoline, so a virtual call would recurse. Genuine-Kotlin `__P` conformers
+     * keep the more-specialized `where Self: __P` virtual witness.
+     *
+     * Returns null for abstract methods (no default to inherit) and for non-protocol parents.
+     */
+    internal fun directDispatchProtocolWitnessOrNull(): SirFunction? = withSessions {
+        if (parent !is SirProtocol) return@withSessions null
+        if (!isInstance || isUnavailable || isAbstractKotlinMethod) return@withSessions null
+        if (!needsReverseBridge()) return@withSessions null
+        val proxy = bridgeProxy ?: return@withSessions null
+        val named = ktSymbol as? KaNamedSymbol ?: return@withSessions null
+
+        val forwardKotlinCall = buildForwardKotlinCall()
+        buildFunctionCopy(this@SirFunctionFromKtSymbol) {
+            origin = SirOrigin.Trampoline(this@SirFunctionFromKtSymbol)
+            isOverride = false
+            modality = SirModality.UNSPECIFIED
+            bridges.clear()
+            bridges.add(proxy.createDirectDispatchForwardBridge(named.name.asString(), forwardKotlinCall))
+            body = SirFunctionBody(proxy.createSwiftInvocation(useDirectDispatch = true) { "return $it" })
+        }
+    }
 }

@@ -528,7 +528,21 @@ internal class SirAuxiliaryProtocolDeclarationsFromKtSymbol(
                 }.also { it.parent = this }
             }
 
-        // Per swift rules, @_spi-requirements in non-@_spi protocols require default implementations.
+        // Non-virtual "direct dispatch" witnesses for defaulted (non-abstract) interface methods.
+        // Placed in this UNCONSTRAINED extension so Swift selects them only for non-`__P` conformers
+        // (a Swift class that inherits a Kotlin class and first-adopts this interface, whose patched
+        // itable would make a virtual call recurse); genuine-Kotlin `__P` conformers keep the
+        // more-specialized `where Self: __P` virtual witness.
+        val defaultWitnesses = members
+            .filterIsInstance<SirFunctionFromKtSymbol>()
+            .mapNotNull { fn -> fn.directDispatchProtocolWitnessOrNull()?.let { fn to it } }
+        val witnessSources: Set<SirFunction> = defaultWitnesses.mapTo(mutableSetOf()) { it.first }
+        defaultWitnesses.forEach { it.second.parent = this }
+
+        // Per swift rules, an individually-@_spi requirement in a non-@_spi protocol needs a universal
+        // default impl in a protocol extension. A defaulted requirement now gets a real witness above
+        // (which serves as that default), so emit a fatalError trap only for the remaining (abstract)
+        // @_spi requirements — never both, or Swift sees the member declared twice in this extension.
         val protocolSpiGroups = targetProtocol.attributes
             .filterIsInstance<SirAttribute.SPI>()
             .mapTo(mutableSetOf()) { it.name }
@@ -575,7 +589,7 @@ internal class SirAuxiliaryProtocolDeclarationsFromKtSymbol(
             }
         }
 
-        (typeAliases + spiFunctionTraps + spiVariableTraps).toMutableList()
+        (typeAliases + spiFunctionTraps + spiVariableTraps + defaultWitnesses.map { it.second }).toMutableList()
     }
 }
 
