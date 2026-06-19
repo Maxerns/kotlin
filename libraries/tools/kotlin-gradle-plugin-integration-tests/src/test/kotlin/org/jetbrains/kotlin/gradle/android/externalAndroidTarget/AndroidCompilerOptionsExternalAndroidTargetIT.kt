@@ -8,7 +8,6 @@ package org.jetbrains.kotlin.gradle.android.externalAndroidTarget
 import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import org.gradle.kotlin.dsl.kotlin
 import org.gradle.util.GradleVersion
-import org.jetbrains.kotlin.cli.common.arguments.K2JVMCompilerArguments
 import org.jetbrains.kotlin.gradle.plugin.KotlinCompilerArgumentsProducer
 import org.jetbrains.kotlin.gradle.testbase.*
 import org.jetbrains.kotlin.gradle.uklibs.ignoreAccessViolations
@@ -246,11 +245,10 @@ class AndroidCompilerOptionsExternalAndroidTargetIT : KGPBaseTest() {
                 val taskName = taskPath.substringAfterLast(":")
                 val task = project.tasks.named(taskName, KotlinCompile::class.java).get()
                 val arguments = task.createCompilerArguments(KotlinCompilerArgumentsProducer.CreateCompilerArgumentsContext.default)
-                    as K2JVMCompilerArguments
 
                 mapOf(
-                    "optIn" to arguments.optIn.orEmpty().toList(),
-                    "freeArgs" to arguments.freeArgs.orEmpty().toList(),
+                    "optIn" to arguments.optIn.toList(),
+                    "freeArgs" to arguments.freeArgs.toList(),
                     "progressiveMode" to arguments.progressiveMode,
                     "allWarningsAsErrors" to arguments.allWarningsAsErrors,
                     "jvmTarget" to arguments.jvmTarget.orEmpty(),
