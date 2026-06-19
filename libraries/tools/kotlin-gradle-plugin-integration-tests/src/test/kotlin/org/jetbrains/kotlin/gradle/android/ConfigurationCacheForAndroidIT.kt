@@ -45,6 +45,33 @@ class ConfigurationCacheForAndroidIT : AbstractConfigurationCacheIT() {
         }
     }
 
+    @DisplayName("works in android plus com.android.legacy-kapt project on AGP 9 new DSL")
+    @GradleAndroidTest
+    @AndroidTestVersions(minVersion = TestVersions.AGP.AGP_90)
+    fun testAndroidLegacyKaptProject(
+        gradleVersion: GradleVersion,
+        agpVersion: String,
+        jdkVersion: JdkVersions.ProvidedJdk,
+    ) {
+        project(
+            "kapt2/android-legacy-kapt",
+            gradleVersion,
+            buildOptions = buildOptions(gradleVersion).copy(
+                androidVersion = agpVersion,
+                enableLegacyAgpDsl = false,
+            ),
+            buildJdk = jdkVersion.location,
+        ) {
+            gradleProperties.append("\nkapt.incremental.apt=false")
+            testConfigurationCacheOf(
+                ":lib:kaptGenerateStubsDebugKotlin",
+                ":lib:kaptDebugKotlin",
+                ":lib:compileDebugKotlin",
+                suppressAgpWarnings = true,
+            )
+        }
+    }
+
     @DisplayName("works in android project")
     @GradleAndroidTest
     fun testKotlinAndroidProject(
