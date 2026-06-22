@@ -49,7 +49,6 @@ internal constructor(
      */
     @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    @Suppress("OVERRIDE_BY_INLINE")
     public actual inline operator fun compareTo(other: UByte): Int =
         this.compareTo(other.toULong())
 
@@ -60,7 +59,6 @@ internal constructor(
      */
     @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    @Suppress("OVERRIDE_BY_INLINE")
     public actual inline operator fun compareTo(other: UShort): Int =
         this.compareTo(other.toULong())
 
@@ -71,7 +69,6 @@ internal constructor(
      */
     @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    @Suppress("OVERRIDE_BY_INLINE")
     public actual inline operator fun compareTo(other: UInt): Int =
         this.compareTo(other.toULong())
 
@@ -505,8 +502,9 @@ internal constructor(
      * In case when this `ULong` value is exactly between two `Float`s,
      * the one with zero at least significant bit of mantissa is selected.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public actual fun toFloat(): Float =
+    public actual inline fun toFloat(): Float =
         this.toDouble().toFloat()
 
     /**
@@ -516,8 +514,9 @@ internal constructor(
      * In case when this `ULong` value is exactly between two `Double`s,
      * the one with zero at least significant bit of mantissa is selected.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public actual fun toDouble(): Double =
+    public actual inline fun toDouble(): Double =
         ulongToDouble(data)
 
     @kotlin.internal.IntrinsicConstEvaluation

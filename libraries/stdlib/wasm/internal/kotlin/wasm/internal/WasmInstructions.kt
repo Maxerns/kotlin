@@ -465,10 +465,12 @@ internal fun wasm_f32_convert_i32_s(a: Int): Float =
 internal fun wasm_f32_convert_i64_s(a: Long): Float =
     implementedAsIntrinsic
 
+@PublishedApi
 @WasmOp(WasmOp.F32_CONVERT_I32_U)
 internal fun wasm_f32_convert_i32_u(a: Int): Float =
     implementedAsIntrinsic
 
+@PublishedApi
 @WasmOp(WasmOp.F32_CONVERT_I64_U)
 internal fun wasm_f32_convert_i64_u(a: Long): Float =
     implementedAsIntrinsic

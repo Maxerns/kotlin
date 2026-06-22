@@ -284,7 +284,7 @@ abstract class BaseUnsignedTypeGenerator(
                 )
                 annotations += INLINE_ONLY
                 annotations += INTRINSIC_CONST_EVALUATION
-                annotations += OVERRIDE_BY_INLINE
+                if (otherType == type) annotations += OVERRIDE_BY_INLINE
                 signature {
                     isInline = true
                     isOperator = true
@@ -582,8 +582,10 @@ abstract class BaseUnsignedTypeGenerator(
 
             method {
                 appendDoc(doc)
+                annotations += INLINE_ONLY
                 annotations += INTRINSIC_CONST_EVALUATION
                 signature {
+                    isInline = true
                     methodName = "to$otherName"
                     returnType = otherName
                 }

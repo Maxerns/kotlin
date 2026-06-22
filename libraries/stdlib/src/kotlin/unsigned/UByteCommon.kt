@@ -59,7 +59,6 @@ internal constructor(
      */
     @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    @Suppress("OVERRIDE_BY_INLINE")
     public inline operator fun compareTo(other: UShort): Int
 
     /**
@@ -69,7 +68,6 @@ internal constructor(
      */
     @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    @Suppress("OVERRIDE_BY_INLINE")
     public inline operator fun compareTo(other: UInt): Int
 
     /**
@@ -79,7 +77,6 @@ internal constructor(
      */
     @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    @Suppress("OVERRIDE_BY_INLINE")
     public inline operator fun compareTo(other: ULong): Int
 
     /** Adds the other value to this value. */
@@ -430,16 +427,18 @@ internal constructor(
      *
      * The resulting `Float` value represents the same numerical value as this `UByte`.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public fun toFloat(): Float
+    public inline fun toFloat(): Float
 
     /**
      * Converts this [UByte] value to [Double].
      *
      * The resulting `Double` value represents the same numerical value as this `UByte`.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public fun toDouble(): Double
+    public inline fun toDouble(): Double
 
     @kotlin.internal.IntrinsicConstEvaluation
     public override fun toString(): String
