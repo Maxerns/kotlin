@@ -47,128 +47,156 @@ internal constructor(
      * Returns zero if this value is equal to the specified other value, a negative number if it's less than other,
      * or a positive number if it's greater than other.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public operator fun compareTo(other: UByte): Int
+    @Suppress("OVERRIDE_BY_INLINE")
+    public inline operator fun compareTo(other: UByte): Int
 
     /**
      * Compares this value with the specified value for order.
      * Returns zero if this value is equal to the specified other value, a negative number if it's less than other,
      * or a positive number if it's greater than other.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public operator fun compareTo(other: UShort): Int
+    @Suppress("OVERRIDE_BY_INLINE")
+    public inline operator fun compareTo(other: UShort): Int
 
     /**
      * Compares this value with the specified value for order.
      * Returns zero if this value is equal to the specified other value, a negative number if it's less than other,
      * or a positive number if it's greater than other.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public operator fun compareTo(other: UInt): Int
+    @Suppress("OVERRIDE_BY_INLINE")
+    public inline operator fun compareTo(other: UInt): Int
 
     /**
      * Compares this value with the specified value for order.
      * Returns zero if this value is equal to the specified other value, a negative number if it's less than other,
      * or a positive number if it's greater than other.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public override operator fun compareTo(other: ULong): Int
+    @Suppress("OVERRIDE_BY_INLINE")
+    public override inline operator fun compareTo(other: ULong): Int
 
     /** Adds the other value to this value. */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public operator fun plus(other: UByte): ULong
+    public inline operator fun plus(other: UByte): ULong
 
     /** Adds the other value to this value. */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public operator fun plus(other: UShort): ULong
+    public inline operator fun plus(other: UShort): ULong
 
     /** Adds the other value to this value. */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public operator fun plus(other: UInt): ULong
+    public inline operator fun plus(other: UInt): ULong
 
     /** Adds the other value to this value. */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public operator fun plus(other: ULong): ULong
+    public inline operator fun plus(other: ULong): ULong
 
     /** Subtracts the other value from this value. */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public operator fun minus(other: UByte): ULong
+    public inline operator fun minus(other: UByte): ULong
 
     /** Subtracts the other value from this value. */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public operator fun minus(other: UShort): ULong
+    public inline operator fun minus(other: UShort): ULong
 
     /** Subtracts the other value from this value. */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public operator fun minus(other: UInt): ULong
+    public inline operator fun minus(other: UInt): ULong
 
     /** Subtracts the other value from this value. */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public operator fun minus(other: ULong): ULong
+    public inline operator fun minus(other: ULong): ULong
 
     /** Multiplies this value by the other value. */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public operator fun times(other: UByte): ULong
+    public inline operator fun times(other: UByte): ULong
 
     /** Multiplies this value by the other value. */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public operator fun times(other: UShort): ULong
+    public inline operator fun times(other: UShort): ULong
 
     /** Multiplies this value by the other value. */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public operator fun times(other: UInt): ULong
+    public inline operator fun times(other: UInt): ULong
 
     /** Multiplies this value by the other value. */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public operator fun times(other: ULong): ULong
+    public inline operator fun times(other: ULong): ULong
 
     /** Divides this value by the other value, truncating the result to an integer that is closer to zero. */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public operator fun div(other: UByte): ULong
+    public inline operator fun div(other: UByte): ULong
 
     /** Divides this value by the other value, truncating the result to an integer that is closer to zero. */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public operator fun div(other: UShort): ULong
+    public inline operator fun div(other: UShort): ULong
 
     /** Divides this value by the other value, truncating the result to an integer that is closer to zero. */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public operator fun div(other: UInt): ULong
+    public inline operator fun div(other: UInt): ULong
 
     /** Divides this value by the other value, truncating the result to an integer that is closer to zero. */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public operator fun div(other: ULong): ULong
+    public inline operator fun div(other: ULong): ULong
 
     /**
      * Calculates the remainder of truncating division of this value (dividend) by the other value (divisor).
      *
      * The result is always less than the divisor.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public operator fun rem(other: UByte): ULong
+    public inline operator fun rem(other: UByte): ULong
 
     /**
      * Calculates the remainder of truncating division of this value (dividend) by the other value (divisor).
      *
      * The result is always less than the divisor.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public operator fun rem(other: UShort): ULong
+    public inline operator fun rem(other: UShort): ULong
 
     /**
      * Calculates the remainder of truncating division of this value (dividend) by the other value (divisor).
      *
      * The result is always less than the divisor.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public operator fun rem(other: UInt): ULong
+    public inline operator fun rem(other: UInt): ULong
 
     /**
      * Calculates the remainder of truncating division of this value (dividend) by the other value (divisor).
      *
      * The result is always less than the divisor.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public operator fun rem(other: ULong): ULong
+    public inline operator fun rem(other: ULong): ULong
 
     /**
      * Divides this value by the other value, flooring the result to an integer that is closer to negative infinity.
@@ -337,8 +365,9 @@ internal constructor(
      * The resulting `Byte` value is represented by the least significant 8 bits of this `ULong` value.
      * Note that the resulting `Byte` value may be negative.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public fun toByte(): Byte
+    public inline fun toByte(): Byte
 
     /**
      * Converts this [ULong] value to [Short].
@@ -349,8 +378,9 @@ internal constructor(
      * The resulting `Short` value is represented by the least significant 16 bits of this `ULong` value.
      * Note that the resulting `Short` value may be negative.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public fun toShort(): Short
+    public inline fun toShort(): Short
 
     /**
      * Converts this [ULong] value to [Int].
@@ -361,8 +391,9 @@ internal constructor(
      * The resulting `Int` value is represented by the least significant 32 bits of this `ULong` value.
      * Note that the resulting `Int` value may be negative.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public fun toInt(): Int
+    public inline fun toInt(): Int
 
     /**
      * Converts this [ULong] value to [Long].
@@ -372,8 +403,9 @@ internal constructor(
      *
      * The resulting `Long` value has the same binary representation as this `ULong` value.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public fun toLong(): Long
+    public inline fun toLong(): Long
 
     /**
      * Converts this [ULong] value to [UByte].
@@ -383,8 +415,9 @@ internal constructor(
      *
      * The resulting `UByte` value is represented by the least significant 8 bits of this `ULong` value.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public fun toUByte(): UByte
+    public inline fun toUByte(): UByte
 
     /**
      * Converts this [ULong] value to [UShort].
@@ -394,8 +427,9 @@ internal constructor(
      *
      * The resulting `UShort` value is represented by the least significant 16 bits of this `ULong` value.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public fun toUShort(): UShort
+    public inline fun toUShort(): UShort
 
     /**
      * Converts this [ULong] value to [UInt].
@@ -405,12 +439,14 @@ internal constructor(
      *
      * The resulting `UInt` value is represented by the least significant 32 bits of this `ULong` value.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public fun toUInt(): UInt
+    public inline fun toUInt(): UInt
 
     /** Returns this value. */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public fun toULong(): ULong
+    public inline fun toULong(): ULong
 
     /**
      * Converts this [ULong] value to [Float].
@@ -445,8 +481,9 @@ internal constructor(
  * whereas the most significant 56 bits are filled with the sign bit of this value.
  */
 @SinceKotlin("1.5")
+@kotlin.internal.InlineOnly
 @kotlin.internal.IntrinsicConstEvaluation
-public expect fun Byte.toULong(): ULong
+public expect inline fun Byte.toULong(): ULong
 
 /**
  * Converts this [Short] value to [ULong].
@@ -457,8 +494,9 @@ public expect fun Byte.toULong(): ULong
  * whereas the most significant 48 bits are filled with the sign bit of this value.
  */
 @SinceKotlin("1.5")
+@kotlin.internal.InlineOnly
 @kotlin.internal.IntrinsicConstEvaluation
-public expect fun Short.toULong(): ULong
+public expect inline fun Short.toULong(): ULong
 
 /**
  * Converts this [Int] value to [ULong].
@@ -469,8 +507,9 @@ public expect fun Short.toULong(): ULong
  * whereas the most significant 32 bits are filled with the sign bit of this value.
  */
 @SinceKotlin("1.5")
+@kotlin.internal.InlineOnly
 @kotlin.internal.IntrinsicConstEvaluation
-public expect fun Int.toULong(): ULong
+public expect inline fun Int.toULong(): ULong
 
 /**
  * Converts this [Long] value to [ULong].
@@ -480,8 +519,9 @@ public expect fun Int.toULong(): ULong
  * The resulting `ULong` value has the same binary representation as this `Long` value.
  */
 @SinceKotlin("1.5")
+@kotlin.internal.InlineOnly
 @kotlin.internal.IntrinsicConstEvaluation
-public expect fun Long.toULong(): ULong
+public expect inline fun Long.toULong(): ULong
 
 /**
  * Converts this [Float] value to [ULong].
@@ -490,8 +530,9 @@ public expect fun Long.toULong(): ULong
  * Returns zero if this `Float` value is negative or `NaN`, [ULong.MAX_VALUE] if it's bigger than `ULong.MAX_VALUE`.
  */
 @SinceKotlin("1.5")
+@kotlin.internal.InlineOnly
 @kotlin.internal.IntrinsicConstEvaluation
-public expect fun Float.toULong(): ULong
+public expect inline fun Float.toULong(): ULong
 
 /**
  * Converts this [Double] value to [ULong].
@@ -500,5 +541,6 @@ public expect fun Float.toULong(): ULong
  * Returns zero if this `Double` value is negative or `NaN`, [ULong.MAX_VALUE] if it's bigger than `ULong.MAX_VALUE`.
  */
 @SinceKotlin("1.5")
+@kotlin.internal.InlineOnly
 @kotlin.internal.IntrinsicConstEvaluation
-public expect fun Double.toULong(): ULong
+public expect inline fun Double.toULong(): ULong

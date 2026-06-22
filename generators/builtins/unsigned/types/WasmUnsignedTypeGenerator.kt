@@ -13,7 +13,6 @@ import unsigned.types.BaseUnsignedTypeGenerator
 import java.io.PrintWriter
 
 class WasmUnsignedTypeGenerator(type: UnsignedType, out: PrintWriter) : BaseUnsignedTypeGenerator(type, out, ExpectActualModifier.Actual) {
-    private val intrinsicOperators = setOf("rem", "div")
     override val extraImports = setOf("kotlin.wasm.internal.*")
 
     override fun compareToBody(otherType: UnsignedType): String = when (type) {
@@ -23,82 +22,36 @@ class WasmUnsignedTypeGenerator(type: UnsignedType, out: PrintWriter) : BaseUnsi
     }
 
     override fun binaryOperatorsBody(operator: String, otherType: UnsignedType, returnType: UnsignedType): String {
-        return if (type == otherType && type == returnType && operator in intrinsicOperators) {
-            "implementedAsIntrinsic"
-        } else super.binaryOperatorsBody(operator, otherType, returnType)
+        val isBinaryOperationOnSimilarTypes = type == otherType && type == returnType
+        return when (operator) {
+            "rem" if isBinaryOperationOnSimilarTypes -> "${type.capitalized}(wasm_i${type.bitSize}_rem_u(this.data, other.data))"
+            "div" if isBinaryOperationOnSimilarTypes -> "${type.capitalized}(wasm_i${type.bitSize}_div_u(this.data, other.data))"
+            else -> super.binaryOperatorsBody(operator, otherType, returnType)
+        }
     }
 
     override fun floatingConversionBody(otherType: PrimitiveType): String = when (type) {
-        UnsignedType.UINT, UnsignedType.ULONG -> "implementedAsIntrinsic"
+        UnsignedType.UINT, UnsignedType.ULONG -> "wasm_f${otherType.bitSize}_convert_i${type.bitSize}_u(this.data)"
         else -> super.floatingConversionBody(otherType)
     }
 
     override fun fromFloatingPointBody(otherType: PrimitiveType): String = when (type) {
-        UnsignedType.UINT, UnsignedType.ULONG -> "implementedAsIntrinsic"
+        UnsignedType.UINT, UnsignedType.ULONG -> "${type.capitalized}(wasm_i${type.bitSize}_trunc_sat_f${otherType.bitSize}_u(this))"
         else -> super.fromFloatingPointBody(otherType)
     }
 
     override fun signedConversionBody(otherType: UnsignedType): String = when (type) {
-        UnsignedType.UINT if otherType == UnsignedType.ULONG -> "implementedAsIntrinsic"
+        UnsignedType.UINT if otherType == UnsignedType.ULONG -> "wasm_i64_extend_i32_u(this.data)"
         else -> super.signedConversionBody(otherType)
     }
 
     override fun unsignedConversionBody(otherType: UnsignedType): String = when (type) {
-        UnsignedType.UINT if otherType == UnsignedType.ULONG -> "implementedAsIntrinsic"
+        UnsignedType.UINT if otherType == UnsignedType.ULONG -> "${otherType.capitalized}(wasm_i64_extend_i32_u(this.data))"
         else -> super.unsignedConversionBody(otherType)
     }
 
     override fun toStringHashCodeBody(): String = when (type) {
-        UnsignedType.UINT, UnsignedType.ULONG -> " utoa${type.bitSize}(this)"
+        UnsignedType.UINT, UnsignedType.ULONG -> "utoa${type.bitSize}(this)"
         else -> super.toStringHashCodeBody()
     }
-
-    private fun MethodBuilder.intrinsifyWith(operation: String) {
-        annotations.add("WasmOp(WasmOp.$operation)")
-        annotations.remove(INLINE_ONLY)
-        modifySignature { isInline = false }
-    }
-
-    override fun MethodBuilder.patchMethodDeclaration() {
-        when (methodName) {
-            "rem" if type.capitalized.let { it == returnType && it == parameterType } -> when (type) {
-                UnsignedType.UINT -> intrinsifyWith("I32_REM_U")
-                UnsignedType.ULONG -> intrinsifyWith("I64_REM_U")
-                else -> {}
-            }
-            "div" if type.capitalized.let { it == returnType && it == parameterType } -> when (type) {
-                UnsignedType.UINT -> intrinsifyWith("I32_DIV_U")
-                UnsignedType.ULONG -> intrinsifyWith("I64_DIV_U")
-                else -> {}
-            }
-            "toFloat" -> when (type) {
-                UnsignedType.UINT -> intrinsifyWith("F32_CONVERT_I32_U")
-                UnsignedType.ULONG -> intrinsifyWith("F32_CONVERT_I64_U")
-                else -> {}
-            }
-            "toDouble" -> when (type) {
-                UnsignedType.UINT -> intrinsifyWith("F64_CONVERT_I32_U")
-                UnsignedType.ULONG -> intrinsifyWith("F64_CONVERT_I64_U")
-                else -> {}
-            }
-            "toUInt" -> when (extensionReceiver) {
-                PrimitiveType.FLOAT.capitalized -> intrinsifyWith("I32_TRUNC_SAT_F32_U")
-                PrimitiveType.DOUBLE.capitalized -> intrinsifyWith("I32_TRUNC_SAT_F64_U")
-                else -> {}
-            }
-            "toULong" -> when (extensionReceiver) {
-                PrimitiveType.FLOAT.capitalized -> intrinsifyWith("I64_TRUNC_SAT_F32_U")
-                PrimitiveType.DOUBLE.capitalized -> intrinsifyWith("I64_TRUNC_SAT_F64_U")
-                null if type == UnsignedType.UINT -> intrinsifyWith("I64_EXTEND_I32_U")
-                else -> {}
-            }
-            "toLong" if type == UnsignedType.UINT -> intrinsifyWith("I64_EXTEND_I32_U")
-            "compareTo" -> {
-                annotations.remove(OVERRIDE_BY_INLINE)
-                annotations.remove(INLINE_ONLY)
-                modifySignature { isInline = false }
-            }
-        }
-    }
-
 }

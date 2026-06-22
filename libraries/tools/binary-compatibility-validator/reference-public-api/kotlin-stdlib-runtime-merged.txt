@@ -305,6 +305,8 @@ public final class kotlin/UByte : java/lang/Comparable {
 	public static final fun equals-impl0 (BB)Z
 	public fun hashCode ()I
 	public static fun hashCode-impl (B)I
+	public static final fun toDouble-impl (B)D
+	public static final fun toFloat-impl (B)F
 	public fun toString ()Ljava/lang/String;
 	public static fun toString-impl (B)Ljava/lang/String;
 	public final synthetic fun unbox-impl ()B
@@ -364,6 +366,8 @@ public final class kotlin/UInt : java/lang/Comparable {
 	public static final fun equals-impl0 (II)Z
 	public fun hashCode ()I
 	public static fun hashCode-impl (I)I
+	public static final fun toDouble-impl (I)D
+	public static final fun toFloat-impl (I)F
 	public fun toString ()Ljava/lang/String;
 	public static fun toString-impl (I)Ljava/lang/String;
 	public final synthetic fun unbox-impl ()I
@@ -423,6 +427,8 @@ public final class kotlin/ULong : java/lang/Comparable {
 	public static final fun equals-impl0 (JJ)Z
 	public fun hashCode ()I
 	public static fun hashCode-impl (J)I
+	public static final fun toDouble-impl (J)D
+	public static final fun toFloat-impl (J)F
 	public fun toString ()Ljava/lang/String;
 	public static fun toString-impl (J)Ljava/lang/String;
 	public final synthetic fun unbox-impl ()J
@@ -482,6 +488,8 @@ public final class kotlin/UShort : java/lang/Comparable {
 	public static final fun equals-impl0 (SS)Z
 	public fun hashCode ()I
 	public static fun hashCode-impl (S)I
+	public static final fun toDouble-impl (S)D
+	public static final fun toFloat-impl (S)F
 	public fun toString ()Ljava/lang/String;
 	public static fun toString-impl (S)Ljava/lang/String;
 	public final synthetic fun unbox-impl ()S
@@ -542,7 +550,7 @@ public final class kotlin/Unit {
 public abstract interface annotation class kotlin/UnsafeVariance : java/lang/annotation/Annotation {
 }
 
-public final class kotlin/UnsignedKt {
+public final class kotlin/UnsignedCommonKt {
 	public static final fun doubleToUInt (D)I
 	public static final fun doubleToULong (D)J
 	public static final fun uintCompare (II)I

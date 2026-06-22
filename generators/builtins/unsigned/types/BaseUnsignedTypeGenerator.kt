@@ -73,8 +73,6 @@ abstract class BaseUnsignedTypeGenerator(
     open val extraImports = emptySet<String>()
     open val extraClassAnnotations = emptySet<String>()
 
-    internal open fun MethodBuilder.patchMethodDeclaration() {}
-
     open fun compareToBody(otherType: UnsignedType): String = when {
         otherType == type && maxByDomainCapacity(type, UnsignedType.UINT) == type ->
             "${className.lowercase()}Compare(this.data, other.data)"
@@ -284,8 +282,11 @@ abstract class BaseUnsignedTypeGenerator(
                     or a positive number if it's greater than other.
                     """.trimIndent()
                 )
+                annotations += INLINE_ONLY
                 annotations += INTRINSIC_CONST_EVALUATION
+                annotations += OVERRIDE_BY_INLINE
                 signature {
+                    isInline = true
                     isOperator = true
                     isOverride = otherType == type
                     methodName = "compareTo"
@@ -295,11 +296,7 @@ abstract class BaseUnsignedTypeGenerator(
 
                 if (expectActualModifier != ExpectActualModifier.Expect) {
                     compareToBody(otherType).setAsBody()
-                    annotations += OVERRIDE_BY_INLINE
-                    annotations += INLINE_ONLY
-                    modifySignature { isInline = true }
                 }
-                patchMethodDeclaration()
             }
         }
     }
@@ -317,8 +314,10 @@ abstract class BaseUnsignedTypeGenerator(
             val opReturnType = getOperatorReturnType(type, otherType)
             method {
                 appendDoc(binaryOperatorDoc(name, type, otherType))
+                annotations += INLINE_ONLY
                 annotations += INTRINSIC_CONST_EVALUATION
                 signature {
+                    isInline = true
                     isOperator = true
                     methodName = name
                     parameter { this.name = "other"; type = otherType.capitalized }
@@ -326,10 +325,7 @@ abstract class BaseUnsignedTypeGenerator(
                 }
                 if (expectActualModifier != ExpectActualModifier.Expect) {
                     binaryOperatorsBody(name, otherType, opReturnType).setAsBody()
-                    annotations += INLINE_ONLY
-                    modifySignature { isInline = true }
                 }
-                patchMethodDeclaration()
             }
         }
     }
@@ -351,7 +347,6 @@ abstract class BaseUnsignedTypeGenerator(
                 if (expectActualModifier != ExpectActualModifier.Expect) {
                     floorDivModeBody(name, otherType, operationType, opReturnType).setAsBody()
                 }
-                patchMethodDeclaration()
             }
         }
     }
@@ -370,7 +365,6 @@ abstract class BaseUnsignedTypeGenerator(
                 if (expectActualModifier != ExpectActualModifier.Expect) {
                     unaryOperatorBody(name).setAsBody()
                 }
-                patchMethodDeclaration()
             }
         }
     }
@@ -392,7 +386,6 @@ abstract class BaseUnsignedTypeGenerator(
             if (expectActualModifier != ExpectActualModifier.Expect) {
                 rangeToBody(rangeType, convertToRangeElement("this"), convertToRangeElement("other")).setAsBody()
             }
-            patchMethodDeclaration()
         }
     }
 
@@ -421,7 +414,6 @@ abstract class BaseUnsignedTypeGenerator(
             if (expectActualModifier != ExpectActualModifier.Expect) {
                 rangeUntilBody(rangeType, convertToRangeElement("this"), convertToRangeElement("other")).setAsBody()
             }
-            patchMethodDeclaration()
         }
     }
 
@@ -443,7 +435,6 @@ abstract class BaseUnsignedTypeGenerator(
                 if (expectActualModifier != ExpectActualModifier.Expect) {
                     bitShiftBody(implementation).setAsBody()
                 }
-                patchMethodDeclaration()
             }
         }
 
@@ -469,7 +460,6 @@ abstract class BaseUnsignedTypeGenerator(
                 if (expectActualModifier != ExpectActualModifier.Expect) {
                     bitwiseOperatorsBody(name).setAsBody()
                 }
-                patchMethodDeclaration()
             }
         }
         method {
@@ -484,7 +474,6 @@ abstract class BaseUnsignedTypeGenerator(
             if (expectActualModifier != ExpectActualModifier.Expect) {
                 inversionBody().setAsBody()
             }
-            patchMethodDeclaration()
         }
     }
 
@@ -522,17 +511,16 @@ abstract class BaseUnsignedTypeGenerator(
 
             method {
                 appendDoc(doc)
+                annotations += INLINE_ONLY
                 annotations += INTRINSIC_CONST_EVALUATION
                 signature {
+                    isInline = true
                     methodName = "to$signed"
                     returnType = signed
                 }
                 if (expectActualModifier != ExpectActualModifier.Expect) {
                     signedConversionBody(otherType).setAsBody()
-                    annotations += INLINE_ONLY
-                    modifySignature { isInline = true }
                 }
-                patchMethodDeclaration()
             }
         }
 
@@ -563,17 +551,16 @@ abstract class BaseUnsignedTypeGenerator(
 
             method {
                 appendDoc(doc)
+                annotations += INLINE_ONLY
                 annotations += INTRINSIC_CONST_EVALUATION
                 signature {
+                    isInline = true
                     methodName = "to$name"
                     returnType = name
                 }
                 if (expectActualModifier != ExpectActualModifier.Expect) {
                     unsignedConversionBody(otherType).setAsBody()
-                    annotations += INLINE_ONLY
-                    modifySignature { isInline = true }
                 }
-                patchMethodDeclaration()
             }
         }
     }
@@ -603,7 +590,6 @@ abstract class BaseUnsignedTypeGenerator(
                 if (expectActualModifier != ExpectActualModifier.Expect) {
                     floatingConversionBody(otherType).setAsBody()
                 }
-                patchMethodDeclaration()
             }
         }
     }
@@ -638,9 +624,11 @@ abstract class BaseUnsignedTypeGenerator(
             method {
                 appendDoc(doc)
                 annotations += "SinceKotlin(\"1.5\")"
+                annotations += INLINE_ONLY
                 annotations += INTRINSIC_CONST_EVALUATION
                 expectActual = expectActualModifier
                 signature {
+                    isInline = true
                     expectActual = expectActualModifier
                     extensionReceiver = otherSigned
                     methodName = "to$className"
@@ -648,10 +636,7 @@ abstract class BaseUnsignedTypeGenerator(
                 }
                 if (expectActualModifier != ExpectActualModifier.Expect) {
                     toOtherUnsignedTypeBody(otherType).setAsBody()
-                    annotations += INLINE_ONLY
-                    modifySignature { isInline = true }
                 }
-                patchMethodDeclaration()
             }
         }
 
@@ -670,19 +655,18 @@ abstract class BaseUnsignedTypeGenerator(
                     """.trimIndent()
                 )
                 annotations += "SinceKotlin(\"1.5\")"
+                annotations += INLINE_ONLY
                 annotations += INTRINSIC_CONST_EVALUATION
                 expectActual = expectActualModifier
                 signature {
+                    isInline = true
                     extensionReceiver = otherName
                     methodName = "to$className"
                     returnType = className
                 }
                 if (expectActualModifier != ExpectActualModifier.Expect) {
                     fromFloatingPointBody(otherType).setAsBody()
-                    modifySignature { isInline = true }
-                    annotations += INLINE_ONLY
                 }
-                patchMethodDeclaration()
             }
         }
     }
@@ -698,7 +682,6 @@ abstract class BaseUnsignedTypeGenerator(
             if (expectActualModifier != ExpectActualModifier.Expect) {
                 toStringHashCodeBody().setAsBody()
             }
-            patchMethodDeclaration()
         }
     }
 

@@ -46,8 +46,10 @@ internal constructor(
      * Returns zero if this value is equal to the specified other value, a negative number if it's less than other,
      * or a positive number if it's greater than other.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public actual operator fun compareTo(other: UByte): Int =
+    @Suppress("OVERRIDE_BY_INLINE")
+    public actual inline operator fun compareTo(other: UByte): Int =
         this.compareTo(other.toUInt())
 
     /**
@@ -55,8 +57,10 @@ internal constructor(
      * Returns zero if this value is equal to the specified other value, a negative number if it's less than other,
      * or a positive number if it's greater than other.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public actual operator fun compareTo(other: UShort): Int =
+    @Suppress("OVERRIDE_BY_INLINE")
+    public actual inline operator fun compareTo(other: UShort): Int =
         this.compareTo(other.toUInt())
 
     /**
@@ -64,8 +68,10 @@ internal constructor(
      * Returns zero if this value is equal to the specified other value, a negative number if it's less than other,
      * or a positive number if it's greater than other.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public actual override operator fun compareTo(other: UInt): Int =
+    @Suppress("OVERRIDE_BY_INLINE")
+    public actual override inline operator fun compareTo(other: UInt): Int =
         wasm_u32_compareTo(this.data, other.data)
 
     /**
@@ -73,103 +79,105 @@ internal constructor(
      * Returns zero if this value is equal to the specified other value, a negative number if it's less than other,
      * or a positive number if it's greater than other.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    public actual operator fun compareTo(other: ULong): Int =
+    @Suppress("OVERRIDE_BY_INLINE")
+    public actual inline operator fun compareTo(other: ULong): Int =
         this.toULong().compareTo(other)
 
     /** Adds the other value to this value. */
-    @kotlin.internal.IntrinsicConstEvaluation
     @kotlin.internal.InlineOnly
+    @kotlin.internal.IntrinsicConstEvaluation
     public actual inline operator fun plus(other: UByte): UInt =
         this.plus(other.toUInt())
 
     /** Adds the other value to this value. */
-    @kotlin.internal.IntrinsicConstEvaluation
     @kotlin.internal.InlineOnly
+    @kotlin.internal.IntrinsicConstEvaluation
     public actual inline operator fun plus(other: UShort): UInt =
         this.plus(other.toUInt())
 
     /** Adds the other value to this value. */
-    @kotlin.internal.IntrinsicConstEvaluation
     @kotlin.internal.InlineOnly
+    @kotlin.internal.IntrinsicConstEvaluation
     public actual inline operator fun plus(other: UInt): UInt =
         UInt(this.data.plus(other.data))
 
     /** Adds the other value to this value. */
-    @kotlin.internal.IntrinsicConstEvaluation
     @kotlin.internal.InlineOnly
+    @kotlin.internal.IntrinsicConstEvaluation
     public actual inline operator fun plus(other: ULong): ULong =
         this.toULong().plus(other)
 
     /** Subtracts the other value from this value. */
-    @kotlin.internal.IntrinsicConstEvaluation
     @kotlin.internal.InlineOnly
+    @kotlin.internal.IntrinsicConstEvaluation
     public actual inline operator fun minus(other: UByte): UInt =
         this.minus(other.toUInt())
 
     /** Subtracts the other value from this value. */
-    @kotlin.internal.IntrinsicConstEvaluation
     @kotlin.internal.InlineOnly
+    @kotlin.internal.IntrinsicConstEvaluation
     public actual inline operator fun minus(other: UShort): UInt =
         this.minus(other.toUInt())
 
     /** Subtracts the other value from this value. */
-    @kotlin.internal.IntrinsicConstEvaluation
     @kotlin.internal.InlineOnly
+    @kotlin.internal.IntrinsicConstEvaluation
     public actual inline operator fun minus(other: UInt): UInt =
         UInt(this.data.minus(other.data))
 
     /** Subtracts the other value from this value. */
-    @kotlin.internal.IntrinsicConstEvaluation
     @kotlin.internal.InlineOnly
+    @kotlin.internal.IntrinsicConstEvaluation
     public actual inline operator fun minus(other: ULong): ULong =
         this.toULong().minus(other)
 
     /** Multiplies this value by the other value. */
-    @kotlin.internal.IntrinsicConstEvaluation
     @kotlin.internal.InlineOnly
+    @kotlin.internal.IntrinsicConstEvaluation
     public actual inline operator fun times(other: UByte): UInt =
         this.times(other.toUInt())
 
     /** Multiplies this value by the other value. */
-    @kotlin.internal.IntrinsicConstEvaluation
     @kotlin.internal.InlineOnly
+    @kotlin.internal.IntrinsicConstEvaluation
     public actual inline operator fun times(other: UShort): UInt =
         this.times(other.toUInt())
 
     /** Multiplies this value by the other value. */
-    @kotlin.internal.IntrinsicConstEvaluation
     @kotlin.internal.InlineOnly
+    @kotlin.internal.IntrinsicConstEvaluation
     public actual inline operator fun times(other: UInt): UInt =
         UInt(this.data.times(other.data))
 
     /** Multiplies this value by the other value. */
-    @kotlin.internal.IntrinsicConstEvaluation
     @kotlin.internal.InlineOnly
+    @kotlin.internal.IntrinsicConstEvaluation
     public actual inline operator fun times(other: ULong): ULong =
         this.toULong().times(other)
 
     /** Divides this value by the other value, truncating the result to an integer that is closer to zero. */
-    @kotlin.internal.IntrinsicConstEvaluation
     @kotlin.internal.InlineOnly
+    @kotlin.internal.IntrinsicConstEvaluation
     public actual inline operator fun div(other: UByte): UInt =
         this.div(other.toUInt())
 
     /** Divides this value by the other value, truncating the result to an integer that is closer to zero. */
-    @kotlin.internal.IntrinsicConstEvaluation
     @kotlin.internal.InlineOnly
+    @kotlin.internal.IntrinsicConstEvaluation
     public actual inline operator fun div(other: UShort): UInt =
         this.div(other.toUInt())
 
     /** Divides this value by the other value, truncating the result to an integer that is closer to zero. */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    @WasmOp(WasmOp.I32_DIV_U)
-    public actual operator fun div(other: UInt): UInt =
-        implementedAsIntrinsic
+    public actual inline operator fun div(other: UInt): UInt =
+        UInt(wasm_i32_div_u(this.data, other.data))
 
     /** Divides this value by the other value, truncating the result to an integer that is closer to zero. */
-    @kotlin.internal.IntrinsicConstEvaluation
     @kotlin.internal.InlineOnly
+    @kotlin.internal.IntrinsicConstEvaluation
     public actual inline operator fun div(other: ULong): ULong =
         this.toULong().div(other)
 
@@ -178,8 +186,8 @@ internal constructor(
      *
      * The result is always less than the divisor.
      */
-    @kotlin.internal.IntrinsicConstEvaluation
     @kotlin.internal.InlineOnly
+    @kotlin.internal.IntrinsicConstEvaluation
     public actual inline operator fun rem(other: UByte): UInt =
         this.rem(other.toUInt())
 
@@ -188,8 +196,8 @@ internal constructor(
      *
      * The result is always less than the divisor.
      */
-    @kotlin.internal.IntrinsicConstEvaluation
     @kotlin.internal.InlineOnly
+    @kotlin.internal.IntrinsicConstEvaluation
     public actual inline operator fun rem(other: UShort): UInt =
         this.rem(other.toUInt())
 
@@ -198,18 +206,18 @@ internal constructor(
      *
      * The result is always less than the divisor.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    @WasmOp(WasmOp.I32_REM_U)
-    public actual operator fun rem(other: UInt): UInt =
-        implementedAsIntrinsic
+    public actual inline operator fun rem(other: UInt): UInt =
+        UInt(wasm_i32_rem_u(this.data, other.data))
 
     /**
      * Calculates the remainder of truncating division of this value (dividend) by the other value (divisor).
      *
      * The result is always less than the divisor.
      */
-    @kotlin.internal.IntrinsicConstEvaluation
     @kotlin.internal.InlineOnly
+    @kotlin.internal.IntrinsicConstEvaluation
     public actual inline operator fun rem(other: ULong): ULong =
         this.toULong().rem(other)
 
@@ -398,8 +406,8 @@ internal constructor(
      * The resulting `Byte` value is represented by the least significant 8 bits of this `UInt` value.
      * Note that the resulting `Byte` value may be negative.
      */
-    @kotlin.internal.IntrinsicConstEvaluation
     @kotlin.internal.InlineOnly
+    @kotlin.internal.IntrinsicConstEvaluation
     public actual inline fun toByte(): Byte =
         data.toByte()
 
@@ -412,8 +420,8 @@ internal constructor(
      * The resulting `Short` value is represented by the least significant 16 bits of this `UInt` value.
      * Note that the resulting `Short` value may be negative.
      */
-    @kotlin.internal.IntrinsicConstEvaluation
     @kotlin.internal.InlineOnly
+    @kotlin.internal.IntrinsicConstEvaluation
     public actual inline fun toShort(): Short =
         data.toShort()
 
@@ -425,8 +433,8 @@ internal constructor(
      *
      * The resulting `Int` value has the same binary representation as this `UInt` value.
      */
-    @kotlin.internal.IntrinsicConstEvaluation
     @kotlin.internal.InlineOnly
+    @kotlin.internal.IntrinsicConstEvaluation
     public actual inline fun toInt(): Int =
         data
 
@@ -438,10 +446,10 @@ internal constructor(
      * The least significant 32 bits of the resulting `Long` value are the same as the bits of this `UInt` value,
      * whereas the most significant 32 bits are filled with zeros.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    @WasmOp(WasmOp.I64_EXTEND_I32_U)
-    public actual fun toLong(): Long =
-        implementedAsIntrinsic
+    public actual inline fun toLong(): Long =
+        wasm_i64_extend_i32_u(this.data)
 
     /**
      * Converts this [UInt] value to [UByte].
@@ -451,8 +459,8 @@ internal constructor(
      *
      * The resulting `UByte` value is represented by the least significant 8 bits of this `UInt` value.
      */
-    @kotlin.internal.IntrinsicConstEvaluation
     @kotlin.internal.InlineOnly
+    @kotlin.internal.IntrinsicConstEvaluation
     public actual inline fun toUByte(): UByte =
         data.toUByte()
 
@@ -464,14 +472,14 @@ internal constructor(
      *
      * The resulting `UShort` value is represented by the least significant 16 bits of this `UInt` value.
      */
-    @kotlin.internal.IntrinsicConstEvaluation
     @kotlin.internal.InlineOnly
+    @kotlin.internal.IntrinsicConstEvaluation
     public actual inline fun toUShort(): UShort =
         data.toUShort()
 
     /** Returns this value. */
-    @kotlin.internal.IntrinsicConstEvaluation
     @kotlin.internal.InlineOnly
+    @kotlin.internal.IntrinsicConstEvaluation
     public actual inline fun toUInt(): UInt =
         this
 
@@ -483,10 +491,10 @@ internal constructor(
      * The least significant 32 bits of the resulting `ULong` value are the same as the bits of this `UInt` value,
      * whereas the most significant 32 bits are filled with zeros.
      */
+    @kotlin.internal.InlineOnly
     @kotlin.internal.IntrinsicConstEvaluation
-    @WasmOp(WasmOp.I64_EXTEND_I32_U)
-    public actual fun toULong(): ULong =
-        implementedAsIntrinsic
+    public actual inline fun toULong(): ULong =
+        ULong(wasm_i64_extend_i32_u(this.data))
 
     /**
      * Converts this [UInt] value to [Float].
@@ -496,9 +504,8 @@ internal constructor(
      * the one with zero at least significant bit of mantissa is selected.
      */
     @kotlin.internal.IntrinsicConstEvaluation
-    @WasmOp(WasmOp.F32_CONVERT_I32_U)
     public actual fun toFloat(): Float =
-        implementedAsIntrinsic
+        wasm_f32_convert_i32_u(this.data)
 
     /**
      * Converts this [UInt] value to [Double].
@@ -506,13 +513,12 @@ internal constructor(
      * The resulting `Double` value represents the same numerical value as this `UInt`.
      */
     @kotlin.internal.IntrinsicConstEvaluation
-    @WasmOp(WasmOp.F64_CONVERT_I32_U)
     public actual fun toDouble(): Double =
-        implementedAsIntrinsic
+        wasm_f64_convert_i32_u(this.data)
 
     @kotlin.internal.IntrinsicConstEvaluation
     public actual override fun toString(): String =
-         utoa32(this)
+        utoa32(this)
 }
 
 /**
@@ -524,8 +530,8 @@ internal constructor(
  * whereas the most significant 24 bits are filled with the sign bit of this value.
  */
 @SinceKotlin("1.5")
-@kotlin.internal.IntrinsicConstEvaluation
 @kotlin.internal.InlineOnly
+@kotlin.internal.IntrinsicConstEvaluation
 public actual inline fun Byte.toUInt(): UInt =
     UInt(this.toInt())
 
@@ -538,8 +544,8 @@ public actual inline fun Byte.toUInt(): UInt =
  * whereas the most significant 16 bits are filled with the sign bit of this value.
  */
 @SinceKotlin("1.5")
-@kotlin.internal.IntrinsicConstEvaluation
 @kotlin.internal.InlineOnly
+@kotlin.internal.IntrinsicConstEvaluation
 public actual inline fun Short.toUInt(): UInt =
     UInt(this.toInt())
 
@@ -551,8 +557,8 @@ public actual inline fun Short.toUInt(): UInt =
  * The resulting `UInt` value has the same binary representation as this `Int` value.
  */
 @SinceKotlin("1.5")
-@kotlin.internal.IntrinsicConstEvaluation
 @kotlin.internal.InlineOnly
+@kotlin.internal.IntrinsicConstEvaluation
 public actual inline fun Int.toUInt(): UInt =
     UInt(this)
 
@@ -565,8 +571,8 @@ public actual inline fun Int.toUInt(): UInt =
  * The resulting `UInt` value is represented by the least significant 32 bits of this `Long` value.
  */
 @SinceKotlin("1.5")
-@kotlin.internal.IntrinsicConstEvaluation
 @kotlin.internal.InlineOnly
+@kotlin.internal.IntrinsicConstEvaluation
 public actual inline fun Long.toUInt(): UInt =
     UInt(this.toInt())
 
@@ -577,10 +583,10 @@ public actual inline fun Long.toUInt(): UInt =
  * Returns zero if this `Float` value is negative or `NaN`, [UInt.MAX_VALUE] if it's bigger than `UInt.MAX_VALUE`.
  */
 @SinceKotlin("1.5")
+@kotlin.internal.InlineOnly
 @kotlin.internal.IntrinsicConstEvaluation
-@WasmOp(WasmOp.I32_TRUNC_SAT_F32_U)
-public actual fun Float.toUInt(): UInt =
-    implementedAsIntrinsic
+public actual inline fun Float.toUInt(): UInt =
+    UInt(wasm_i32_trunc_sat_f32_u(this))
 
 /**
  * Converts this [Double] value to [UInt].
@@ -589,7 +595,7 @@ public actual fun Float.toUInt(): UInt =
  * Returns zero if this `Double` value is negative or `NaN`, [UInt.MAX_VALUE] if it's bigger than `UInt.MAX_VALUE`.
  */
 @SinceKotlin("1.5")
+@kotlin.internal.InlineOnly
 @kotlin.internal.IntrinsicConstEvaluation
-@WasmOp(WasmOp.I32_TRUNC_SAT_F64_U)
-public actual fun Double.toUInt(): UInt =
-    implementedAsIntrinsic
+public actual inline fun Double.toUInt(): UInt =
+    UInt(wasm_i32_trunc_sat_f64_u(this))
