@@ -446,7 +446,7 @@ internal class KClassImpl<T : Any>(
         }
 
         private fun useK1ImplementationForFakeOverrides(): Boolean =
-            !newFakeOverridesImplementation || useK1Implementation || isComplicatedBuiltinSubclass()
+            useK1Implementation || isComplicatedBuiltinSubclass()
 
         // TODO: KT-85727 Reflection: support collections and their subclasses in the new implementation
         fun isComplicatedBuiltinSubclass(): Boolean =
