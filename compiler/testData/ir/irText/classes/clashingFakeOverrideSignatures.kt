@@ -1,7 +1,8 @@
 // IGNORE_BACKEND: JKLIB
-// IGNORE_BACKEND: WASM, NATIVE, JS_IR, JS_IR_ES6, JVM, WASM, WASM_JS, WASM_WASI, ANDROID, JVM_IR_SERIALIZE
-//  ^ TODO decide if we want to fix KT-42020 for FIR as well
-// KT-61141: IrSimpleFunctionSymbolImpl for /Derived.foo|foo(kotlin.String){}[0] is already bound
+// DUMP_IR_DIFFERENCE: JVM
+//   Probably, fake overrides for non-JVM targets are built incorrectly, like `FUN FAKE_OVERRIDE name:foo` in class Derived with `VALUE_PARAMETER name:x` overrides both
+//     - public final fun foo (x: T of <root>.Base): kotlin.Unit declared in <root>.Base
+//     - public final fun foo (y: kotlin.String): kotlin.Unit declared in <root>.Base
 // KOTLIN_REFLECT_DUMP_MISMATCH
 
 open class Base<T> {
