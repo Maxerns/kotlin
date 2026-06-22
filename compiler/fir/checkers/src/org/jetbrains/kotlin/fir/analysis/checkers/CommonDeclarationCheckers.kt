@@ -181,6 +181,7 @@ object CommonDeclarationCheckers : DeclarationCheckers() {
         FirTopLevelPropertiesChecker,
         FirPackageConflictsWithClassifierChecker,
         PlatformClassMappedToKotlinImportsChecker,
+        FirStaticInitializationChecker,
     )
 
     override val scriptCheckers: Set<FirScriptChecker> = setOf(
@@ -217,7 +218,7 @@ object CommonDeclarationCheckers : DeclarationCheckers() {
     )
 
     override val anonymousInitializerCheckers: Set<FirAnonymousInitializerChecker> = setOf(
-        FirAnonymousInitializerInInterfaceChecker
+        FirAnonymousInitializerInInterfaceChecker,
     )
 
     override val valueParameterCheckers: Set<FirValueParameterChecker> = setOf(
