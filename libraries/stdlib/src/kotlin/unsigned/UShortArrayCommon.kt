@@ -42,7 +42,6 @@ internal constructor(
      * Returns the number of elements in the array.
      */
     public override val size: Int
-        get
 
     /** Creates an iterator over the elements of the array. */
     public override operator fun iterator(): kotlin.collections.Iterator<UShort>

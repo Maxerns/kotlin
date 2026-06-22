@@ -493,9 +493,6 @@ internal class MethodBuilder : AnnotatedAndDocumented(), PrimitiveBuilder {
     val parameterType: String
         get() = signature?.parameterType ?: throwNotInitialized("type", "MethodParameterBuilder")
 
-    val extensionReceiver: String?
-        get() = signature?.extensionReceiver
-
     fun signature(init: MethodSignatureBuilder.() -> Unit): MethodSignatureBuilder {
         throwIfAlreadyInitialized(signature, "signature", "MethodBuilder")
         val signatureBuilder = MethodSignatureBuilder(::expectActual)
@@ -567,10 +564,9 @@ internal class PropertyBuilder : AnnotatedAndDocumented(), PrimitiveBuilder, Pri
             val variableKeyword = if (isMutable) "var" else "val"
             append("$variableKeyword $name: $type")
             value?.let { append(" = ").append(value) }
-            getterBody?.let {
-                append("$END_LINE    get")
-                if (it.isNotEmpty()) append("()")
-                append(it)
+            if (getterBody != null) {
+                append("$END_LINE    get()")
+                append(getterBody)
             }
         }
     }

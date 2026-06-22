@@ -142,10 +142,9 @@ abstract class BaseUnsignedArrayGenerator(
                 modifier("override")
                 name = "size"
                 type = "Int"
+
                 if (expectActualModifier != ExpectActualModifier.Expect) {
                     sizeGetterBody().setAsExpressionGetterBody()
-                } else {
-                    getterBody = ""
                 }
             }
 
