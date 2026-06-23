@@ -10,6 +10,7 @@ import org.jetbrains.annotations.TestOnly
 import org.jetbrains.kotlin.analysis.api.*
 import org.jetbrains.kotlin.analysis.api.annotations.*
 import org.jetbrains.kotlin.analysis.api.base.KaContextReceiver
+import org.jetbrains.kotlin.analysis.api.components.KaDeprecation
 import org.jetbrains.kotlin.analysis.api.contracts.description.Context
 import org.jetbrains.kotlin.analysis.api.contracts.description.KaContractEffectDeclaration
 import org.jetbrains.kotlin.analysis.api.contracts.description.renderKaContractEffectDeclaration
@@ -22,7 +23,6 @@ import org.jetbrains.kotlin.analysis.utils.printer.prettyPrint
 import org.jetbrains.kotlin.descriptors.Visibility
 import org.jetbrains.kotlin.name.*
 import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.analysis.api.components.KaDeprecation
 import org.jetbrains.kotlin.types.Variance
 import java.lang.reflect.InvocationTargetException
 import kotlin.reflect.KClass
@@ -193,8 +193,7 @@ public class KaDebugRenderer(
                 .sortedBy { it.name }
             appendLine()
             printCollectionIfNotEmpty(members, separator = "\n") { member ->
-                val renderSymbolsFully = member.name == KaValueParameterSymbol::generatedPrimaryConstructorProperty.name
-                renderProperty(member, printer, renderSymbolsFully, currentSymbolStack, symbol)
+                renderProperty(member, printer, renderSymbolsFully = false, currentSymbolStack, symbol)
             }
         }
     }
