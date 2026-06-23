@@ -7,6 +7,11 @@
 // WITH_COROUTINES
 // WITH_REFLECT
 
+// IGNORE_KLIB_RUNTIME_ERRORS_WITH_CUSTOM_SECOND_STAGE: Native:2.3,2.4
+// ^^^ K/Native didn't generate KSuspendFunctionN <: KFunction{N + 1}
+// fixed after KT-78040 (AddFunctionSupertypeToSuspendFunctionLowering was modified
+// and moved into backend.common to we used by Wasm as well)
+
 import kotlin.reflect.KFunction2
 import kotlin.reflect.KSuspendFunction1
 import kotlin.test.*
