@@ -1205,6 +1205,7 @@ public abstract class org/jetbrains/kotlin/analysis/api/symbols/KaPropertySymbol
 	public abstract fun getHasBackingField ()Z
 	public abstract fun getHasGetter ()Z
 	public abstract fun getHasSetter ()Z
+	public abstract fun getPrimaryConstructorParameter ()Lorg/jetbrains/kotlin/analysis/api/symbols/KaValueParameterSymbol;
 	public abstract fun getSetter ()Lorg/jetbrains/kotlin/analysis/api/symbols/KaPropertySetterSymbol;
 	public final fun isDelegatedProperty ()Z
 	public abstract fun isFromPrimaryConstructor ()Z
@@ -1349,6 +1350,7 @@ public abstract class org/jetbrains/kotlin/analysis/api/symbols/KaSyntheticJavaP
 	public abstract fun getJavaSetterSymbol ()Lorg/jetbrains/kotlin/analysis/api/symbols/KaNamedFunctionSymbol;
 	public final fun getLocation ()Lorg/jetbrains/kotlin/analysis/api/symbols/KaSymbolLocation;
 	public fun getOrigin ()Lorg/jetbrains/kotlin/analysis/api/symbols/KaSymbolOrigin;
+	public final fun getPrimaryConstructorParameter ()Lorg/jetbrains/kotlin/analysis/api/symbols/KaValueParameterSymbol;
 	public final fun isDelegated ()Z
 	public final fun isFromPrimaryConstructor ()Z
 }

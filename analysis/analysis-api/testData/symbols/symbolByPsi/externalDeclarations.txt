@@ -113,6 +113,7 @@ KaConstructorSymbol:
         modality: FINAL
         name: paramProp
         origin: SOURCE
+        primaryConstructorParameter: KaValueParameterSymbol(<local>/paramProp)
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []
@@ -548,6 +549,7 @@ KaKotlinPropertySymbol:
   modality: FINAL
   name: baz
   origin: SOURCE
+  primaryConstructorParameter: null
   receiverParameter: null
   returnType: KaUsualClassType:
     annotations: []
@@ -779,6 +781,7 @@ KaKotlinPropertySymbol:
   modality: FINAL
   name: prop
   origin: SOURCE
+  primaryConstructorParameter: null
   receiverParameter: null
   returnType: KaUsualClassType:
     annotations: []
@@ -1067,6 +1070,7 @@ KaConstructorSymbol:
         modality: FINAL
         name: paramProp2
         origin: SOURCE
+        primaryConstructorParameter: KaValueParameterSymbol(<local>/paramProp2)
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []
@@ -1401,6 +1405,7 @@ KaKotlinPropertySymbol:
   modality: FINAL
   name: propWithExternalGetter
   origin: SOURCE
+  primaryConstructorParameter: null
   receiverParameter: null
   returnType: KaUsualClassType:
     annotations: []
@@ -1499,6 +1504,7 @@ KaKotlinPropertySymbol:
   modality: FINAL
   name: propWithExternalAccessors
   origin: SOURCE
+  primaryConstructorParameter: null
   receiverParameter: null
   returnType: KaUsualClassType:
     annotations: []

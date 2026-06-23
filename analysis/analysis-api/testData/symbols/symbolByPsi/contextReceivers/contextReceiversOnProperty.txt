@@ -145,6 +145,7 @@ KaKotlinPropertySymbol:
   modality: FINAL
   name: y
   origin: SOURCE
+  primaryConstructorParameter: null
   receiverParameter: null
   returnType: KaUsualClassType:
     annotations: []

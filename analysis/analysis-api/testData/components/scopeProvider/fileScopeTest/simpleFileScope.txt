@@ -119,6 +119,7 @@ KaKotlinPropertySymbol:
   modality: FINAL
   name: testVal
   origin: SOURCE
+  primaryConstructorParameter: null
   receiverParameter: null
   returnType: KaUsualClassType:
     annotations: []

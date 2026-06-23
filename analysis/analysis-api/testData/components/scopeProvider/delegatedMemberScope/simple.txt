@@ -82,6 +82,7 @@ KaKotlinPropertySymbol:
   modality: OPEN
   name: zoo
   origin: DELEGATED
+  primaryConstructorParameter: null
   receiverParameter: KaReceiverParameterSymbol:
     annotations: []
     callableId: null
@@ -355,6 +356,7 @@ KaKotlinPropertySymbol:
   modality: OPEN
   name: foo
   origin: DELEGATED
+  primaryConstructorParameter: null
   receiverParameter: null
   returnType: KaUsualClassType:
     annotations: []
@@ -504,6 +506,7 @@ KaKotlinPropertySymbol:
   modality: OPEN
   name: bar
   origin: DELEGATED
+  primaryConstructorParameter: null
   receiverParameter: null
   returnType: KaUsualClassType:
     annotations: []
@@ -707,6 +710,7 @@ KaKotlinPropertySymbol:
   modality: OPEN
   name: doo
   origin: DELEGATED
+  primaryConstructorParameter: null
   receiverParameter: KaReceiverParameterSymbol:
     annotations: []
     callableId: null

@@ -228,6 +228,7 @@ scopes:
         modality: FINAL
         name: foo
         origin: SOURCE
+        primaryConstructorParameter: null
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []

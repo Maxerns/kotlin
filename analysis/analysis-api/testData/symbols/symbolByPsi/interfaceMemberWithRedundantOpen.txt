@@ -87,6 +87,7 @@ KaKotlinPropertySymbol:
   modality: ABSTRACT
   name: default
   origin: SOURCE
+  primaryConstructorParameter: null
   receiverParameter: null
   returnType: KaUsualClassType:
     annotations: []
@@ -197,6 +198,7 @@ KaKotlinPropertySymbol:
   modality: ABSTRACT
   name: defaultWithOpen
   origin: SOURCE
+  primaryConstructorParameter: null
   receiverParameter: null
   returnType: KaUsualClassType:
     annotations: []
@@ -303,6 +305,7 @@ KaKotlinPropertySymbol:
   modality: OPEN
   name: defaultWithOpenAndBody
   origin: SOURCE
+  primaryConstructorParameter: null
   receiverParameter: null
   returnType: KaUsualClassType:
     annotations: []

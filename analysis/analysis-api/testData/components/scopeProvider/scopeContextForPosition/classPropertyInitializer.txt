@@ -121,6 +121,34 @@ scopes:
         modality: FINAL
         name: constructorProp
         origin: SOURCE
+        primaryConstructorParameter: KaValueParameterSymbol:
+          annotations: []
+          callableId: null
+          contextReceivers: []
+          generatedPrimaryConstructorProperty: KaKotlinPropertySymbol(test/Child.constructorProp)
+          hasDeclaredDefaultValue: false
+          hasDefaultValue: false
+          isActual: false
+          isCompanion: false
+          isCrossinline: false
+          isDelegated: false
+          isExpect: false
+          isExtension: false
+          isExternal: false
+          isImplicitLambdaParameter: false
+          isNoinline: false
+          isVal: true
+          isVararg: false
+          location: LOCAL
+          modality: FINAL
+          name: constructorProp
+          origin: SOURCE
+          receiverParameter: null
+          returnType: KaUsualClassType:
+            annotations: []
+            typeArguments: []
+            type: kotlin/Int
+          visibility: PUBLIC
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []
@@ -232,6 +260,7 @@ scopes:
         modality: FINAL
         name: childProp
         origin: SOURCE
+        primaryConstructorParameter: null
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []
@@ -311,6 +340,34 @@ scopes:
         modality: FINAL
         name: value
         origin: SOURCE
+        primaryConstructorParameter: KaValueParameterSymbol:
+          annotations: []
+          callableId: null
+          contextReceivers: []
+          generatedPrimaryConstructorProperty: KaKotlinPropertySymbol(test/Base.value)
+          hasDeclaredDefaultValue: false
+          hasDefaultValue: false
+          isActual: false
+          isCompanion: false
+          isCrossinline: false
+          isDelegated: false
+          isExpect: false
+          isExtension: false
+          isExternal: false
+          isImplicitLambdaParameter: false
+          isNoinline: false
+          isVal: true
+          isVararg: false
+          location: LOCAL
+          modality: FINAL
+          name: value
+          origin: SOURCE
+          receiverParameter: null
+          returnType: KaUsualClassType:
+            annotations: []
+            typeArguments: []
+            type: kotlin/Int
+          visibility: PUBLIC
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []
@@ -422,6 +479,7 @@ scopes:
         modality: FINAL
         name: baseProp
         origin: SOURCE
+        primaryConstructorParameter: null
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []
@@ -653,6 +711,7 @@ scopes:
               modality: FINAL
               name: constructorProp
               origin: SOURCE
+              primaryConstructorParameter: KaValueParameterSymbol(<local>/constructorProp)
               receiverParameter: null
               returnType: KaUsualClassType:
                 annotations: []

@@ -91,6 +91,7 @@ KaValueParameterSymbol:
     modality: OPEN
     name: bar
     origin: SOURCE
+    primaryConstructorParameter: KaValueParameterSymbol(<local>/bar)
     receiverParameter: null
     returnType: KaUsualClassType:
       annotations: []

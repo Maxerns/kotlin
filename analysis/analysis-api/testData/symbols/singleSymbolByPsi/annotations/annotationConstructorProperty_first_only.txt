@@ -103,6 +103,7 @@ KaValueParameterSymbol:
     modality: FINAL
     name: prop
     origin: SOURCE
+    primaryConstructorParameter: KaValueParameterSymbol(<local>/prop)
     receiverParameter: null
     returnType: KaUsualClassType:
       annotations: []

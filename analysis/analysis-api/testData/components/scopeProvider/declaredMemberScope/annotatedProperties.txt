@@ -90,6 +90,39 @@ KaKotlinPropertySymbol:
   modality: FINAL
   name: withDefaultGetter
   origin: SOURCE
+  primaryConstructorParameter: KaValueParameterSymbol:
+    annotations: []
+    callableId: null
+    contextReceivers: []
+    generatedPrimaryConstructorProperty: KaKotlinPropertySymbol(/Foo.withDefaultGetter)
+    hasDeclaredDefaultValue: false
+    hasDefaultValue: false
+    isActual: false
+    isCompanion: false
+    isCrossinline: false
+    isDelegated: false
+    isExpect: false
+    isExtension: false
+    isExternal: false
+    isImplicitLambdaParameter: false
+    isNoinline: false
+    isVal: true
+    isVararg: false
+    location: LOCAL
+    modality: FINAL
+    name: withDefaultGetter
+    origin: SOURCE
+    receiverParameter: null
+    returnType: KaUsualClassType:
+      annotations: []
+      typeArguments: []
+      type: kotlin/Int
+    visibility: PUBLIC
+    getContainingFileSymbol: KaFileSymbol(main.kt)
+    getContainingJvmClassName: Foo
+    getContainingModule: KaSourceModule "Sources of main"
+    deprecation: null
+    importableFqName: null
   receiverParameter: null
   returnType: KaUsualClassType:
     annotations: []
@@ -200,6 +233,39 @@ KaKotlinPropertySymbol:
   modality: FINAL
   name: withDefaultSetter
   origin: SOURCE
+  primaryConstructorParameter: KaValueParameterSymbol:
+    annotations: []
+    callableId: null
+    contextReceivers: []
+    generatedPrimaryConstructorProperty: KaKotlinPropertySymbol(/Foo.withDefaultSetter)
+    hasDeclaredDefaultValue: false
+    hasDefaultValue: false
+    isActual: false
+    isCompanion: false
+    isCrossinline: false
+    isDelegated: false
+    isExpect: false
+    isExtension: false
+    isExternal: false
+    isImplicitLambdaParameter: false
+    isNoinline: false
+    isVal: true
+    isVararg: false
+    location: LOCAL
+    modality: FINAL
+    name: withDefaultSetter
+    origin: SOURCE
+    receiverParameter: null
+    returnType: KaUsualClassType:
+      annotations: []
+      typeArguments: []
+      type: kotlin/String
+    visibility: PUBLIC
+    getContainingFileSymbol: KaFileSymbol(main.kt)
+    getContainingJvmClassName: Foo
+    getContainingModule: KaSourceModule "Sources of main"
+    deprecation: null
+    importableFqName: null
   receiverParameter: null
   returnType: KaUsualClassType:
     annotations: []
@@ -414,6 +480,39 @@ KaKotlinPropertySymbol:
   modality: FINAL
   name: both
   origin: SOURCE
+  primaryConstructorParameter: KaValueParameterSymbol:
+    annotations: []
+    callableId: null
+    contextReceivers: []
+    generatedPrimaryConstructorProperty: KaKotlinPropertySymbol(/Foo.both)
+    hasDeclaredDefaultValue: false
+    hasDefaultValue: false
+    isActual: false
+    isCompanion: false
+    isCrossinline: false
+    isDelegated: false
+    isExpect: false
+    isExtension: false
+    isExternal: false
+    isImplicitLambdaParameter: false
+    isNoinline: false
+    isVal: true
+    isVararg: false
+    location: LOCAL
+    modality: FINAL
+    name: both
+    origin: SOURCE
+    receiverParameter: null
+    returnType: KaUsualClassType:
+      annotations: []
+      typeArguments: []
+      type: kotlin/String
+    visibility: PUBLIC
+    getContainingFileSymbol: KaFileSymbol(main.kt)
+    getContainingJvmClassName: Foo
+    getContainingModule: KaSourceModule "Sources of main"
+    deprecation: null
+    importableFqName: null
   receiverParameter: null
   returnType: KaUsualClassType:
     annotations: []
@@ -634,6 +733,42 @@ KaKotlinPropertySymbol:
   modality: FINAL
   name: allAnnotations
   origin: SOURCE
+  primaryConstructorParameter: KaValueParameterSymbol:
+    annotations: [
+      MyAnnotation6()
+        psi: KtAnnotationEntry
+    ]
+    callableId: null
+    contextReceivers: []
+    generatedPrimaryConstructorProperty: KaKotlinPropertySymbol(/Foo.allAnnotations)
+    hasDeclaredDefaultValue: false
+    hasDefaultValue: false
+    isActual: false
+    isCompanion: false
+    isCrossinline: false
+    isDelegated: false
+    isExpect: false
+    isExtension: false
+    isExternal: false
+    isImplicitLambdaParameter: false
+    isNoinline: false
+    isVal: true
+    isVararg: false
+    location: LOCAL
+    modality: FINAL
+    name: allAnnotations
+    origin: SOURCE
+    receiverParameter: null
+    returnType: KaUsualClassType:
+      annotations: []
+      typeArguments: []
+      type: kotlin/String
+    visibility: PUBLIC
+    getContainingFileSymbol: KaFileSymbol(main.kt)
+    getContainingJvmClassName: Foo
+    getContainingModule: KaSourceModule "Sources of main"
+    deprecation: null
+    importableFqName: null
   receiverParameter: null
   returnType: KaUsualClassType:
     annotations: []
@@ -1065,6 +1200,7 @@ KaKotlinPropertySymbol:
   modality: FINAL
   name: memberPropertyWithReceiver
   origin: SOURCE
+  primaryConstructorParameter: null
   receiverParameter: KaReceiverParameterSymbol:
     annotations: [
       MyAnnotation7()
@@ -1336,6 +1472,7 @@ KaKotlinPropertySymbol:
   modality: FINAL
   name: withCustomSetter
   origin: SOURCE
+  primaryConstructorParameter: null
   receiverParameter: null
   returnType: KaUsualClassType:
     annotations: []
@@ -1539,6 +1676,7 @@ KaKotlinPropertySymbol:
   modality: FINAL
   name: withCustomGetter
   origin: SOURCE
+  primaryConstructorParameter: null
   receiverParameter: null
   returnType: KaUsualClassType:
     annotations: []
@@ -1746,6 +1884,7 @@ KaKotlinPropertySymbol:
   modality: FINAL
   name: custom
   origin: SOURCE
+  primaryConstructorParameter: null
   receiverParameter: null
   returnType: KaUsualClassType:
     annotations: []
@@ -1953,6 +2092,7 @@ KaKotlinPropertySymbol:
   modality: FINAL
   name: variable
   origin: SOURCE
+  primaryConstructorParameter: null
   receiverParameter: null
   returnType: KaUsualClassType:
     annotations: []
@@ -2190,6 +2330,7 @@ KaConstructorSymbol:
         modality: FINAL
         name: withDefaultGetter
         origin: SOURCE
+        primaryConstructorParameter: KaValueParameterSymbol(<local>/withDefaultGetter)
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []
@@ -2331,6 +2472,7 @@ KaConstructorSymbol:
         modality: FINAL
         name: withDefaultSetter
         origin: SOURCE
+        primaryConstructorParameter: KaValueParameterSymbol(<local>/withDefaultSetter)
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []
@@ -2576,6 +2718,7 @@ KaConstructorSymbol:
         modality: FINAL
         name: both
         origin: SOURCE
+        primaryConstructorParameter: KaValueParameterSymbol(<local>/both)
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []
@@ -2830,6 +2973,7 @@ KaConstructorSymbol:
         modality: FINAL
         name: allAnnotations
         origin: SOURCE
+        primaryConstructorParameter: KaValueParameterSymbol(<local>/allAnnotations)
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []

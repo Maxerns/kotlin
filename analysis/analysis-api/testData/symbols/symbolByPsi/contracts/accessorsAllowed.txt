@@ -211,6 +211,7 @@ KaKotlinPropertySymbol:
   modality: FINAL
   name: prop
   origin: SOURCE
+  primaryConstructorParameter: null
   receiverParameter: KaReceiverParameterSymbol:
     annotations: []
     callableId: null
@@ -520,6 +521,7 @@ KaConstructorSymbol:
         modality: FINAL
         name: message
         origin: SOURCE
+        primaryConstructorParameter: KaValueParameterSymbol(<local>/message)
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []
@@ -798,6 +800,7 @@ KaKotlinPropertySymbol:
   modality: FINAL
   name: isError
   origin: SOURCE
+  primaryConstructorParameter: null
   receiverParameter: KaReceiverParameterSymbol:
     annotations: []
     callableId: null
@@ -1009,6 +1012,7 @@ KaKotlinPropertySymbol:
   modality: FINAL
   name: isContextError
   origin: SOURCE
+  primaryConstructorParameter: null
   receiverParameter: null
   returnType: KaUsualClassType:
     annotations: []

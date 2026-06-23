@@ -103,6 +103,7 @@ KaSyntheticJavaPropertySymbol:
   modality: OPEN
   name: prop
   origin: JAVA_SYNTHETIC_PROPERTY
+  primaryConstructorParameter: null
   receiverParameter: null
   returnType: KaFlexibleType:
     annotations: []

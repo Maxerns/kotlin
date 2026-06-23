@@ -434,6 +434,7 @@ KaKotlinPropertySymbol:
   modality: FINAL
   name: first
   origin: LIBRARY
+  primaryConstructorParameter: null
   receiverParameter: null
   returnType: KaTypeParameterType:
     annotations: []
@@ -510,6 +511,7 @@ KaKotlinPropertySymbol:
   modality: FINAL
   name: second
   origin: LIBRARY
+  primaryConstructorParameter: null
   receiverParameter: null
   returnType: KaTypeParameterType:
     annotations: []

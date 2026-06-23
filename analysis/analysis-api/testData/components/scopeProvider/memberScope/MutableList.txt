@@ -1236,6 +1236,7 @@ KaKotlinPropertySymbol:
   modality: ABSTRACT
   name: size
   origin: INTERSECTION_OVERRIDE
+  primaryConstructorParameter: null
   receiverParameter: null
   returnType: KaUsualClassType:
     annotations: []

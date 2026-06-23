@@ -82,6 +82,7 @@ KaKotlinPropertySymbol:
   modality: FINAL
   name: jvmField
   origin: SOURCE
+  primaryConstructorParameter: null
   receiverParameter: null
   returnType: KaUsualClassType:
     annotations: []
@@ -277,6 +278,7 @@ KaKotlinPropertySymbol:
   modality: FINAL
   name: jvmFieldOnField
   origin: SOURCE
+  primaryConstructorParameter: null
   receiverParameter: null
   returnType: KaUsualClassType:
     annotations: []
