@@ -33,6 +33,7 @@ import org.jetbrains.kotlin.resolve.constants.evaluate.CompileTimeType
 import org.jetbrains.kotlin.resolve.constants.evaluate.canEvalOp
 import org.jetbrains.kotlin.resolve.constants.evaluate.evalBinaryOp
 import org.jetbrains.kotlin.resolve.constants.evaluate.evalUnaryOp
+import org.jetbrains.kotlin.utils.exceptions.rethrowIntellijPlatformExceptionIfNeeded
 
 /**
  * Evaluates the given IR expression using constant folding.
@@ -69,18 +70,14 @@ private class IrExpressionEvaluator(
         return when {
             expression.isInterpretableKCallableNameCall(irBuiltIns) -> inlineCallableName(expression)
             expression.isEnumName() -> inlineEnumName(expression)
-            field != null -> {
-                if (!field.canBeInlined()) return evaluateBuiltinCall(expression)
-
+            field != null && field.canBeInlined() -> {
                 val const = field.getInitializerAndReportInlining(expression)
                 val receiver = expression.dispatchReceiver
                 if (receiver == null || receiver.shouldDropConstReceiver()) return const
 
                 IrCompositeImpl(expression.startOffset, expression.endOffset, expression.type, null, listOf(receiver, const))
             }
-            property != null -> {
-                if (!property.isConst) return evaluateBuiltinCall(expression)
-
+            property != null && property.isConst -> {
                 val const = (property.getter?.body?.statements?.singleOrNull() as? IrConst)?.shallowCopy()
                     ?: return evaluateBuiltinCall(expression)
                 val receiver = expression.dispatchReceiver
@@ -107,6 +104,7 @@ private class IrExpressionEvaluator(
         val builder = StringBuilder()
         for (argument in expression.arguments) {
             val const = argument.evaluateAsConst() ?: return null
+            if (isFloatingPointOptimizationDisabled && const.type.isFloatOrDouble()) return null
             builder.append(const.getCastedValue() ?: return null)
         }
         return builder.toString().toIrConstOrNull(expression.type, expression.startOffset, expression.endOffset)
@@ -140,7 +138,8 @@ private class IrExpressionEvaluator(
                 }
                 else -> return null
             }
-        } catch (_: Exception) {
+        } catch (e: Throwable) {
+            rethrowIntellijPlatformExceptionIfNeeded(e)
             // The operation would fail at runtime; leave the expression unfolded.
             return null
         }
@@ -179,7 +178,7 @@ private class IrExpressionEvaluator(
         val constName = owner?.name?.asString()?.toIrConst(irBuiltIns.stringType, expression.startOffset, expression.endOffset)
             ?: return null
 
-        val boundArgsWithoutThis = boundArgs.filterNot { it is IrGetValue && it.symbol.owner.name == SpecialNames.THIS }
+        val boundArgsWithoutThis = boundArgs.filterNot { it.shouldDropConstReceiver() }
         if (boundArgsWithoutThis.isEmpty()) return constName
 
         return IrCompositeImpl(
