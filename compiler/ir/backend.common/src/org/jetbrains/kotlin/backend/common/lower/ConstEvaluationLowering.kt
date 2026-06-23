@@ -24,19 +24,12 @@ import org.jetbrains.kotlin.platform.isWasm
  */
 class ConstEvaluationLowering(
     val context: CommonBackendContext,
-    platform: TargetPlatform? = null,
+    private val isFloatingPointOptimizationDisabled: Boolean = false
 ) : FileLoweringPass {
     private val inlineConstTracker = context.configuration[CommonConfigurationKeys.INLINE_CONST_TRACKER]
-    private val isFloatingPointOptimizationDisabled = platform.isJs() || platform.isWasm()
 
     override fun lower(irFile: IrFile) {
         irFile.transform(object : IrTransformer<Nothing?>() {
-            override fun visitFunction(declaration: IrFunction, data: Nothing?): IrStatement {
-                // It is useless to visit default accessor, we probably want to leave code there as it is
-                if (declaration.origin == IrDeclarationOrigin.DEFAULT_PROPERTY_ACCESSOR) return declaration
-                return visitDeclaration(declaration, data)
-            }
-
             override fun visitExpression(expression: IrExpression, data: Nothing?): IrExpression {
                 val superResult = super.visitExpression(expression, data)
                 val evaluateResult = evaluate(

@@ -107,7 +107,7 @@ private fun createAutoboxingTransformerPhase(context: JsCommonBackendContext): A
 }
 
 private fun createConstEvaluationPhase(context: JsIrBackendContext): ConstEvaluationLowering {
-    return ConstEvaluationLowering(context, platform = JsPlatforms.defaultJsPlatform)
+    return ConstEvaluationLowering(context, isFloatingPointOptimizationDisabled = true)
 }
 
 fun jsLoweringsOfTheFirstPhase(

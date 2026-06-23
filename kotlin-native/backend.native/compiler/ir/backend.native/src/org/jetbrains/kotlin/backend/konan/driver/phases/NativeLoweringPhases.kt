@@ -602,7 +602,7 @@ internal val redundantCastsRemoverPhase = createFileLoweringPhase(
 
 internal val constEvaluationPhase = createFileLoweringPhase(
         lowering = { context: Context ->
-            ConstEvaluationLowering(context, platform = NativePlatforms.unspecifiedNativePlatform)
+            ConstEvaluationLowering(context, isFloatingPointOptimizationDisabled = false)
         },
         name = "ConstEvaluationLowering",
         prerequisite = setOf(inlineAllFunctionsPhase)
