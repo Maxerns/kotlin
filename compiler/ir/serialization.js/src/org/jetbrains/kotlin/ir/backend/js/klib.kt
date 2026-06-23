@@ -195,6 +195,16 @@ fun loadIrForSingleModule(
         fragmentNames = deserializedFragments.getUniqueNameForEachFragment(),
     )
 
+    //Hack - pre-load functional interfaces in case if IrLoader cut its count (KT-71039)
+    //Restored after KT-78040
+    if (isStdlibCompilation) {
+        repeat(25) {
+            irBuiltIns.functionN(it)
+            irBuiltIns.kFunctionN(it)
+        }
+    }
+
+
     return IrModuleInfo(
         module = mainFragment,
         dependencies = moduleDependencies,
