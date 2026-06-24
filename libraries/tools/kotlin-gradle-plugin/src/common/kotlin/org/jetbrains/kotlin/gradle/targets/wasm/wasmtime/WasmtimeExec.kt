@@ -63,12 +63,13 @@ abstract class WasmtimeExec internal constructor() : AbstractExecTask<WasmtimeEx
             return project.registerTask(
                 name
             ) {
+                // executable does not have Provider API,
+                // dependsOn(wasmtimeSetupTaskProvider) required
                 it.executable = wasmtime.executable.get()
 
                 with(wasmtime) {
                     it.dependsOn(project.wasmtimeSetupTaskProvider)
                 }
-                it.dependsOn(compilation.compileTaskProvider)
                 it.configuration()
             }
         }

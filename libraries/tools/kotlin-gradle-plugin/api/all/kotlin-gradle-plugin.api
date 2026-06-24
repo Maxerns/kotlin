@@ -5565,12 +5565,7 @@ public final class org/jetbrains/kotlin/gradle/targets/wasm/d8/D8SetupTask$Compa
 }
 
 public abstract interface class org/jetbrains/kotlin/gradle/targets/wasm/dsl/KotlinWasmtimeDsl : org/jetbrains/kotlin/gradle/targets/js/dsl/KotlinJsSubTargetDsl {
-	public abstract fun runTask (Lkotlin/jvm/functions/Function1;)V
-	public abstract fun runTask (Lorg/gradle/api/Action;)V
-}
-
-public final class org/jetbrains/kotlin/gradle/targets/wasm/dsl/KotlinWasmtimeDsl$DefaultImpls {
-	public static fun runTask (Lorg/jetbrains/kotlin/gradle/targets/wasm/dsl/KotlinWasmtimeDsl;Lkotlin/jvm/functions/Function1;)V
+	public abstract fun getWasmtimeRunArgs ()Lorg/gradle/api/provider/ListProperty;
 }
 
 public abstract class org/jetbrains/kotlin/gradle/targets/wasm/nodejs/WasmNodeJsEnvSpec : org/jetbrains/kotlin/gradle/targets/web/nodejs/BaseNodeJsEnvSpec {

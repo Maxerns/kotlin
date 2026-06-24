@@ -5,18 +5,15 @@
 
 package org.jetbrains.kotlin.gradle.targets.wasm
 
-import org.gradle.api.Action
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.targets.js.ir.JsIrBinary
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrSubTarget
 import org.jetbrains.kotlin.gradle.targets.js.ir.KotlinJsIrTarget
 import org.jetbrains.kotlin.gradle.targets.js.ir.WasmBinary
 import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
-import org.jetbrains.kotlin.gradle.targets.wasm.testing.KotlinWasmtime
 import org.jetbrains.kotlin.gradle.targets.wasm.dsl.KotlinWasmtimeDsl
-import org.jetbrains.kotlin.gradle.targets.wasm.wasmtime.WasmtimeExec
+import org.jetbrains.kotlin.gradle.targets.wasm.testing.KotlinWasmtime
 import org.jetbrains.kotlin.gradle.targets.wasm.wasmtime.WasmtimePlugin
-import org.jetbrains.kotlin.gradle.utils.withType
 import javax.inject.Inject
 
 @OptIn(ExperimentalWasmDsl::class)
@@ -33,14 +30,6 @@ internal constructor(
     override val testTaskDescription: String
         get() = "Run all ${target.name} tests inside Wasmtime"
 
-    override fun runTask(body: Action<WasmtimeExec>) {
-        subTargetConfigurators
-            .withType<WasmtimeEnvironmentConfigurator>()
-            .configureEach {
-                it.configureRun(body)
-            }
-    }
-
     override fun configureDefaultTestFramework(test: KotlinJsTest) {
         test.testFramework = KotlinWasmtime(test)
     }
@@ -56,7 +45,6 @@ internal constructor(
         binary: JsIrBinary,
     ) {
         binary as WasmBinary
-        test.dependsOn(binary.linkTask)
         test.inputFileProperty.fileProvider(binary.mainWasmFile)
     }
 }

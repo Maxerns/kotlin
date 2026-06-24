@@ -166,10 +166,8 @@ abstract class KotlinJsIrSubTarget(
 
     internal open fun configureTestInputFile(test: KotlinJsTest, binary: JsIrBinary) {
         val inputFile = if (target.wasmTargetType != KotlinWasmTargetType.WASI) {
-            test.dependsOn(binary.linkSyncTask)
             binary.mainFileSyncPath
         } else {
-            test.dependsOn(binary.linkTask)
             binary.mainFile
         }
 

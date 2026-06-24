@@ -4,17 +4,20 @@
  */
 
 @file:OptIn(ExperimentalWasmDsl::class)
+
 package org.jetbrains.kotlin.gradle.targets.wasm.wasmtime
 
+import org.apache.commons.compress.compressors.xz.XZCompressorInputStream
 import org.gradle.api.tasks.Internal
 import org.gradle.work.DisableCachingByDefault
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.InternalKotlinGradlePluginApi
-import org.apache.commons.compress.compressors.xz.XZCompressorInputStream
 import org.jetbrains.kotlin.gradle.targets.js.AbstractSetupTask
 import org.jetbrains.kotlin.gradle.utils.getFile
+import org.jetbrains.kotlin.gradle.utils.setExecutable
 import java.io.File
 import javax.inject.Inject
+import kotlin.io.path.Path
 
 @DisableCachingByDefault
 abstract class WasmtimeSetupTask @Inject constructor(
@@ -67,7 +70,7 @@ abstract class WasmtimeSetupTask @Inject constructor(
         }
 
         if (!isWindows) {
-            File(executable.get()).setExecutable(true)
+            Path(executable.get()).setExecutable()
         }
     }
 

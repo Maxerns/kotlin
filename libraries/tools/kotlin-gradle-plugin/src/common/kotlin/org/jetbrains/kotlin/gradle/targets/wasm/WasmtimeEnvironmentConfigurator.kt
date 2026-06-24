@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.gradle.targets.wasm
 
+import org.gradle.api.Action
 import org.gradle.api.tasks.TaskProvider
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsBinaryMode
@@ -17,8 +18,8 @@ import org.jetbrains.kotlin.gradle.tasks.locateTask
 import org.jetbrains.kotlin.util.capitalizeDecapitalize.toLowerCaseAsciiOnly
 
 @ExperimentalWasmDsl
-internal class WasmtimeEnvironmentConfigurator(subTarget: KotlinJsIrSubTarget) :
-    JsEnvironmentConfigurator<WasmtimeExec>(subTarget) {
+internal class WasmtimeEnvironmentConfigurator(private val wasmtimeSubTarget: KotlinWasmtimeSubtarget) :
+    JsEnvironmentConfigurator<WasmtimeExec>(wasmtimeSubTarget) {
 
     override fun configureBinaryRun(binary: JsIrBinary): TaskProvider<WasmtimeExec> {
         val binaryRunName = subTarget.disambiguateCamelCased(
@@ -48,9 +49,12 @@ internal class WasmtimeEnvironmentConfigurator(subTarget: KotlinJsIrSubTarget) :
             inputFileProperty.fileProvider(
                 inputWasmFile
             )
-            runTaskConfigurations.all {
-                it.execute(this)
-            }
+
+            wasmtimeArgs.set(wasmtimeSubTarget.wasmtimeRunArgs)
         }
+    }
+
+    override fun configureRun(body: Action<WasmtimeExec>) {
+        // do nothing
     }
 }

@@ -5,10 +5,9 @@
 
 package org.jetbrains.kotlin.gradle.targets.wasm.dsl
 
-import org.gradle.api.Action
+import org.gradle.api.provider.ListProperty
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsSubTargetDsl
-import org.jetbrains.kotlin.gradle.targets.wasm.wasmtime.WasmtimeExec
 
 /**
  * [Wasmtime](https://wasmtime.dev) execution environment options for Kotlin WasmWasi targets.
@@ -18,19 +17,5 @@ import org.jetbrains.kotlin.gradle.targets.wasm.wasmtime.WasmtimeExec
 @ExperimentalWasmDsl
 interface KotlinWasmtimeDsl : KotlinJsSubTargetDsl {
 
-    /**
-     * Configure the default [org.jetbrains.kotlin.gradle.targets.wasm.wasmtime.WasmtimeExec] task that **runs** the Kotlin WasmWasi target.
-     *
-     * @see org.jetbrains.kotlin.gradle.targets.wasm.wasmtime.WasmtimeExec
-     */
-    fun runTask(body: WasmtimeExec.() -> Unit) {
-        runTask(Action {
-            body(it)
-        })
-    }
-
-    /**
-     * [Action] based version of [runTask] above.
-     */
-    fun runTask(body: Action<WasmtimeExec>)
+    val wasmtimeRunArgs: ListProperty<String>
 }
