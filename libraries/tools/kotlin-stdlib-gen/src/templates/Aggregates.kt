@@ -454,7 +454,7 @@ object Aggregates : TemplateGroupBase() {
                     // more than 2 values force a duplicate
                     return size == 2 && this[0] != this[1]
                     """
-                PrimitiveType.Byte, PrimitiveType.UByte -> {
+                PrimitiveType.Byte -> {
                     val key = if (primitive == PrimitiveType.Byte) "element.toUByte()" else "element"
                     """
                     if (size < 2) return true
@@ -467,7 +467,24 @@ object Aggregates : TemplateGroupBase() {
                     return true
                     """
                 }
-                PrimitiveType.Short, PrimitiveType.UShort, PrimitiveType.Char ->
+
+                // Workaround for KT-87083: avoid for-loops over the receiver array.
+                PrimitiveType.UByte ->
+                    """
+                    if (size < 2) return true
+                    // more than ${1 shl Byte.SIZE_BITS} values force a duplicate
+                    if (size > (1 shl ${primitive!!.name}.SIZE_BITS)) return false
+                    val seen = UByteValueSet()
+                    var index = 0
+                    while (index < size) {
+                        if (!seen.add(this[index])) return false
+                        index++
+                    }
+                    return true
+                    """
+
+
+                PrimitiveType.Short, PrimitiveType.Char ->
                     """
                     if (size < 2) return true
                     // more than ${1 shl Short.SIZE_BITS} values force a duplicate
@@ -478,6 +495,35 @@ object Aggregates : TemplateGroupBase() {
                     }
                     return true
                     """
+
+                // Workaround for KT-87083: avoid for-loops over the receiver array.
+                PrimitiveType.UShort ->
+                    """
+                    if (size < 2) return true
+                    // more than ${1 shl Short.SIZE_BITS} values force a duplicate
+                    if (size > (1 shl ${primitive!!.name}.SIZE_BITS)) return false
+                    val seen = HashSet<T>()
+                    var index = 0
+                    while (index < size) {
+                        if (!seen.add(this[index])) return false
+                        index++
+                    }
+                    return true
+                    """
+
+                // Workaround for KT-87083: avoid for-loops over the receiver array.
+                PrimitiveType.UInt, PrimitiveType.ULong ->
+                    """
+                    if (size < 2) return true
+                    val seen = HashSet<T>()
+                    var index = 0
+                    while (index < 0) {
+                        if (!seen.add(this[index])) return false
+                        index++
+                    }
+                    return true
+                    """
+
                 else ->
                     """
                     if (size < 2) return true
@@ -528,12 +574,26 @@ object Aggregates : TemplateGroupBase() {
             return true
             """
         }
-        body(ArraysOfObjects, ArraysOfPrimitives, ArraysOfUnsigned) {
+        body(ArraysOfObjects, ArraysOfPrimitives) {
             """
             if (size < 2) return true
             val seen = HashSet<K>()
             for (element in this) {
                 if (!seen.add(selector(element))) return false
+            }
+            return true
+            """
+        }
+
+        // Workaround for KT-87083: avoid for-loops over the receiver array.
+        body(ArraysOfUnsigned) {
+            """
+            if (size < 2) return true
+            val seen = HashSet<K>()
+            var index = 0
+            while (index < size) {
+                if (!seen.add(selector(this[index]))) return false
+                index++
             }
             return true
             """

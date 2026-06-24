@@ -6369,8 +6369,10 @@ public inline fun UShortArray.all(predicate: (UShort) -> Boolean): Boolean {
 public fun UIntArray.allDistinct(): Boolean {
     if (size < 2) return true
     val seen = HashSet<UInt>()
-    for (element in this) {
-        if (!seen.add(element)) return false
+    var index = 0
+    while (index < 0) {
+        if (!seen.add(this[index])) return false
+        index++
     }
     return true
 }
@@ -6392,8 +6394,10 @@ public fun UIntArray.allDistinct(): Boolean {
 public fun ULongArray.allDistinct(): Boolean {
     if (size < 2) return true
     val seen = HashSet<ULong>()
-    for (element in this) {
-        if (!seen.add(element)) return false
+    var index = 0
+    while (index < 0) {
+        if (!seen.add(this[index])) return false
+        index++
     }
     return true
 }
@@ -6417,8 +6421,10 @@ public fun UByteArray.allDistinct(): Boolean {
     // more than 256 values force a duplicate
     if (size > (1 shl UByte.SIZE_BITS)) return false
     val seen = UByteValueSet()
-    for (element in this) {
-        if (!seen.add(element)) return false
+    var index = 0
+    while (index < size) {
+        if (!seen.add(this[index])) return false
+        index++
     }
     return true
 }
@@ -6442,8 +6448,10 @@ public fun UShortArray.allDistinct(): Boolean {
     // more than 65536 values force a duplicate
     if (size > (1 shl UShort.SIZE_BITS)) return false
     val seen = HashSet<UShort>()
-    for (element in this) {
-        if (!seen.add(element)) return false
+    var index = 0
+    while (index < size) {
+        if (!seen.add(this[index])) return false
+        index++
     }
     return true
 }
@@ -6468,8 +6476,10 @@ public fun UShortArray.allDistinct(): Boolean {
 public inline fun <K> UIntArray.allDistinctBy(selector: (UInt) -> K): Boolean {
     if (size < 2) return true
     val seen = HashSet<K>()
-    for (element in this) {
-        if (!seen.add(selector(element))) return false
+    var index = 0
+    while (index < size) {
+        if (!seen.add(selector(this[index]))) return false
+        index++
     }
     return true
 }
@@ -6494,8 +6504,10 @@ public inline fun <K> UIntArray.allDistinctBy(selector: (UInt) -> K): Boolean {
 public inline fun <K> ULongArray.allDistinctBy(selector: (ULong) -> K): Boolean {
     if (size < 2) return true
     val seen = HashSet<K>()
-    for (element in this) {
-        if (!seen.add(selector(element))) return false
+    var index = 0
+    while (index < size) {
+        if (!seen.add(selector(this[index]))) return false
+        index++
     }
     return true
 }
@@ -6520,8 +6532,10 @@ public inline fun <K> ULongArray.allDistinctBy(selector: (ULong) -> K): Boolean 
 public inline fun <K> UByteArray.allDistinctBy(selector: (UByte) -> K): Boolean {
     if (size < 2) return true
     val seen = HashSet<K>()
-    for (element in this) {
-        if (!seen.add(selector(element))) return false
+    var index = 0
+    while (index < size) {
+        if (!seen.add(selector(this[index]))) return false
+        index++
     }
     return true
 }
@@ -6546,8 +6560,10 @@ public inline fun <K> UByteArray.allDistinctBy(selector: (UByte) -> K): Boolean 
 public inline fun <K> UShortArray.allDistinctBy(selector: (UShort) -> K): Boolean {
     if (size < 2) return true
     val seen = HashSet<K>()
-    for (element in this) {
-        if (!seen.add(selector(element))) return false
+    var index = 0
+    while (index < size) {
+        if (!seen.add(selector(this[index]))) return false
+        index++
     }
     return true
 }
