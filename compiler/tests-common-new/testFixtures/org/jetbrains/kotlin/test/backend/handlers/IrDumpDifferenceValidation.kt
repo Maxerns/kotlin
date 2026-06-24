@@ -128,7 +128,7 @@ private fun buildPatch(baseText: String, targetText: String, targetBackendName: 
         UNIFIED_CONTEXT_LINES,
     )
     return unifiedDiff
-        .joinToString("\n")
+        .joinToString(System.lineSeparator())
         .trimEnd()
 }
 
@@ -158,7 +158,7 @@ private fun applyPatch(baseText: String, patchFile: File): String {
         testInfraError("Unknown target-specific patch format in ${patchFile.absolutePath}: $e")
     }
 
-    return patchedLines.joinToString("\n").trimEnd()
+    return patchedLines.joinToString(System.lineSeparator()).trimEnd()
 }
 
 private fun TargetBackend.compatibleBackendNamesIncludingSelf(): List<String> {
