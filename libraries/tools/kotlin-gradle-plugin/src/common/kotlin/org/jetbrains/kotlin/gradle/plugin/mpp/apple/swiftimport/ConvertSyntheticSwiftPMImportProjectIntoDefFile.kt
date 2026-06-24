@@ -14,7 +14,6 @@ import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Nested
@@ -120,6 +119,9 @@ internal abstract class ConvertSyntheticSwiftPMImportProjectIntoDefFile : Defaul
         val architectures = architectures.get()
         val defFiles = defFiles.getFile()
         val ldDump = ldDump.getFile()
+
+        val errorFile = swiftPMImportError.get().asFile
+        errorFile.delete()
 
         if (!hasSwiftPMDependencies.get()) {
             writeEmptyDefAndLinkerOutputs(

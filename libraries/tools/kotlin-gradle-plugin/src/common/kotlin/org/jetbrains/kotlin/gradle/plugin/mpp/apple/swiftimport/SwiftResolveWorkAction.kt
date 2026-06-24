@@ -5,9 +5,9 @@
 
 package org.jetbrains.kotlin.gradle.plugin.mpp.apple.swiftimport
 
-import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileSystemOperations
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.logging.Logging
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.process.ExecOperations
@@ -26,6 +26,8 @@ internal interface SwiftResolveWorkParameters : WorkParameters {
     val markCompletion: Property<Boolean>
     val syntheticLockFile: RegularFileProperty
     val workspaceStateJson: RegularFileProperty
+    val ideaSyncEnabled: Property<Boolean>
+    val errorFile: RegularFileProperty
 }
 
 
@@ -33,7 +35,12 @@ internal abstract class SwiftResolveWorkAction @Inject constructor(
     private val execOps: ExecOperations,
     private val fs: FileSystemOperations,
 ) : WorkAction<SwiftResolveWorkParameters> {
+
+    private val logger = Logging.getLogger(SwiftResolveWorkAction::class.java)
+
     override fun execute() {
+        val errorFile = parameters.errorFile.get().asFile
+        errorFile.delete()
         try {
             doExecute()
             if (parameters.markCompletion.get()) {
@@ -51,6 +58,13 @@ internal abstract class SwiftResolveWorkAction @Inject constructor(
             if (parameters.markCompletion.get()) {
                 parameters.coordinationService.get()
                     .markSwiftResolveFailed(parameters.syntheticPackageHash.get(), failure)
+            }
+
+            if (parameters.ideaSyncEnabled.get()) {
+                val errorText = "Warning: Failed to resolve SwiftPM packages : ${failure.message ?: ""}"
+                logger.warn(errorText, failure)
+                errorFile.writeText(errorText)
+                return
             }
             throw failure
         }
