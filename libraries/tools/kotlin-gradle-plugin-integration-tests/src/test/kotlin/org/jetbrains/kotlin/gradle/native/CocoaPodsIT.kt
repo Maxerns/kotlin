@@ -320,7 +320,7 @@ class CocoaPodsIT : KGPBaseTest() {
 
             buildWithCocoapodsWrapper(podspecTaskName)
 
-            buildGradleKts.addCocoapodsBlock("ios.deploymentTarget = \"12.5\"")
+            buildGradleKts.addCocoapodsBlock("ios.deploymentTarget = \"18.2\"")
             buildWithCocoapodsWrapper(podspecTaskName) {
                 assertTasksExecuted(podspecTaskName)
             }
@@ -778,7 +778,7 @@ class CocoaPodsIT : KGPBaseTest() {
             cocoapodsSingleKtPod,
             gradleVersion
         ) {
-            buildGradleKts.addCocoapodsBlock("ios.deploymentTarget = \"14.0\"")
+            buildGradleKts.addCocoapodsBlock("ios.deploymentTarget = \"17.6\"")
             buildWithCocoapodsWrapper(subprojectPodImportTask) {
                 assertTasksExecuted(listOf(subprojectPodspecTask, subprojectPodInstallTask))
             }
@@ -1179,7 +1179,7 @@ class CocoaPodsIT : KGPBaseTest() {
             buildGradleKts.addKotlinBlock("iosArm64()")
             buildGradleKts.addCocoapodsBlock(
                 """
-                    ios.deploymentTarget = "15.0"
+                    ios.deploymentTarget = "17.6"
                     
                     pod("MBProgressHUD", version="1.2.0")            
                     pod("SDWebImage", version="5.21.5")
@@ -1311,7 +1311,7 @@ class CocoaPodsIT : KGPBaseTest() {
                 spec.summary                  = 'CocoaPods test library'
                 spec.vendored_frameworks      = 'cocoapods.xcframework'
                 spec.libraries                = 'c++'
-                spec.ios.deployment_target    = '15'
+                spec.ios.deployment_target    = '17.6'
             end
         """.trimIndent()
 
