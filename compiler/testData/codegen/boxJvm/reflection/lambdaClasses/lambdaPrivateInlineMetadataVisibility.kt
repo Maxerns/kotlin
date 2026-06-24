@@ -1,6 +1,8 @@
 // TARGET_BACKEND: JVM
 // WITH_STDLIB
 
+import kotlin.jvm.JvmSerializableLambda
+
 private const val SYNTHETIC_CLASS_VISIBILITY_SHIFT = 8
 private const val SYNTHETIC_CLASS_VISIBILITY_MASK = 0b111
 private const val LOCAL_VISIBILITY = 5
@@ -15,18 +17,21 @@ private fun syntheticClassVisibility(javaClass: Class<*>): Int =
 private fun isPublicAbi(javaClass: Class<*>): Boolean =
     metadataExtraInt(javaClass) and PUBLIC_ABI_FLAG != 0
 
-annotation class Ann(val value: String)
+private inline fun lambdaPrivateInline(): Class<*> {
+    val lambda = @JvmSerializableLambda { "OK" }
+    return lambda::class.java
+}
 
 fun box(): String {
-    val ann = Ann("OK")
+    val lambdaClass = lambdaPrivateInline()
 
-    val visibility = syntheticClassVisibility(ann.javaClass)
+    val visibility = syntheticClassVisibility(lambdaClass)
     if (visibility != LOCAL_VISIBILITY) {
-        return "Fail: expected LOCAL visibility (5), got $visibility"
+        return "Fail: expected LOCAL visibility (5) for lambda in private inline function, got $visibility"
     }
-    if (isPublicAbi(ann.javaClass)) {
-        return "Fail: expected annotation implementation class to not be public ABI in non-inline context"
+    if (isPublicAbi(lambdaClass)) {
+        return "Fail: expected lambda in private inline function to not be public ABI"
     }
 
-    return ann.value
+    return "OK"
 }

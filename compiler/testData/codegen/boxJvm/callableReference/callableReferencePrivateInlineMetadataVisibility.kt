@@ -15,18 +15,23 @@ private fun syntheticClassVisibility(javaClass: Class<*>): Int =
 private fun isPublicAbi(javaClass: Class<*>): Boolean =
     metadataExtraInt(javaClass) and PUBLIC_ABI_FLAG != 0
 
-annotation class Ann(val value: String)
+fun foo(): String = "OK"
+
+private inline fun callableRefPrivateInline(): Class<*> {
+    val ref = ::foo
+    return ref::class.java
+}
 
 fun box(): String {
-    val ann = Ann("OK")
+    val refClass = callableRefPrivateInline()
 
-    val visibility = syntheticClassVisibility(ann.javaClass)
+    val visibility = syntheticClassVisibility(refClass)
     if (visibility != LOCAL_VISIBILITY) {
-        return "Fail: expected LOCAL visibility (5), got $visibility"
+        return "Fail: expected LOCAL visibility (5) for callable reference in private inline function, got $visibility"
     }
-    if (isPublicAbi(ann.javaClass)) {
-        return "Fail: expected annotation implementation class to not be public ABI in non-inline context"
+    if (isPublicAbi(refClass)) {
+        return "Fail: expected callable reference in private inline function to not be public ABI"
     }
 
-    return ann.value
+    return "OK"
 }
