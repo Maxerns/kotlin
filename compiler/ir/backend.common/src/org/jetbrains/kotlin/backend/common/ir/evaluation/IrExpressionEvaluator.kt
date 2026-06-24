@@ -77,14 +77,6 @@ private class IrExpressionEvaluator(
 
                 IrCompositeImpl(expression.startOffset, expression.endOffset, expression.type, null, listOf(receiver, const))
             }
-            property != null && property.isConst -> {
-                val const = (property.getter?.body?.statements?.singleOrNull() as? IrConst)?.shallowCopy()
-                    ?: return evaluateBuiltinCall(expression)
-                val receiver = expression.dispatchReceiver
-                if (receiver == null || receiver.shouldDropConstReceiver()) return const
-
-                IrCompositeImpl(expression.startOffset, expression.endOffset, expression.type, null, listOf(receiver, const))
-            }
             else -> evaluateBuiltinCall(expression)
         }
     }
