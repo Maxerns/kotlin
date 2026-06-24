@@ -71,7 +71,7 @@ class SwiftPMImportExplicitClangModulesIT : KGPBaseTest() {
                     swiftPMImport.emptyxcode/ExposedHelperMeta|null[1]
                     swiftPMImport.emptyxcode/ExposedHelper|null[1]
                 """.trimIndent(),
-                commonizeAndDumpCinteropSignatures().filterOutNoiseSignatures(),
+                commonizeAndDumpCinteropMetadata().filterOutNoiseSignatures(),
                 message = "With implicit discovery disabled and only ExposedTarget listed in importedClangModules, " +
                         "only ExposedHelper symbols should be exposed via cinterop"
             )
@@ -128,7 +128,7 @@ class SwiftPMImportExplicitClangModulesIT : KGPBaseTest() {
                     swiftPMImport.emptyxcode/HiddenHelperMeta|null[1]
                     swiftPMImport.emptyxcode/HiddenHelper|null[1]
                 """.trimIndent(),
-                commonizeAndDumpCinteropSignatures().filterOutNoiseSignatures(),
+                commonizeAndDumpCinteropMetadata().filterOutNoiseSignatures(),
                 message = "With implicit discovery disabled and importedClangModules omitted, the default " +
                         "(products list) should be used and both ExposedHelper and HiddenHelper should be exposed"
             )

@@ -25,7 +25,6 @@ import org.jetbrains.kotlin.gradle.testbase.build
 import org.jetbrains.kotlin.gradle.testbase.buildAndFail
 import org.jetbrains.kotlin.gradle.testbase.buildScriptInjection
 import org.jetbrains.kotlin.gradle.testbase.buildXcodeProject
-import org.jetbrains.kotlin.gradle.testbase.compileSource
 import org.jetbrains.kotlin.gradle.testbase.plugins
 import org.jetbrains.kotlin.gradle.testbase.project
 import org.jetbrains.kotlin.gradle.uklibs.applyMultiplatform
@@ -386,7 +385,7 @@ class SwiftPMImportBinaryTargetsIT : KGPBaseTest() {
                     swiftPMImport.emptyxcode/LocalHelperMeta|null[1]
                     swiftPMImport.emptyxcode/LocalHelper|null[1]
                 """.trimIndent(),
-                commonizeAndDumpCinteropSignatures().filterOutNoiseSignatures(),
+                commonizeAndDumpCinteropMetadata().filterOutNoiseSignatures(),
                 message = "Cinterop signatures should match expected output for linkage=$linkage, buildType=$buildType"
             )
 

@@ -119,10 +119,17 @@ class BuildScriptInjectionIT : KGPBaseTest() {
 
             assertEquals(
                 """
-                /consumeInCommon|consumeInCommon(Common){}[0]
+                library {
+                  library fragment {
+                    // package name: <root>
+                    package {
+                      public final fun consumeInCommon(common: Common): kotlin/Unit
+                    }
+                  }
+                }
                 
                 """.trimIndent(),
-                dumpKlibMetadataSignatures(
+                dumpKlibMetadata(
                     consumer.buildScriptReturn {
                         kotlinMultiplatform.metadata().compilations.getByName("commonMain").output.classesDirs.singleFile
                     }.buildAndReturn(executingProject = this)
@@ -131,11 +138,18 @@ class BuildScriptInjectionIT : KGPBaseTest() {
 
             assertEquals(
                 """
-                /consumeInCommon|consumeInCommon(Common){}[0]
-                /consumeInLinuxArm64Main|consumeInLinuxArm64Main(Common;LinuxArm64){}[0]
+                library {
+                  library fragment {
+                    // package name: <root>
+                    package {
+                      public final fun consumeInCommon(common: Common): kotlin/Unit
+                      public final fun consumeInLinuxArm64Main(common: Common, linuxArm64: LinuxArm64): kotlin/Unit
+                    }
+                  }
+                }
                 
                 """.trimIndent(),
-                dumpKlibMetadataSignatures(
+                dumpKlibMetadata(
                     consumer.buildScriptReturn {
                         kotlinMultiplatform.linuxArm64().compilations.getByName("main").output.classesDirs.singleFile
                     }.buildAndReturn(executingProject = this)

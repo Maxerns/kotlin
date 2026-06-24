@@ -29,7 +29,7 @@ import org.jetbrains.kotlin.gradle.uklibs.Variant
 import org.jetbrains.kotlin.gradle.uklibs.VariantFile
 import org.jetbrains.kotlin.gradle.uklibs.applyMultiplatform
 import org.jetbrains.kotlin.gradle.testbase.build
-import org.jetbrains.kotlin.gradle.uklibs.dumpKlibMetadataSignatures
+import org.jetbrains.kotlin.gradle.uklibs.dumpKlibMetadata
 import org.jetbrains.kotlin.gradle.util.runProcess
 import java.io.Closeable
 import java.io.File
@@ -1125,7 +1125,7 @@ fun PublishedProject.assertSwiftPMMetadataVariantExistsInRootComponent() {
     )
 }
 
-fun TestProject.commonizeAndDumpCinteropSignatures(
+fun TestProject.commonizeAndDumpCinteropMetadata(
     commonizerBasePath: Path = projectPath,
     commonizeTask: String = "commonizeCInterop",
 ): String {
@@ -1139,7 +1139,7 @@ fun TestProject.commonizeAndDumpCinteropSignatures(
         .listDirectoryEntries()
         .single { it.isDirectory() }
 
-    return dumpKlibMetadataSignatures(commonizerResult.toFile())
+    return dumpKlibMetadata(commonizerResult.toFile())
 }
 
 private val CINTEROP_NOISE_SIGNATURE_LINES = setOf(

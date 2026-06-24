@@ -260,9 +260,34 @@ fun TestProject.includeBuild(
 }
 
 
-fun TestProject.dumpKlibMetadata(klib: File) = dumpKlib(klib, "dump-metadata")
+fun TestProject.dumpKlibMetadata(klib: File): String {
+    val lines = dumpKlib(klib, "dump-metadata").lineSequence()
 
-fun TestProject.dumpKlibMetadataSignatures(klib: File) = dumpKlib(klib, "dump-metadata-signatures")
+    return buildString {
+        var trimLeadingWhitespace = false
+        for (line in lines) {
+            if (line.isBlank()) continue // skip blank lines
+
+            // put all annotations to the same line as their declaration-holder
+            val lineWithoutLeadingWhitespace = line.trimStart()
+            if (lineWithoutLeadingWhitespace.startsWith("// module name:")) continue // skip ugly and useless test module name
+
+            if (trimLeadingWhitespace) {
+                trimLeadingWhitespace = false
+                append(lineWithoutLeadingWhitespace)
+            } else {
+                append(line)
+            }
+
+            trimLeadingWhitespace = lineWithoutLeadingWhitespace.startsWith('@')
+            if (trimLeadingWhitespace) {
+                append(' ')
+            } else {
+                appendLine()
+            }
+        }
+    }
+}
 
 private fun TestProject.dumpKlib(klib: File, dumpMethod: String): String {
     val dumpName = "dump_${UUID.randomUUID().toString().replace("-", "_")}"

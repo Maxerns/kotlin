@@ -1247,7 +1247,7 @@ private fun TestProject.testVisibleSignatures(
     commonizerBasePath: Path = projectPath,
     commonizeTask: String = "commonizeCInterop",
 ) {
-    val metadataDump = commonizeAndDumpCinteropSignatures(commonizerBasePath, commonizeTask)
+    val metadataDump = commonizeAndDumpCinteropMetadata(commonizerBasePath, commonizeTask)
 
     val actualSignatures = mutableMapOf<String, MutableList<String>>()
     metadataDump.lines().forEach { line ->

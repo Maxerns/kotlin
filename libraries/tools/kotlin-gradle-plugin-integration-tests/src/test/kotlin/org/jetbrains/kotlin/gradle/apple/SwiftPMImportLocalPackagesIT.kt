@@ -93,7 +93,7 @@ class SwiftPMImportLocalPackagesIT : KGPBaseTest() {
                     swiftPMImport.emptyxcode/OriginalClassMeta|null[1]
                     swiftPMImport.emptyxcode/OriginalClass|null[1]
                 """.trimIndent(),
-                commonizeAndDumpCinteropSignatures().filterOutNoiseSignatures(),
+                commonizeAndDumpCinteropMetadata().filterOutNoiseSignatures(),
                 message = "Initial cinterop signatures should match expected output"
             )
 
@@ -138,7 +138,7 @@ class SwiftPMImportLocalPackagesIT : KGPBaseTest() {
                     swiftPMImport.emptyxcode/OriginalClassMeta|null[1]
                     swiftPMImport.emptyxcode/OriginalClass|null[1]
                 """.trimIndent(),
-                commonizeAndDumpCinteropSignatures().filterOutNoiseSignatures(),
+                commonizeAndDumpCinteropMetadata().filterOutNoiseSignatures(),
                 message = "Updated cinterop signatures should match expected output"
             )
         }
@@ -190,7 +190,7 @@ class SwiftPMImportLocalPackagesIT : KGPBaseTest() {
                     swiftPMImport.emptyxcode/LocalHelperMeta|null[1]
                     swiftPMImport.emptyxcode/LocalHelper|null[1]
                 """.trimIndent(),
-                commonizeAndDumpCinteropSignatures().filterOutNoiseSignatures(),
+                commonizeAndDumpCinteropMetadata().filterOutNoiseSignatures(),
                 message = "Cinterop signatures should match expected output for local package with ObjC sources"
             )
         }
@@ -240,7 +240,7 @@ class SwiftPMImportLocalPackagesIT : KGPBaseTest() {
 
             assertEquals(
                 "swiftPMImport.emptyxcode/cxx_greeting|cxx_greeting(){}[1]",
-                commonizeAndDumpCinteropSignatures().trim(),
+                commonizeAndDumpCinteropMetadata().trim(),
                 message = "Cinterop signatures should be empty for local package with C++ sources"
             )
 
@@ -368,7 +368,7 @@ class SwiftPMImportLocalPackagesIT : KGPBaseTest() {
                 assertOutputContains("fatal error: 'string' file not found")
             }
 
-            val signatures = commonizeAndDumpCinteropSignatures()
+            val signatures = commonizeAndDumpCinteropMetadata()
             assertEquals(
                 """
                     swiftPMImport.emptyxcode/LocalHelper.<init>|objc:init#Constructor[1]
@@ -556,7 +556,7 @@ class SwiftPMImportLocalPackagesIT : KGPBaseTest() {
 
             assertEquals(
                 "",
-                commonizeAndDumpCinteropSignatures().filterOutNoiseSignatures(),
+                commonizeAndDumpCinteropMetadata().filterOutNoiseSignatures(),
                 message = "Cinterop signatures should be empty for local package with pure Swift sources"
             )
 

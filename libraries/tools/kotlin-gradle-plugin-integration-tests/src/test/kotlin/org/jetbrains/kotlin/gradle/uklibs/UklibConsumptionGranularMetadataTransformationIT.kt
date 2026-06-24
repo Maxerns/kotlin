@@ -403,10 +403,17 @@ class UklibConsumptionGranularMetadataTransformationIT : KGPBaseTest() {
 
             assertEquals(
                 """
-                /consume|consume(ProducerCommon){}[0]
+                library {
+                  library fragment {
+                    // package name: <root>
+                    package {
+                      public final fun consume(param: ProducerCommon): kotlin/Unit
+                    }
+                  }
+                }
 
                 """.trimIndent(),
-                dumpKlibMetadataSignatures(linuxMainMetadata),
+                dumpKlibMetadata(linuxMainMetadata),
             )
         }
     }
