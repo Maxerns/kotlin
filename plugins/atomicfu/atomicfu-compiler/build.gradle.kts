@@ -209,6 +209,11 @@ projectTests {
         // IncrementalK2JVMWithAtomicfuRunnerTestGenerated needs the compiler distribution.
         @OptIn(KotlinCompilerDistUsage::class)
         withDist()
+
+        jvmArgs(
+            // additions for SDK 261
+            "--add-opens=java.base/jdk.internal.ref=ALL-UNNAMED",
+        )
     }
 
     nativeTestTask(
