@@ -517,7 +517,7 @@ object Aggregates : TemplateGroupBase() {
                     if (size < 2) return true
                     val seen = HashSet<T>()
                     var index = 0
-                    while (index < 0) {
+                    while (index < size) {
                         if (!seen.add(this[index])) return false
                         index++
                     }
