@@ -178,7 +178,7 @@ private class IrExpressionEvaluator(
         val constName = owner?.name?.asString()?.toIrConst(irBuiltIns.stringType, expression.startOffset, expression.endOffset)
             ?: return null
 
-        val boundArgsWithoutThis = boundArgs.filterNot { it.shouldDropConstReceiver() }
+        val boundArgsWithoutThis = boundArgs.filterNot { it is IrGetValue }
         if (boundArgsWithoutThis.isEmpty()) return constName
 
         return IrCompositeImpl(
