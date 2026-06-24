@@ -106,25 +106,14 @@ fun File.dumpIr(
     absolutePathPrefixes,
 )
 
-fun TestCompilationArtifact.KLIB.dumpMetadataSignatures(
-    kotlinNativeClassLoader: ClassLoader,
-    signatureVersion: KotlinIrSignatureVersion,
-): String = invokeKlibTool(
-    kotlinNativeClassLoader,
-    klibFile,
-    command = "dump-metadata-signatures",
-    printSignatures = false,
-    signatureVersion
-)
-
-fun TestCompilationArtifact.KLIB.dumpIrSignatures(
+fun TestCompilationArtifact.KLIB.dumpSignatures(
     kotlinNativeClassLoader: ClassLoader,
     signatureVersion: KotlinIrSignatureVersion,
     onlyTopLevelSignatures: Boolean,
 ): String = invokeKlibTool(
     kotlinNativeClassLoader,
     klibFile,
-    command = "dump-ir-signatures",
+    command = "dump-signatures",
     printSignatures = false,
     signatureVersion,
     onlyTopLevelSignatures = onlyTopLevelSignatures,

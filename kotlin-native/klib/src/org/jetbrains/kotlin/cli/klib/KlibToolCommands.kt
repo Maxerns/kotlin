@@ -30,6 +30,7 @@ import org.jetbrains.kotlin.library.components.ir
 import org.jetbrains.kotlin.library.components.metadata
 import org.jetbrains.kotlin.library.hasAbi
 import org.jetbrains.kotlin.library.loadSizeInfo
+import org.jetbrains.kotlin.library.metadata.isCInteropLibrary
 import org.jetbrains.kotlin.library.metadata.kotlinLibrary
 import org.jetbrains.kotlin.library.metadata.parseModuleHeader
 import org.jetbrains.kotlin.library.metadata.parsePackageFragment
@@ -320,32 +321,27 @@ internal class DumpMetadata(output: KlibToolOutput, args: KlibToolArguments) : K
     }
 }
 
-internal class DumpMetadataSignatures(output: KlibToolOutput, args: KlibToolArguments) : KlibToolCommand(output, args) {
-    override fun execute() {
-        // Don't call `checkSupportedInLibrary()` - the signatures are anyway generated on the fly.
-
-        val idSignatureRenderer = args.signatureVersion.getMostSuitableSignatureRenderer() ?: return
-
-        val library = loadKlib(args.libraryPath, output) ?: return
-
-        val module = ModuleDescriptorLoader(output).load(library) ?: return
-
-        DescriptorSignaturesRenderer(output, idSignatureRenderer).render(module)
-    }
-}
-
-internal class DumpIrSignatures(output: KlibToolOutput, args: KlibToolArguments) : KlibToolCommand(output, args) {
+internal class DumpSignatures(output: KlibToolOutput, args: KlibToolArguments) : KlibToolCommand(output, args) {
+    @OptIn(K1Deprecation::class)
     override fun execute() {
         val library = loadKlib(args.libraryPath, output) ?: return
-
-        if (!checkLibraryHasIr(library) || !args.signatureVersion.checkSupportedInLibrary(library)) return
-
         val idSignatureRenderer = args.signatureVersion.getMostSuitableSignatureRenderer() ?: return
 
-        val signatures = with(IrSignaturesExtractor(library)) {
-            if (args.onlyTopLevelSignatures) extractOnlyTopLevelPublicSignatures() else extractAllPublicSignatures()
+        if (library.isCInteropLibrary()) {
+            // Don't call `checkSupportedInLibrary()` - the signatures are anyway generated on the fly.
+
+            val module = ModuleDescriptorLoader(output).load(library) ?: return
+            DescriptorSignaturesRenderer(output, idSignatureRenderer).render(module)
+        } else if (library.ir != null) {
+            if (!args.signatureVersion.checkSupportedInLibrary(library)) return
+
+            val signatures = with(IrSignaturesExtractor(library)) {
+                if (args.onlyTopLevelSignatures) extractOnlyTopLevelPublicSignatures() else extractAllPublicSignatures()
+            }
+
+            IrSignaturesRenderer(output, idSignatureRenderer).render(signatures)
+        } else {
+            output.logError("This library does not have IR and is not a C-interop library: ${library.path}")
         }
-
-        IrSignaturesRenderer(output, idSignatureRenderer).render(signatures)
     }
 }
