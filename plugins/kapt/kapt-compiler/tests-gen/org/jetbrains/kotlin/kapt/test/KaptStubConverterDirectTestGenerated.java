@@ -815,6 +815,12 @@ public class KaptStubConverterDirectTestGenerated extends AbstractKaptStubConver
   }
 
   @Test
+  @TestMetadata("propertyContextParams.kt")
+  public void testPropertyContextParams() {
+    run("propertyContextParams.kt");
+  }
+
+  @Test
   @TestMetadata("recentlyNullable.kt")
   public void testRecentlyNullable() {
     run("recentlyNullable.kt");
