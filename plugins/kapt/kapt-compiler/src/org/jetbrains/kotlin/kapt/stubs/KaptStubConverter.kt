@@ -102,7 +102,6 @@ import java.io.File
 import java.lang.Deprecated
 import java.util.IdentityHashMap
 import javax.lang.model.element.ElementKind
-import kotlin.compareTo
 import kotlin.math.sign
 import com.sun.tools.javac.util.List as JavacList
 
@@ -146,7 +145,7 @@ class KaptStubConverter(val kaptContext: KaptContextForStubGeneration, val gener
 
     // Whether Kapt shall generate syntactically correct Java source code, or may generate incorrect (but good for the annotation
     // processing) stubs. Currently, it is mostly a marker for the known cases of potentially incorrect syntax rather than a public flag
-    private val strictJavaMode = false
+    private val avoidIncorrectJavaCode = false
 
     val bindings: Map<String, KaptJavaFileObject>
         field = mutableMapOf<String, KaptJavaFileObject>()
@@ -560,7 +559,7 @@ class KaptStubConverter(val kaptContext: KaptContextForStubGeneration, val gener
             }
             append(classKindText).append(" ").append(simpleName)
             clazz.isInterface()
-            if (!isAnnotation || !strictJavaMode) {
+            if (!isAnnotation || !avoidIncorrectJavaCode) {
                 // interface cannot have type parameters or extends clause, but they are allowed (not reported)
                 // during the annotations processing
                 appendListIfNonEmpty(genericType.typeParameters, "<", ">") { it.second }
