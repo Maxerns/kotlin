@@ -16,6 +16,7 @@ import org.jetbrains.kotlin.gradle.internal.testing.TCServiceMessagesClient
 import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsTestsLocation
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.net.URI
 import kotlin.time.Duration
 
 private val log = LoggerFactory.getLogger("org.jetbrains.kotlin.gradle.tasks.testing.PlaywrightTestExecutor")
@@ -36,7 +37,7 @@ internal class PwRunnerSpec(
     val name: String,
     val browserKind: PwBrowserKind,
     val testsLocation: KotlinJsTestsLocation,
-    val buildTestsExecutionerUrl: (baseUrl: String) -> String,
+    val buildTestsExecutionerUrl: (baseUrl: URI) -> URI,
     val timeout: Duration,
     val finishMarker: String,
     val headless: Boolean,
@@ -101,25 +102,24 @@ internal class PlaywrightTestExecutor() : TestExecuter<PwExecutionSpec> {
 
         log.info("Launching playwright runner '${runner.name}' (${runner.browserKind})")
         val browser: Browser = browserType.launch(launchOptions)
-        runner.testsLocation.devServer.get().use { baseUrl ->
-            browser.use {
-                val page = browser.newPage()
-                page.use {
-                    page.setDefaultTimeout(runner.timeout.inWholeMilliseconds.toDouble())
-                    var finished = false
-                    page.onConsoleMessage {
-                        if (it.text().startsWith(runner.finishMarker)) {
-                            finished = true
-                        } else {
-                            handler.write(it.text().toByteArray())
-                            handler.writeEndLine()
-                        }
+        val testLocationUrl = runner.testsLocation.url.get()
+        browser.use {
+            val page = browser.newPage()
+            page.use {
+                page.setDefaultTimeout(runner.timeout.inWholeMilliseconds.toDouble())
+                var finished = false
+                page.onConsoleMessage {
+                    if (it.text().startsWith(runner.finishMarker)) {
+                        finished = true
+                    } else {
+                        handler.write(it.text().toByteArray())
+                        handler.writeEndLine()
                     }
-                    val url = runner.buildTestsExecutionerUrl(baseUrl)
-                    log.info("Execute JS tests with ${runner.name} runner at URL: $url")
-                    page.navigate(url)
-                    page.waitForCondition({ finished })
                 }
+                val url = runner.buildTestsExecutionerUrl(testLocationUrl)
+                log.info("Execute JS tests with ${runner.name} runner at URL: $url")
+                page.navigate(url.toString())
+                page.waitForCondition({ finished })
             }
         }
     }

@@ -139,13 +139,13 @@ internal class KotlinPlaywrightJsTestFramework(
         launchArgs = launchArgs.get(),
     )
 
-    private fun BrowserRunnerInput.buildRunnerUrl(baseUrl: String, cliArgs: List<String>): String {
+    private fun BrowserRunnerInput.buildRunnerUrl(baseUrl: URI, cliArgs: List<String>): URI {
         val runnerConfig = KotlinBrowserRunnerConfig(
             timeout = timeout.get(),
             testsFinishedMarker = finishMarker.get(),
             kotlinTestCliArguments = cliArgs
         )
-        return runnerConfig.buildUrlWithConfigState(URI(baseUrl)).toString()
+        return runnerConfig.buildUrlWithConfigState(baseUrl)
     }
 
     companion object {
