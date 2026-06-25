@@ -3029,6 +3029,7 @@ public abstract class org/jetbrains/kotlin/gradle/targets/js/ir/JsIrBinary : org
 	protected final fun get_linkSyncTask ()Lorg/gradle/api/tasks/TaskProvider;
 	public final fun setGenerateTs (Z)V
 	protected fun syncInputConfigure (Lorg/jetbrains/kotlin/gradle/targets/js/ir/DefaultIncrementalSyncTask;)V
+	protected final fun wasmFileFromJsFile (Lorg/gradle/api/provider/Provider;)Lorg/gradle/api/provider/Provider;
 }
 
 public final class org/jetbrains/kotlin/gradle/targets/js/ir/JsIrBinary$Companion {
