@@ -41,9 +41,9 @@ class AndroidCompilerOptionsExternalAndroidTargetTest {
         val arguments = project.compileArguments("compileAndroidMain")
         arguments.assertHasOptIn("kotlin.RequiresOptIn")
         arguments.assertHasFreeCompilerArg("-Xexpect-actual-classes")
-        arguments.assertProgressiveMode()
-        arguments.assertAllWarningsAsErrors()
-        arguments.assertJvmTarget("1.8")
+        arguments.assertHasProgressiveMode()
+        arguments.assertHasAllWarningsAsErrors()
+        arguments.assertHasJvmTarget("1.8")
     }
 
     @Test
@@ -63,8 +63,8 @@ class AndroidCompilerOptionsExternalAndroidTargetTest {
         val arguments = project.compileArguments("compileAndroidMain")
         arguments.assertHasOptIn("kotlin.RequiresOptIn")
         arguments.assertHasFreeCompilerArg("-Xexpect-actual-classes")
-        arguments.assertProgressiveMode()
-        arguments.assertAllWarningsAsErrors()
+        arguments.assertHasProgressiveMode()
+        arguments.assertHasAllWarningsAsErrors()
     }
 
     @Test
@@ -82,8 +82,8 @@ class AndroidCompilerOptionsExternalAndroidTargetTest {
         project.evaluate()
 
         val arguments = project.compileArguments("compileAndroidMain")
-        arguments.assertProgressiveMode()
-        arguments.assertAllWarningsAsErrors()
+        arguments.assertHasProgressiveMode()
+        arguments.assertHasAllWarningsAsErrors()
     }
 
     @Test
@@ -102,8 +102,8 @@ class AndroidCompilerOptionsExternalAndroidTargetTest {
         project.evaluate()
 
         val arguments = project.compileArguments("compileAndroidHostTest")
-        arguments.assertProgressiveMode()
-        arguments.assertAllWarningsAsErrors()
+        arguments.assertHasProgressiveMode()
+        arguments.assertHasAllWarningsAsErrors()
     }
 
     @Test
@@ -123,7 +123,7 @@ class AndroidCompilerOptionsExternalAndroidTargetTest {
         }
         project.evaluate()
 
-        project.compileArguments("compileAndroidMain").assertNoAllWarningsAsErrors()
+        project.compileArguments("compileAndroidMain").assertHasNoAllWarningsAsErrors()
     }
 
     private fun externalAndroidLibraryProject(
@@ -151,30 +151,30 @@ class AndroidCompilerOptionsExternalAndroidTargetTest {
     }
 
     private fun List<String>.assertHasOptIn(value: String) {
-        assertContainsCompilerArguments("-opt-in", value)
+        assertHasCompilerArgument("-opt-in", value)
     }
 
     private fun List<String>.assertHasFreeCompilerArg(value: String) {
         assertTrue(value in this, "Expected free compiler arg '$value' in $this")
     }
 
-    private fun List<String>.assertProgressiveMode() {
+    private fun List<String>.assertHasProgressiveMode() {
         assertTrue("-progressive" in this, "Expected progressive mode to be enabled: $this")
     }
 
-    private fun List<String>.assertAllWarningsAsErrors() {
+    private fun List<String>.assertHasAllWarningsAsErrors() {
         assertTrue("-Werror" in this, "Expected allWarningsAsErrors to be enabled: $this")
     }
 
-    private fun List<String>.assertNoAllWarningsAsErrors() {
+    private fun List<String>.assertHasNoAllWarningsAsErrors() {
         assertFalse("-Werror" in this, "Expected allWarningsAsErrors to be disabled: $this")
     }
 
-    private fun List<String>.assertJvmTarget(expected: String) {
-        assertContainsCompilerArguments("-jvm-target", expected)
+    private fun List<String>.assertHasJvmTarget(expected: String) {
+        assertHasCompilerArgument("-jvm-target", expected)
     }
 
-    private fun List<String>.assertContainsCompilerArguments(name: String, value: String) {
+    private fun List<String>.assertHasCompilerArgument(name: String, value: String) {
         val argumentIndex = indexOf(name)
         assertTrue(argumentIndex >= 0, "Expected '$name' argument in $this")
         assertEquals(getOrNull(argumentIndex + 1), value, "Expected '$name $value' in $this")
