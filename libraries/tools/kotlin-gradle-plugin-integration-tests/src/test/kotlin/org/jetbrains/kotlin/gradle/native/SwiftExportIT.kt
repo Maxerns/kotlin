@@ -842,18 +842,32 @@ class SwiftExportIT : KGPBaseTest() {
                 }
             }
 
-            val envVars = swiftExportEmbedAndSignEnvVariables(testBuildDir)
-            val combinedEnvVars = EnvironmentalVariables(
-                envVars.environmentalVariables + ("PROJECT_FILE_PATH" to projectPath.resolve("iosApp/iosApp.xcodeproj")
-                    .absolutePathString())
+            val iosAppXcodeProj = projectPath.resolve("iosApp/iosApp.xcodeproj")
+            val envVars = swiftExportEmbedAndSignEnvVariables(
+                testBuildDir,
+                customVariables = mapOf(
+                    "XCODEPROJ_PATH" to "iosApp/iosApp.xcodeproj",
+                    "PROJECT_FILE_PATH" to iosAppXcodeProj.absolutePathString(),
+                )
             )
 
             buildAndFail(
                 ":embedSwiftExportForXcode",
-                environmentVariables = combinedEnvVars,
+                environmentVariables = envVars,
             ) {
                 assertHasDiagnostic(KotlinToolingDiagnostics.SwiftPMLinkagePackageNotIntegratedInXcodeProject)
-                assertOutputDoesNotContain("ConfigurationCacheProblemsException: Configuration cache problems found in this build")
+            }
+
+            build(
+                "integrateLinkagePackage",
+                environmentVariables = envVars
+            )
+
+            build(
+                ":embedSwiftExportForXcode",
+                environmentVariables = envVars,
+            ) {
+                assertNoDiagnostic(KotlinToolingDiagnostics.SwiftPMLinkagePackageNotIntegratedInXcodeProject)
             }
         }
     }
