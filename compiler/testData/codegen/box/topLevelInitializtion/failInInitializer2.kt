@@ -15,8 +15,8 @@ fun box() : String {
         return "FAIL 1"
     } catch(t: Error) {
         val cause = t.cause
-        if (cause !is IllegalStateException) return "FAIL 2"
-        if (cause.message != "1") return "FAIL 3"
+        if (cause !is IllegalStateException) return "FAIL 2: cause must be IllegalStateException, was ${cause?.let { it::class }}"
+        if (cause.message != "1") return "FAIL 3: message must be '1', was '${cause.message}'"
     }
     try {
         y
