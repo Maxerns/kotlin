@@ -32,6 +32,7 @@ import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.typeOrNull
 import org.jetbrains.kotlin.kapt.base.javac.kaptError
 import org.jetbrains.kotlin.kapt.base.mapJList
+import org.jetbrains.kotlin.kapt.base.getJavacList
 import org.jetbrains.kotlin.kapt.stubs.ErrorTypeCorrector.TypeKind.*
 import org.jetbrains.kotlin.kapt.util.joinPairedText
 import org.jetbrains.kotlin.load.kotlin.TypeMappingMode
@@ -129,7 +130,7 @@ class ErrorTypeCorrector(
         )
         return treeMaker.TypeApply(
             baseExpression.first,
-            mapJList(convertedArguments) { it.first },
+            convertedArguments.getJavacList(),
         ) to baseExpression.second + convertedArguments.toTypeArgumentsText()
     }
 
@@ -218,7 +219,7 @@ class ErrorTypeCorrector(
 
         val treeMaker = converter.treeMaker
         val name = "Function" + (parameterTypes.size - 1)
-        return treeMaker.TypeApply(treeMaker.SimpleName(name), mapJList(parameterTypes) { it.first }) to
+        return treeMaker.TypeApply(treeMaker.SimpleName(name), parameterTypes.getJavacList()) to
                 name + parameterTypes.toTypeArgumentsText()
     }
 
@@ -299,7 +300,7 @@ class ErrorTypeCorrector(
         val convertedArguments = session.typeContext.convertTypeArguments(arguments, typeParameters, coneType, substitutions)
         return treeMaker.TypeApply(
             baseExpression.first,
-            mapJList(convertedArguments) { it.first },
+            convertedArguments.getJavacList(),
         ) to baseExpression.second + convertedArguments.toTypeArgumentsText()
     }
 

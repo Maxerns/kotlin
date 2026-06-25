@@ -492,7 +492,7 @@ class KaptStubConverter(val kaptContext: KaptContextForStubGeneration, val gener
                 /* enclosing = */ null,
                 /* typeArgs = */ JavacList.nil(),
                 /* clazz = */ treeMaker.Ident(treeMaker.name(data.field.name)),
-                /* args = */ mapJList(args) { it.first },
+                /* args = */ args.getJavacList(),
                 /* def = */ def
             )
 
@@ -540,13 +540,13 @@ class KaptStubConverter(val kaptContext: KaptContextForStubGeneration, val gener
         val classTree = treeMaker.ClassDef(
             modifiers.first,
             treeMaker.name(simpleName),
-            mapJList(genericType.typeParameters) { it.first },
+            genericType.typeParameters.getJavacList(),
             superTypes.superClass?.first,
-            mapJList(superTypes.interfaces) { it.first },
-            mapJList(enumValues) { it.first } +
-                    mapJList(sortedConvertedFields) { it.first } +
-                    mapJList(sortedConvertedMethods) { it.first } +
-                    mapJList(nestedClasses) { it.first }
+            superTypes.interfaces.getJavacList(),
+            enumValues.getJavacList() +
+                    sortedConvertedFields.getJavacList() +
+                    sortedConvertedMethods.getJavacList() +
+                    nestedClasses.getJavacList()
         ).keepKdocCommentsIfNecessary(clazz)
 
         val text = buildString {
@@ -1060,7 +1060,7 @@ class KaptStubConverter(val kaptContext: KaptContextForStubGeneration, val gener
                     convertLiteral(containingClass, defaultValue.value)
                 }
                 val text = joinPairedText(args, "super(", ");")
-                val call = treeMaker.Apply(JavacList.nil(), treeMaker.SimpleName("super"), mapJList(args) { it.first })
+                val call = treeMaker.Apply(JavacList.nil(), treeMaker.SimpleName("super"), args.getJavacList())
                 JavacList.of<JCStatement>(treeMaker.Exec(call)) to text
             } else {
                 JavacList.nil<JCStatement>() to ""
@@ -1105,9 +1105,9 @@ class KaptStubConverter(val kaptContext: KaptContextForStubGeneration, val gener
             modifiers.first,
             treeMaker.name(name),
             genericSignature.returnType?.first,
-            mapJList(genericSignature.typeParameters) { it.first },
-            mapJList(parameters) { it.first },
-            mapJList(exceptionTypes) { it.first },
+            genericSignature.typeParameters.getJavacList(),
+            parameters.getJavacList(),
+            exceptionTypes.getJavacList(),
             body?.first,
             defaultValue?.first
         ).keepSignature(lineMappings, method).keepKdocCommentsIfNecessary(method) to text
@@ -1484,7 +1484,7 @@ class KaptStubConverter(val kaptContext: KaptContextForStubGeneration, val gener
             append("\n")
         }
 
-        return treeMaker.Annotation(convertedAnnotationType.first, mapJList(convertedArguments) { it.first }) to text
+        return treeMaker.Annotation(convertedAnnotationType.first, convertedArguments.getJavacList()) to text
     }
 
     private fun StringBuilder.appendJavaStringLiteral(str: String) {
@@ -1546,7 +1546,7 @@ class KaptStubConverter(val kaptContext: KaptContextForStubGeneration, val gener
                 val convertedLiterals = args.mapNotNull(::convertFirGetClassCall)
                 if (convertedLiterals.size == args.size) {
                     val text = joinPairedText(convertedLiterals, "{", "}")
-                    return treeMaker.NewArray(null, null, mapJList(convertedLiterals) { it.first }) to text
+                    return treeMaker.NewArray(null, null, convertedLiterals.getJavacList()) to text
                 }
             }
         }
@@ -1562,7 +1562,7 @@ class KaptStubConverter(val kaptContext: KaptContextForStubGeneration, val gener
             val parsed = args.mapNotNull(::tryParseReferenceToIntConstant)
             if (parsed.size == args.size) {
                 val text = joinPairedText(parsed, "{", "}")
-                return treeMaker.NewArray(null, null, mapJList(parsed) { it.first }) to text
+                return treeMaker.NewArray(null, null, parsed.getJavacList()) to text
             }
         }
 
@@ -1582,7 +1582,7 @@ class KaptStubConverter(val kaptContext: KaptContextForStubGeneration, val gener
         val literal = argumentExpression.expression as? FirCollectionLiteral ?: return JavacList.nil<JCExpression>() to "{}"
         val converted = literal.arguments.mapNotNull(::convertFirGetClassCall)
         val text = joinPairedText(converted, "{", "}")
-        return mapJList(converted) { it.first } to text
+        return converted.getJavacList() to text
     }
 
     private fun convertFirGetClassCall(expression: FirExpression): Pair<JCExpression, String>? {

@@ -19,7 +19,7 @@ package org.jetbrains.kotlin.kapt.stubs
 import com.sun.tools.javac.code.BoundKind
 import com.sun.tools.javac.code.TypeTag
 import com.sun.tools.javac.tree.JCTree.*
-import org.jetbrains.kotlin.kapt.base.mapJList
+import org.jetbrains.kotlin.kapt.base.getJavacList
 import org.jetbrains.kotlin.kapt.javac.KaptTreeMaker
 import org.jetbrains.kotlin.kapt.stubs.ElementKind.*
 import org.jetbrains.kotlin.kapt.util.appendListIfNonEmpty
@@ -172,7 +172,7 @@ class SignatureParser(private val treeMaker: KaptTreeMaker) {
         val parsedClassBound = classBounds.firstOrNull()?.let { parseBound(it) }
         val jcClassBound = parsedClassBound?.first
         val parsedInterfaceBounds = interfaceBounds.map { parseBound(it) }
-        val jcInterfaceBounds = mapJList(parsedInterfaceBounds) { it.first }
+        val jcInterfaceBounds = parsedInterfaceBounds.getJavacList()
         val allBounds = if (jcClassBound != null) jcInterfaceBounds.prepend(jcClassBound) else jcInterfaceBounds
 
         val text = buildString {
@@ -259,7 +259,7 @@ class SignatureParser(private val treeMaker: KaptTreeMaker) {
     ): JCExpression {
         if (args.isEmpty()) return fqNameExpression
 
-        return treeMaker.TypeApply(fqNameExpression, mapJList(args) { it.first })
+        return treeMaker.TypeApply(fqNameExpression, args.getJavacList())
     }
 
     private fun convertTypeArgument(arg: SignatureNode): Pair<JCExpression, String> {
