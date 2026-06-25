@@ -38,6 +38,7 @@ import org.jetbrains.kotlin.gradle.utils.lowerCamelCaseName
 import org.jetbrains.kotlin.gradle.utils.mapToFile
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.swiftimport.*
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.swiftimport.GenerateSyntheticLinkageImportProject.Companion.SYNTHETIC_IMPORT_TARGET_MAGIC_NAME
+import org.jetbrains.kotlin.gradle.utils.reportXcodeError
 import java.io.File
 import java.nio.file.Paths
 import javax.inject.Inject
@@ -431,6 +432,17 @@ internal fun checkIfTheLinkageProjectIsConnectedToTheXcodeProject(
         val command =
             "${PROJECT_PATH_ENV}='${xcodeProjectThatCalledEmbedAndSign.path}' '${gradleCommand}' -p '${rootProjectDir}' '${taskCall}' -i"
 
+        val messageLines = listOf(
+            "You have SwiftPM dependencies with $integrationName integration.",
+            "Please integrate with synthetic import linkage project by",
+            "running the following command:",
+            command
+        )
+
+        // Report plain text to the console, so that it is visible in the Xcode build log.
+        messageLines.forEach { it.reportXcodeError() }
+
+        // Report the same diagnostic to the KotlinToolingDiagnostics.
         collector.report(
             toolingDiagnosticsContext,
             KotlinToolingDiagnostics.SwiftPMLinkagePackageNotIntegratedInXcodeProject(integrationName, command)
