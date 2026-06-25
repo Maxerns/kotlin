@@ -58,7 +58,7 @@ class SwiftExportIT : KGPBaseTest() {
             }
             buildAndFail(":embedSwiftExportForXcode") {
                 assertOutputContains("Please run the embedSwiftExportForXcode task from Xcode")
-                assertOutputDoesNotContain("ConfigurationCacheProblemsException: Configuration cache problems found in this build")
+                assertConfigurationCacheStored()
             }
         }
     }
