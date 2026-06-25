@@ -56,16 +56,16 @@ class KaptContextForStubGeneration(
         super.close()
     }
 
-    internal inline fun textGenerationRequire(value: Boolean, lazyMessage: () -> String) {
-        if (options.stubGenerationScheme == StubGenerationScheme.DIRECT) {
-            require(value, lazyMessage)
-        }
-    }
-
     internal fun textGenerationError(message: String): String {
         if (options.stubGenerationScheme == StubGenerationScheme.DIRECT) {
             error(message)
         }
         return "TEXT_GENERATION_ERROR"
+    }
+
+    internal inline fun textGenerationRequire(check: Boolean, lazyMessage: () -> String) {
+        if (options.stubGenerationScheme == StubGenerationScheme.DIRECT) {
+            require(check, lazyMessage)
+        }
     }
 }

@@ -167,12 +167,6 @@ class KaptStubConverter(val kaptContext: KaptContextForStubGeneration, val gener
 
     private val treeMakerImportMethod = TreeMaker::class.java.declaredMethods.single { it.name == "Import" }
 
-    internal inline fun textGenerationRequire(check: Boolean, lazyMessage: () -> String) {
-        if (kaptContext.options.stubGenerationScheme == StubGenerationScheme.DIRECT) {
-            require(check, lazyMessage)
-        }
-    }
-
     internal val typeReferenceToFirType = mutableMapOf<KtTypeReference, ConeKotlinType>().apply {
         for (file in kaptContext.firFiles) {
             file.accept(object : FirDefaultVisitorVoid() {
@@ -571,7 +565,7 @@ class KaptStubConverter(val kaptContext: KaptContextForStubGeneration, val gener
                 // during the annotations processing
                 appendListIfNonEmpty(genericType.typeParameters, "<", ">") { it.second }
                 if (clazz.isInterface()) {
-                    textGenerationRequire(superTypes.superClass == null) {
+                    kaptContext.textGenerationRequire(superTypes.superClass == null) {
                         "Interface ${clazz.name} has an unexpected superclass in Java text generation"
                     }
                     appendListIfNonEmpty(superTypes.interfaces, " extends ", "") { it.second }
@@ -1300,7 +1294,7 @@ class KaptStubConverter(val kaptContext: KaptContextForStubGeneration, val gener
                 jcNonErrorType.name.toString() == NON_EXISTENT_CLASS_NAME.shortName().asString() &&
                 (jcNonErrorType.selected as? JCIdent)?.name.toString() == NON_EXISTENT_CLASS_NAME.parent().asString()
         val isDirectTypeNonExistentClass = nonErrorType != null && nonErrorType.second == NON_EXISTENT_CLASS_NAME.asString()
-        textGenerationRequire(isJTreeTypeNonExistentClass == isDirectTypeNonExistentClass) {
+        kaptContext.textGenerationRequire(isJTreeTypeNonExistentClass == isDirectTypeNonExistentClass) {
             "Inconsistent non-existent class rendering between JCTree and Java text"
         }
 
@@ -1806,7 +1800,10 @@ class KaptStubConverter(val kaptContext: KaptContextForStubGeneration, val gener
             is Array<*> -> { // Two-element String array for enumerations ([desc, fieldName])
                 assert(value.size == 2)
                 val enumType = Type.getType(value[0] as String)
-                val valueName = sanitizeEnumValueName(value[1] as String)
+                val valueName = (value[1] as String).takeIf { isValidIdentifier(it) } ?: run {
+                    kaptContext.compiler.log.report(kaptContext.kaptError("'${value[1]}' is an invalid Java enum value name"))
+                    "InvalidFieldName"
+                }
 
                 sb.append(treeMaker.convertAsmTypeToJavaText(enumType)).append(".").append(valueName)
                 treeMaker.Select(treeMaker.Type(enumType), treeMaker.name(valueName))
@@ -1828,13 +1825,6 @@ class KaptStubConverter(val kaptContext: KaptContextForStubGeneration, val gener
             else -> throw IllegalArgumentException("Illegal literal expression value: $value (${value::class.java.canonicalName})")
         }
     }
-
-    // TODO maybe inline it back
-    private fun sanitizeEnumValueName(valueName: String): String =
-        valueName.takeIf { isValidIdentifier(it) } ?: run {
-            kaptContext.compiler.log.report(kaptContext.kaptError("'$valueName' is an invalid Java enum value name"))
-            "InvalidFieldName"
-        }
 
 
     private fun getDefaultValue(type: Type): Any? = when (type) {
