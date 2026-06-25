@@ -18,19 +18,19 @@ kotlin {
     watchosX64("watchosLibX64")
 
     watchosDeviceArm64("watchosLibDeviceArm64") {
-        println("Configuring ${this.name}")
+        logger.lifecycle("Configuring ${this.name}")
     }
 
     watchosSimulatorArm64("watchosLibSimulatorArm64") {
-        println("Configuring ${this.name}")
+        logger.lifecycle("Configuring ${this.name}")
     }
 
     watchosArm64("watchosLibArm64") {
-        println("Configuring ${this.name}")
+        logger.lifecycle("Configuring ${this.name}")
     }
 
     watchosX64("watchosLibX64") {
-        println("Configuring ${this.name}")
+        logger.lifecycle("Configuring ${this.name}")
     }
 
     sourceSets {
