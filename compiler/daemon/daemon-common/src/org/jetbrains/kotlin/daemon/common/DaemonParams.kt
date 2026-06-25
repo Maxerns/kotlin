@@ -415,6 +415,8 @@ fun configureDaemonJVMOptions(
     if (opts.jvmParams.none { it.matches(jvmAssertArgsRegex) }) {
         opts.jvmParams.add("ea")
     }
+
+    opts.jvmParams.add("-add-opens=java.base/jdk.internal.ref=ALL-UNNAMED")
     return opts
 }
 
