@@ -37,7 +37,6 @@ abstract class WasmtimeExec internal constructor() : AbstractExecTask<WasmtimeEx
 
     override fun exec() {
         val newArgs = mutableListOf<String>()
-        newArgs.addAll(wasmtimeProposalArgs())
         newArgs.addAll(wasmtimeArgs.get())
         val inputFile = inputFileProperty.getFile()
         workingDir = inputFile.parentFile

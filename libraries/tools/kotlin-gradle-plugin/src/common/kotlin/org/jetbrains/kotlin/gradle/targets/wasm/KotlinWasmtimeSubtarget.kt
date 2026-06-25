@@ -25,6 +25,10 @@ internal constructor(
     KotlinJsIrSubTarget(target, "wasmtime"),
     KotlinWasmtimeDsl {
 
+        init {
+            wasmtimeRunArgs.addAll(wasmtimeProposalArgs())
+        }
+
     private val wasmtime = WasmtimePlugin.applyWithEnvSpec(project)
 
     override val testTaskDescription: String
@@ -45,6 +49,6 @@ internal constructor(
         binary: JsIrBinary,
     ) {
         binary as WasmBinary
-        test.inputFileProperty.fileProvider(binary.mainWasmFile)
+        test.inputFileProperty.set(binary.mainWasmFile)
     }
 }

@@ -36,7 +36,6 @@ import org.jetbrains.kotlin.gradle.tasks.registerTask
 import org.jetbrains.kotlin.gradle.utils.filesProvider
 import org.jetbrains.kotlin.gradle.utils.lowerCamelCaseName
 import org.jetbrains.kotlin.gradle.utils.mapToFile
-import java.io.File
 
 interface JsBinary {
     val compilation: KotlinJsCompilation
@@ -156,6 +155,15 @@ sealed class JsIrBinary(
             TypeScriptValidationTask.NAME
         )
 
+    protected fun wasmFileFromJsFile(jsFile: Provider<RegularFile>): Provider<RegularFile> {
+        return project.objects.fileProperty().fileProvider(
+            jsFile.map {
+                val file = it.asFile
+                file.resolveSibling(file.nameWithoutExtension + ".wasm")
+            }
+        )
+    }
+
     val target: KotlinJsIrTarget
         get() = compilation.target
 
@@ -208,7 +216,7 @@ interface WasmBinary {
 
     val mainOptimizedFile: Provider<RegularFile>
 
-    val mainWasmFile: Provider<File>
+    val mainWasmFile: Provider<RegularFile>
 }
 
 internal fun TaskProvider<BinaryenExec>.configureOptimizeTask(binary: WasmBinary) {
@@ -316,7 +324,7 @@ class ExecutableWasm(
         it.outputDirectory.file(mainFileName.get())
     }
 
-    override val mainWasmFile: Provider<File> = if (mode == KotlinJsBinaryMode.PRODUCTION) {
+    override val mainWasmFile: Provider<RegularFile> = if (mode == KotlinJsBinaryMode.PRODUCTION) {
         wasmFileFromJsFile(mainOptimizedFile)
     } else {
         wasmFileFromJsFile(mainFile)
@@ -396,7 +404,7 @@ class LibraryWasm(
         it.outputDirectory.file(mainFileName.get())
     }
 
-    override val mainWasmFile: Provider<File> = if (mode == KotlinJsBinaryMode.PRODUCTION) {
+    override val mainWasmFile: Provider<RegularFile> = if (mode == KotlinJsBinaryMode.PRODUCTION) {
         wasmFileFromJsFile(mainOptimizedFile)
     } else {
         wasmFileFromJsFile(mainFile)
@@ -414,11 +422,5 @@ class LibraryWasm(
         "${linkTaskName}Optimize"
 }
 
-private fun wasmFileFromJsFile(jsFile: Provider<RegularFile>): Provider<File> {
-    return jsFile.map {
-        val file = it.asFile
-        file.resolveSibling(file.nameWithoutExtension + ".wasm")
-    }
-}
 
 internal const val COMPILE_SYNC = "compileSync"

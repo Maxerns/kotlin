@@ -25,6 +25,8 @@ abstract class WasmtimeEnvSpec internal constructor() : EnvSpec<WasmtimeEnv>() {
     override val executable: Provider<String> = env.map { it.executable }
 
     final override fun produceEnv(): Provider<WasmtimeEnv> {
+        // probably better to reorganize with multiple zip
+        // KT-87230
         return version.map { versionValue ->
             val classifier = WasmtimePlatform.platform
             val archiveExtension = WasmtimePlatform.archiveExtension

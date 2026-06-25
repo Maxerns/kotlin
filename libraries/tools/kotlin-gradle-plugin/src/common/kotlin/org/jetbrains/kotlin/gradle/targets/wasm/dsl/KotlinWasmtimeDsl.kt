@@ -17,5 +17,13 @@ import org.jetbrains.kotlin.gradle.targets.js.dsl.KotlinJsSubTargetDsl
 @ExperimentalWasmDsl
 interface KotlinWasmtimeDsl : KotlinJsSubTargetDsl {
 
+    /**
+     * Specifies additional arguments to be passed to the Wasmtime runtime during execution.
+     *
+     * These arguments allow customization of the Wasmtime environment when executing
+     * WebAssembly (Wasm) binaries. The property is typically used to configure runtime-specific
+     * options such as enabling proposals, invoking specific functions, or adjusting behavior
+     * for WebAssembly execution contexts.
+     */
     val wasmtimeRunArgs: ListProperty<String>
 }
