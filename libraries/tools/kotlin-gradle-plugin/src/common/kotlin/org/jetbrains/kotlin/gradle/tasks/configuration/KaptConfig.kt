@@ -177,7 +177,7 @@ internal class KaptWithoutKotlincConfig : KaptConfig<KaptWithoutKotlincTask> {
             )
             task.kaptJars.from(project.configurations.getByName(Kapt3GradleSubplugin.KAPT_WORKER_DEPENDENCIES_CONFIGURATION_NAME))
             task.mapDiagnosticLocations = ext.mapDiagnosticLocations
-            task.stubGenerationScheme = ext.stubGenerationScheme
+            task.stubGenerationScheme.set(ext.stubGenerationScheme)
             if (ext is KaptExtension) {
                 task.annotationProcessorFqNames.set(providers.provider {
                     ext.processors.split(',').filter { it.isNotEmpty() }

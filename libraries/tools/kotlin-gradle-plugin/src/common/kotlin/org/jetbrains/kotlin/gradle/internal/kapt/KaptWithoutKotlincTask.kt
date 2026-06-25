@@ -28,6 +28,7 @@ import org.jetbrains.kotlin.gradle.tasks.Kapt
 import org.jetbrains.kotlin.gradle.tasks.toSingleCompilerPluginOptions
 import org.jetbrains.kotlin.gradle.utils.getJdkClassesRoots
 import org.jetbrains.kotlin.gradle.utils.listPropertyWithConvention
+import org.jetbrains.kotlin.gradle.utils.propertyWithConvention
 import org.jetbrains.kotlin.util.capitalizeDecapitalize.toLowerCaseAsciiOnly
 import org.slf4j.LoggerFactory
 import java.io.File
@@ -53,7 +54,7 @@ abstract class KaptWithoutKotlincTask @Inject constructor(
     var mapDiagnosticLocations: Boolean = false
 
     @get:Input
-    var stubGenerationScheme: String = "jtree"
+    val stubGenerationScheme: Property<String> = objectFactory.propertyWithConvention("jtree")
 
     @get:Input
     abstract val annotationProcessorFqNames: ListProperty<String>
@@ -152,7 +153,7 @@ abstract class KaptWithoutKotlincTask @Inject constructor(
             javacOptions.get(),
 
             kaptFlagsForWorker,
-            stubGenerationScheme,
+            stubGenerationScheme.get(),
 
             disableClassloaderCacheForProcessors
         )

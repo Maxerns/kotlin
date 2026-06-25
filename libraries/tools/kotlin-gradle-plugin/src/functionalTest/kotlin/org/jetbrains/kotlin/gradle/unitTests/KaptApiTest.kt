@@ -139,7 +139,7 @@ class KaptApiTest {
         val task = configureKapt {}
         assertEquals(false, task.useBuildCache)
         assertEquals(false, task.includeCompileClasspath.get())
-        assertEquals("direct", task.stubGenerationScheme)
+        assertEquals("direct", task.stubGenerationScheme.get())
     }
 
     @Test
@@ -147,7 +147,7 @@ class KaptApiTest {
         val task = configureKapt {}
         assertEquals(true, task.useBuildCache)
         assertEquals(true, task.includeCompileClasspath.get())
-        assertEquals("jtree", task.stubGenerationScheme)
+        assertEquals("jtree", task.stubGenerationScheme.get())
     }
 
     @Test
