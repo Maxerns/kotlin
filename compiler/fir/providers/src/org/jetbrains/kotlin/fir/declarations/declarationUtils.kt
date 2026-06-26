@@ -9,6 +9,8 @@ import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.SessionAndScopeSessionHolder
 import org.jetbrains.kotlin.fir.SessionHolder
+import org.jetbrains.kotlin.fir.declarations.utils.isClass
+import org.jetbrains.kotlin.fir.declarations.utils.isFinal
 import org.jetbrains.kotlin.fir.declarations.utils.isInlineOrValue
 import org.jetbrains.kotlin.fir.declarations.utils.isSealed
 import org.jetbrains.kotlin.fir.resolve.*
@@ -209,24 +211,14 @@ fun FirClassSymbol<*>.collectEnumEntries(session: FirSession): List<FirEnumEntry
 }
 
 context(holder: SessionHolder)
-fun FirEnumEntrySymbol.getComplementarySymbols(): List<FirEnumEntrySymbol>? = resolvedReturnType
+fun FirEnumEntrySymbol.getComplementarySymbols(): Set<FirEnumEntrySymbol>? = resolvedReturnType
     .toRegularClassSymbol()
     ?.collectEnumEntries(holder.session)
-    ?.filter { it != this }
+    ?.filterTo(mutableSetOf()) { it != this }
 
 context(holder: SessionHolder)
-fun FirRegularClassSymbol.getComplementarySymbols(): List<FirRegularClassSymbol>? {
-    val superTypes = getSuperTypes(holder.session)
-        .mapNotNullTo(mutableSetOf()) { it.toRegularClassSymbol() }
-
-    return superTypes.flatMap { superType ->
-        if (!superType.isSealed) return@flatMap emptyList()
-
-        superType.fir.getSealedClassInheritors(holder.session)
-            .mapNotNull { it.toSymbol() as? FirRegularClassSymbol }
-            .filter { it != this@getComplementarySymbols && it !in superTypes }
-    }
-}
+fun FirRegularClassSymbol.getComplementarySymbols(): Set<FirClassSymbol<*>> =
+    holder.session.complementarySymbolsCalculator.getComplementarySymbolsFor(this)
 
 /**
  * Returns the FirClassLikeDeclaration that the
