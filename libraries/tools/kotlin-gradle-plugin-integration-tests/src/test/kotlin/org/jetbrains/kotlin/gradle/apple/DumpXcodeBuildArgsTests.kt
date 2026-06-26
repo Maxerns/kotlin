@@ -514,7 +514,7 @@ class DumpXcodeBuildArgsTests : KGPBaseTest() {
 
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     @GradleTest
-    fun `consumer reuses old matching bucket after owner dependency fingerprint changes`(version: GradleVersion) {
+    fun `consumer re-executes xcodebuild after owner dependency fingerprint changes`(version: GradleVersion) {
         val ownerProjectName = "owner"
         val consumerProjectName = "consumer"
         val sharedRepoName = "SharedPackage"
@@ -584,11 +584,11 @@ class DumpXcodeBuildArgsTests : KGPBaseTest() {
                 )
 
                 build(":$consumerProjectName:dumpXcodebuildArgsIphoneos") {
-                    assertOutputContainsExactlyTimes("Command line invocation:", 0)
+                    assertOutputContainsExactlyTimes("Command line invocation:", 1)
                     assertEquals(
                         originalOwnerDumpDir,
                         localIphoneosDumpDir(consumerProjectName),
-                        "The consumer should reuse the old still-valid bucket because its fingerprint matches the owner's original dependency graph"
+                        "The consumer should re-execute xcodebuild because its fingerprint matches the owner's original dependency graph"
                     )
                     assertDumpDirectoryContainsXcodebuildArgsDump(originalOwnerDumpDir)
                 }

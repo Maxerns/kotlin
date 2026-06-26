@@ -103,8 +103,8 @@ internal abstract class DumpXcodeBuildArgs : DefaultTask() {
 
     @TaskAction
     fun dumpXcodeBuildArgs() {
-        val xcodebuildFingerprintFile = xcodebuildFingerprint.orNull.asFile
-        val syntheticPackageFingerprintFile = syntheticPackageFingerprint.orNull.asFile
+        val xcodebuildFingerprintFile = xcodebuildFingerprint.asFile.orNull
+        val syntheticPackageFingerprintFile = syntheticPackageFingerprint.asFile.orNull
         // this is the case when package sync strategy is set to PackageResolvedSynchronization.None
         if (xcodebuildFingerprintFile == null || syntheticPackageFingerprintFile == null) {
             submitXcodebuildArgsDumpWorkAction(
