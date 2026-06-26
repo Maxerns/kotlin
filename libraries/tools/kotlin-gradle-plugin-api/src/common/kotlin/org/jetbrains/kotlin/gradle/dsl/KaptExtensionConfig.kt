@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.gradle.dsl
 
 import org.gradle.api.Action
+import org.gradle.api.provider.Property
 
 /**
  * A plugin DSL extension for configuring kapt annotation processing.
@@ -79,7 +80,7 @@ interface KaptExtensionConfig {
      *
      * Default: `jtree`
      */
-    var stubGenerationScheme: String
+    val stubGenerationScheme: Property<String>
 
     /**
      * Shows annotation processor statistics in the verbose kapt log output.

@@ -134,7 +134,7 @@ class KaptApiTest {
     fun testKaptExtension() {
         plugin.kaptExtension.useBuildCache = false
         plugin.kaptExtension.includeCompileClasspath = false
-        plugin.kaptExtension.stubGenerationScheme = "direct"
+        plugin.kaptExtension.stubGenerationScheme.set("direct")
 
         val task = configureKapt {}
         assertEquals(false, task.useBuildCache)
@@ -164,7 +164,7 @@ class KaptApiTest {
     fun testGenerateStubsOptions() {
         val stubsDir = tmpDir.resolve("stubsDir").also { it.mkdirs() }
         val kaptClasspath = setOf(tmpDir.resolve("kaptClasspath2").also { it.mkdirs() })
-        plugin.kaptExtension.stubGenerationScheme = "direct"
+        plugin.kaptExtension.stubGenerationScheme.set("direct")
 
         val task = plugin.registerKaptGenerateStubsTask(
             GENERATE_STUBS,
