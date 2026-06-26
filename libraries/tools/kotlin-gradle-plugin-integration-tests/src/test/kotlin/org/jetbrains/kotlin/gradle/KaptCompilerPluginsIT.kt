@@ -34,13 +34,41 @@ class KaptCompilerPluginsIT : KaptBaseIT() {
         ) {
             build(":example:kaptGenerateStubsKotlin") {
                 assertTasksExecuted(":example:kaptGenerateStubsKotlin")
-                assertFileInProjectDoesNotContain(
-                    "example/build/tmp/kapt3/stubs/main/repro/TestInterface.java",
-                    "PluginFunction0",
-                )
+
+                val interfaceStub = "example/build/tmp/kapt3/stubs/main/repro/TestInterface.java"
+                assertFileInProjectDoesNotContain(interfaceStub, "repro.internal.PluginFunction0<kotlin.Unit>")
+                assertFileInProjectContains(interfaceStub, "kotlin.jvm.functions.Function0<kotlin.Unit> block")
                 assertFileInProjectContains(
-                    "example/build/tmp/kapt3/stubs/main/repro/TestInterface.java",
-                    "kotlin.jvm.functions.Function0",
+                    interfaceStub,
+                    "java.util.List<? extends kotlin.jvm.functions.Function0<kotlin.Unit>> blocks",
+                )
+                assertFileInProjectContains(interfaceStub, "kotlin.jvm.functions.Function0<kotlin.Unit> testReturn()")
+                assertFileInProjectContains(
+                    interfaceStub,
+                    "java.util.List<kotlin.jvm.functions.Function0<kotlin.Unit>> testListReturn()",
+                )
+
+                val classStub = "example/build/tmp/kapt3/stubs/main/repro/TestClass.java"
+                assertFileInProjectDoesNotContain(classStub, "repro.internal.PluginFunction0<kotlin.Unit>")
+                assertFileInProjectContains(classStub, "private final kotlin.jvm.functions.Function0<kotlin.Unit> directProperty")
+                assertFileInProjectContains(
+                    classStub,
+                    "private final java.util.List<kotlin.jvm.functions.Function0<kotlin.Unit>> listProperty",
+                )
+                assertFileInProjectContains(classStub, "private kotlin.jvm.functions.Function0<kotlin.Unit> mutableDirectProperty")
+                assertFileInProjectContains(
+                    classStub,
+                    "private java.util.List<? extends kotlin.jvm.functions.Function0<kotlin.Unit>> mutableListProperty",
+                )
+                assertFileInProjectContains(classStub, "kotlin.jvm.functions.Function0<kotlin.Unit> getDirectProperty()")
+                assertFileInProjectContains(
+                    classStub,
+                    "java.util.List<kotlin.jvm.functions.Function0<kotlin.Unit>> getListProperty()",
+                )
+                assertFileInProjectContains(classStub, "kotlin.jvm.functions.Function0<kotlin.Unit> p0")
+                assertFileInProjectContains(
+                    classStub,
+                    "java.util.List<? extends kotlin.jvm.functions.Function0<kotlin.Unit>> p0",
                 )
             }
         }
