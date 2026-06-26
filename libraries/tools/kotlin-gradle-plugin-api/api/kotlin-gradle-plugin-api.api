@@ -167,6 +167,13 @@ public abstract interface class org/jetbrains/kotlin/gradle/dsl/KaptJavacOption 
 	public abstract fun option (Ljava/lang/String;Ljava/lang/String;)V
 }
 
+public final class org/jetbrains/kotlin/gradle/dsl/KaptStubGenerationScheme : java/lang/Enum {
+	public static final field DIRECT Lorg/jetbrains/kotlin/gradle/dsl/KaptStubGenerationScheme;
+	public static final field JTREE Lorg/jetbrains/kotlin/gradle/dsl/KaptStubGenerationScheme;
+	public static fun valueOf (Ljava/lang/String;)Lorg/jetbrains/kotlin/gradle/dsl/KaptStubGenerationScheme;
+	public static fun values ()[Lorg/jetbrains/kotlin/gradle/dsl/KaptStubGenerationScheme;
+}
+
 public abstract interface class org/jetbrains/kotlin/gradle/dsl/KotlinAndroidExtension : org/jetbrains/kotlin/gradle/dsl/HasConfigurableKotlinCompilerOptions, org/jetbrains/kotlin/gradle/dsl/KotlinBaseExtension {
 	public abstract fun getSourceSets ()Lorg/gradle/api/NamedDomainObjectContainer;
 	public abstract fun getTarget ()Lorg/jetbrains/kotlin/gradle/plugin/KotlinTarget;

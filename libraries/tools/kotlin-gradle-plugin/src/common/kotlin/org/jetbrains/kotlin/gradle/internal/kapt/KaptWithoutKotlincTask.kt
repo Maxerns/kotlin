@@ -24,6 +24,7 @@ import org.gradle.workers.WorkerExecutor
 import org.jetbrains.kotlin.gradle.internal.kapt.classloaders.ClassLoadersCache
 import org.jetbrains.kotlin.gradle.internal.kapt.classloaders.rootOrSelf
 import org.jetbrains.kotlin.gradle.internal.kapt.incremental.KaptIncrementalChanges
+import org.jetbrains.kotlin.gradle.dsl.KaptStubGenerationScheme
 import org.jetbrains.kotlin.gradle.tasks.Kapt
 import org.jetbrains.kotlin.gradle.tasks.toSingleCompilerPluginOptions
 import org.jetbrains.kotlin.gradle.utils.getJdkClassesRoots
@@ -54,7 +55,8 @@ abstract class KaptWithoutKotlincTask @Inject constructor(
     var mapDiagnosticLocations: Boolean = false
 
     @get:Input
-    val stubGenerationScheme: Property<String> = objectFactory.propertyWithConvention("jtree")
+    val stubGenerationScheme: Property<KaptStubGenerationScheme> =
+        objectFactory.propertyWithConvention(KaptStubGenerationScheme.JTREE)
 
     @get:Input
     abstract val annotationProcessorFqNames: ListProperty<String>
@@ -153,7 +155,7 @@ abstract class KaptWithoutKotlincTask @Inject constructor(
             javacOptions.get(),
 
             kaptFlagsForWorker,
-            stubGenerationScheme.get(),
+            stubGenerationScheme.get().optionValue,
 
             disableClassloaderCacheForProcessors
         )

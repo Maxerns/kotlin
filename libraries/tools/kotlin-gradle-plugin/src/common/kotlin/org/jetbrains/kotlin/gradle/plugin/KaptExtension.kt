@@ -21,6 +21,7 @@ import org.gradle.api.provider.Property
 import org.jetbrains.kotlin.gradle.dsl.KaptArguments
 import org.jetbrains.kotlin.gradle.dsl.KaptExtensionConfig
 import org.jetbrains.kotlin.gradle.dsl.KaptJavacOption
+import org.jetbrains.kotlin.gradle.dsl.KaptStubGenerationScheme
 import org.jetbrains.kotlin.gradle.utils.propertyWithConvention
 import java.util.*
 import javax.inject.Inject
@@ -40,7 +41,8 @@ open class KaptExtension @Inject constructor(objectFactory: ObjectFactory) : Kap
 
     override var stripMetadata: Boolean = false
 
-    override val stubGenerationScheme: Property<String> = objectFactory.propertyWithConvention("jtree")
+    override val stubGenerationScheme: Property<KaptStubGenerationScheme> =
+        objectFactory.propertyWithConvention(KaptStubGenerationScheme.JTREE)
 
     override var showProcessorStats: Boolean = false
 
