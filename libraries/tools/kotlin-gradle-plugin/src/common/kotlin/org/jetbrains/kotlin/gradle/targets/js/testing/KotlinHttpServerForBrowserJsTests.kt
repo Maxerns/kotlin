@@ -12,7 +12,6 @@ import org.gradle.api.logging.Logging
 import org.gradle.api.provider.Provider
 import org.gradle.api.services.BuildService
 import org.gradle.api.services.BuildServiceParameters
-import org.gradle.kotlin.dsl.provideDelegate
 import org.jetbrains.kotlin.gradle.utils.registerClassLoaderScopedBuildService
 import java.net.InetAddress
 import java.net.InetSocketAddress
@@ -22,28 +21,44 @@ import java.util.concurrent.ConcurrentHashMap
 import kotlin.io.path.extension
 import kotlin.io.path.fileSize
 import kotlin.io.path.inputStream
+import kotlin.io.path.isDirectory
 import kotlin.io.path.isRegularFile
 import kotlin.jvm.java
 
 private val logger = Logging.getLogger(KotlinHttpServerForBrowserJsTests::class.java)
 
 internal abstract class KotlinHttpServerForBrowserJsTests : BuildService<BuildServiceParameters.None>, AutoCloseable {
-    private val jdkHttpServer: SimpleJdkHttpServer by lazy {
-        SimpleJdkHttpServer().also {
-            it.start()
-            logger.debug("HTTP server for js tests started at ${it.serverAddress}")
-        }
+    @Volatile
+    private var jdkHttpServer: SimpleJdkHttpServer? = null
+
+    @Synchronized
+    private fun createAndStart(): SimpleJdkHttpServer {
+        val jdkHttpServer = SimpleJdkHttpServer()
+        jdkHttpServer.start()
+        logger.debug("HTTP server for js tests started at ${jdkHttpServer.serverAddress}")
+        this.jdkHttpServer = jdkHttpServer
+        return jdkHttpServer
     }
 
     fun serve(fullTaskPath: String, bundleDirectory: Directory): URI {
-        val url = jdkHttpServer.serveStaticFiles(fullTaskPath, bundleDirectory.asFile.toPath())
-        logger.debug("Serving JS test bundle directory (${bundleDirectory.asFile.toPath()}) at $url")
+        val path = bundleDirectory.asFile.toPath()
+        require(path.isDirectory()) { "Can't serve files from non-directory $path" }
+
+        val server = jdkHttpServer ?: createAndStart()
+        check(server.isActive) { "Can't serve files  HTTP Server is already stopped" }
+
+        val bundleDirPath = bundleDirectory.asFile.toPath()
+        val url = server.serveStaticFiles(fullTaskPath, bundleDirPath)
+        logger.debug("Serving JS test bundle directory ($bundleDirPath) at $url")
         return url
     }
 
     override fun close() {
-        jdkHttpServer.stopAndClear()
-        logger.debug("HTTP server for js tests stopped")
+        jdkHttpServer?.let {
+            val address = it.serverAddress
+            it.stopAndClear()
+            logger.debug("HTTP server for js tests ($address) has been stopped.")
+        }
     }
 }
 
@@ -76,6 +91,9 @@ internal class SimpleJdkHttpServer {
 
         fun clear(): Unit = locations.clear()
     }
+
+    var isActive: Boolean = false
+        private set
 
     private val locator = PrefixLocator<Path>()
     private val server: HttpServer = HttpServer.create(
@@ -127,9 +145,11 @@ internal class SimpleJdkHttpServer {
 
     fun start() {
         server.start()
+        isActive = true
     }
 
     fun stopAndClear() {
+        isActive = false
         locator.clear()
         server.stop(0)
     }
