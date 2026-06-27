@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.gradle.plugin.mpp.apple.swiftimport
 
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.logging.Logging
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
@@ -31,18 +32,24 @@ internal interface XcodebuildArgsDumpWorkParameters : WorkParameters {
     val xcodebuildPlatform: Property<String>
     val xcodebuildSdk: Property<String>
     val architectures: SetProperty<AppleArchitecture>
+
     /** Synthetic SwiftPM project that xcodebuild builds only to expose compiler/linker invocations. */
     val syntheticImportProjectRoot: RegularFileProperty
+
     /** SwiftPM checkout directory used by xcodebuild package resolution. */
     val swiftPMDependenciesCheckout: RegularFileProperty
+
     /** DerivedData root selected by the owning dump task/bucket. */
     val syntheticImportDd: DirectoryProperty
+
     /** Directory where wrapper scripts and captured clang/ld argument files are written. */
     val dumpedXcodeBuildArgsDir: DirectoryProperty
     val additionalXcodeArgs: ListProperty<String>
     val fingerprintCoordinationService: Property<SwiftImportFingerprintedCoordinationService>
     val xcodebuildExecutionFingerprint: Property<String>
     val markCompletion: Property<Boolean>
+    val ideaSyncEnabled: Property<Boolean>
+    val errorFile: RegularFileProperty
 }
 
 /**
@@ -54,7 +61,11 @@ internal abstract class XcodebuildArgsDumpWorkAction @Inject constructor(
     private val execOps: ExecOperations,
 ) : WorkAction<XcodebuildArgsDumpWorkParameters> {
 
+    private val logger = Logging.getLogger(XcodebuildArgsDumpWorkAction::class.java)
+
     override fun execute() {
+        val errorFile = parameters.errorFile.get().asFile
+        errorFile.delete()
         try {
             doExecute()
             if (parameters.markCompletion.get()) {
@@ -70,6 +81,12 @@ internal abstract class XcodebuildArgsDumpWorkAction @Inject constructor(
                     xcodebuildSdk = parameters.xcodebuildSdk.get(),
                     failure = failure,
                 )
+            }
+            if (parameters.ideaSyncEnabled.get()) {
+                val errorText = "Warning: Failed to dump xcodebuild arguments: ${failure.message ?: ""}"
+                logger.warn(errorText, failure)
+                errorFile.writeText(errorText)
+                return
             }
             throw failure
         }

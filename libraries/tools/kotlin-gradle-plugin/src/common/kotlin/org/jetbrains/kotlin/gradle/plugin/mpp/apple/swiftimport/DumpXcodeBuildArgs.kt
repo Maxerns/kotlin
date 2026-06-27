@@ -9,6 +9,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
@@ -101,8 +102,32 @@ internal abstract class DumpXcodeBuildArgs : DefaultTask() {
         layout.buildDirectory.dir(XcodebuildDefFileUtils.clangDumpRelativeDir(sdk)).get()
     }
 
+    /**
+     * When `true` (IDE sync) an xcodebuild failure is downgraded to a warning + stub outputs
+     * instead of failing the IDE import. See KT-85468.
+     */
+    @get:Input
+    abstract val ideaSyncEnabled: Property<Boolean>
+
+
+    /**
+     * Written only when xcodebuild fails leniently during IDE sync, so the task is not considered
+     * up-to-date and the next regular build retries. Mirrors CInteropProcess.errorFileProvider.
+     */
+    @get:OutputFile
+    val swiftPMImportError: Provider<RegularFile> = syntheticImportDd.map {
+        it.file("DumpXcodebuild_error.out")
+    }
+
+    init {
+        // KT-85468: while the error marker exists the task is not up-to-date so the next build retries.
+        outputs.upToDateWhen { !swiftPMImportError.get().asFile.exists() }
+    }
+
     @TaskAction
     fun dumpXcodeBuildArgs() {
+        val errorFile = swiftPMImportError.get().asFile
+        errorFile.delete()
         val xcodebuildFingerprintFile = xcodebuildFingerprint.asFile.orNull
         val syntheticPackageFingerprintFile = syntheticPackageFingerprint.asFile.orNull
         // this is the case when package sync strategy is set to PackageResolvedSynchronization.None
@@ -178,6 +203,8 @@ internal abstract class DumpXcodeBuildArgs : DefaultTask() {
             params.dumpedXcodeBuildArgsDir.fileValue(dumpDir)
             params.additionalXcodeArgs.set(additionalXcodeArgs)
             params.markCompletion.set(markCompletion)
+            params.ideaSyncEnabled.set(ideaSyncEnabled)
+            params.errorFile.set(swiftPMImportError)
 
             if (markCompletion) {
                 params.fingerprintCoordinationService.set(fingerprintCoordinationService)

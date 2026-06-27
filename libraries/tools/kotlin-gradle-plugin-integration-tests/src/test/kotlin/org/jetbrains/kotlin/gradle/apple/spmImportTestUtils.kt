@@ -12,6 +12,7 @@ import org.gradle.kotlin.dsl.kotlin
 import org.gradle.testkit.runner.BuildResult
 import org.intellij.lang.annotations.Language
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.swiftimport.FetchSyntheticImportProjectPackages
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.swiftimport.DumpXcodeBuildArgs
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.swiftimport.FingerprintSyntheticPackage
@@ -412,15 +413,18 @@ internal fun TestProject.initJvmKmp(
 }
 
 internal fun TestProject.initDefaultKmp(
+    nativeTargets: KotlinMultiplatformExtension.() -> List<KotlinNativeTarget> = {
+        listOf(
+            iosArm64(),
+            iosSimulatorArm64()
+        )
+    },
     extra: KotlinMultiplatformExtension.() -> Unit = {},
 ) {
     initKmpPluginsOnly()
     buildScriptInjection {
         project.applyMultiplatform {
-            listOf(
-                iosArm64(),
-                iosSimulatorArm64()
-            ).forEach {
+            nativeTargets().forEach {
                 it.binaries.framework {
                     baseName = "Shared"
                     isStatic = true
@@ -650,9 +654,17 @@ internal fun TestProject.selectedPersistedPackageResolvedPath(
 
 internal fun TestProject.initSwiftPmProject(
     cacheDirFile: File,
+    nativeTargets: KotlinMultiplatformExtension.() -> List<KotlinNativeTarget> = {
+        listOf(
+            iosArm64(),
+            iosSimulatorArm64()
+        )
+    },
     extra: KotlinMultiplatformExtension.() -> Unit,
 ) {
-    initDefaultKmp {
+    initDefaultKmp(
+        nativeTargets = nativeTargets
+    ) {
         configureSwiftPmTestArgs(cacheDirFile)
         extra()
     }

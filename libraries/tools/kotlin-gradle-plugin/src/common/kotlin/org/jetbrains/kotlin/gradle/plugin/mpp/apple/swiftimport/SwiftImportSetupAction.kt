@@ -935,6 +935,7 @@ private fun Project.registerDumpXcodebuildArgsTask(
         dumpTask.swiftPMDependenciesCheckout.set(fetchSyntheticImportProjectPackages.map { it.swiftPMDependenciesCheckout.get() })
         dumpTask.syntheticImportProjectRoot.set(syntheticImportProjectGenerationTaskForCinteropsAndLdDump.map { it.syntheticImportProjectRoot.get() })
         dumpTask.localPackages.filesToTrackFromLocalPackages.set(computeLocalPackageDependencyInputFiles.flatMap { it.filesToTrackFromLocalPackages })
+        dumpTask.ideaSyncEnabled.set(project.isInIdeaSync)
 
     }
 }
