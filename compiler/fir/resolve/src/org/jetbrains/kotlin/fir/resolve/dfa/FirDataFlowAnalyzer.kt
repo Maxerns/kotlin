@@ -573,7 +573,7 @@ abstract class FirDataFlowAnalyzer(
                                 flow.addImplication((expressionVariable eq isType) implies (operandVariable valueNotEq complementarySymbols))
                             }
                         }
-                        if (!type.canBeNull(components.session)) {
+                        if (!type.canBeNull()) {
                             // x is (T & Any) => x != null
                             flow.addImplication((expressionVariable eq isType) implies (operandVariable notEq null))
                         } else if (type.isMarkedNullable) {
@@ -592,7 +592,7 @@ abstract class FirDataFlowAnalyzer(
                         flow.addTypeStatement(operandVariable valueNotEq complementarySymbols)
                     }
                 }
-                if (!type.canBeNull(components.session)) {
+                if (!type.canBeNull()) {
                     flow.commitOperationStatement(operandVariable notEq null)
                 } else {
                     val expressionVariable = SyntheticVariable(typeOperatorCall)
@@ -737,8 +737,8 @@ abstract class FirDataFlowAnalyzer(
         val isEq = operation.isEq()
         val leftOperandType = leftOperand.resolvedType
         val rightOperandType = rightOperand.resolvedType
-        val leftIsNullable = leftOperandType.isMarkedNullable
-        val rightIsNullable = rightOperandType.isMarkedNullable
+        val leftIsNullable = leftOperandType.canBeNull()
+        val rightIsNullable = rightOperandType.canBeNull()
 
         if (leftIsNullable && rightIsNullable) {
             // The logic system is not complex enough to express a second level of implications this creates:
