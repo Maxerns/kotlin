@@ -338,8 +338,8 @@ private fun KaDiagnosticConverterBuilder.addConversions0() {
     }
     add(FirErrors.POSSIBLE_INITIALIZATION_DEADLOCK) { firDiagnostic ->
         PossibleInitializationDeadlockImpl(
-            firDiagnostic.a.map { firBasedSymbol ->
-                firSymbolBuilder.buildSymbol(firBasedSymbol)
+            firDiagnostic.a.map { fqName ->
+                fqName
             },
             firDiagnostic as KtPsiDiagnostic,
             token,
@@ -467,6 +467,14 @@ private fun KaDiagnosticConverterBuilder.addConversions3() {
     }
     add(FirErrors.DEPRECATED_ACCESS_TO_ENUM_ENTRY_PROPERTY_AS_REFERENCE) { firDiagnostic ->
         DeprecatedAccessToEnumEntryPropertyAsReferenceImpl(
+            firDiagnostic as KtPsiDiagnostic,
+            token,
+        )
+    }
+    add(FirErrors.ACCESSING_DECLARATION_OF_POSSIBLY_INACCESSIBLE_CLASS) { firDiagnostic ->
+        AccessingDeclarationOfPossiblyInaccessibleClassImpl(
+            firDiagnostic.a,
+            firSymbolBuilder.buildSymbol(firDiagnostic.b),
             firDiagnostic as KtPsiDiagnostic,
             token,
         )
@@ -752,6 +760,13 @@ private fun KaDiagnosticConverterBuilder.addConversions10() {
     }
     add(FirErrors.DEFAULT_VALUE_NOT_ALLOWED_IN_OVERRIDE) { firDiagnostic ->
         DefaultValueNotAllowedInOverrideImpl(
+            firDiagnostic as KtPsiDiagnostic,
+            token,
+        )
+    }
+    add(FirErrors.ACCESSING_POSSIBLY_INACCESSIBLE_OBJECT_REFERENCE) { firDiagnostic ->
+        AccessingPossiblyInaccessibleObjectReferenceImpl(
+            firDiagnostic.a,
             firDiagnostic as KtPsiDiagnostic,
             token,
         )
@@ -1529,6 +1544,13 @@ private fun KaDiagnosticConverterBuilder.addConversions30() {
             token,
         )
     }
+    add(FirErrors.POSSIBLE_CYCLIC_ACCESS) { firDiagnostic ->
+        PossibleCyclicAccessImpl(
+            firSymbolBuilder.buildSymbol(firDiagnostic.a),
+            firDiagnostic as KtPsiDiagnostic,
+            token,
+        )
+    }
     add(FirJvmErrors.JVM_STATIC_ON_NON_PUBLIC_MEMBER) { firDiagnostic ->
         JvmStaticOnNonPublicMemberImpl(
             firDiagnostic as KtPsiDiagnostic,
@@ -1777,6 +1799,15 @@ private fun KaDiagnosticConverterBuilder.addConversions35() {
             token,
         )
     }
+    add(FirErrors.POSSIBLY_UNINITIALIZED_ENUM_ENTRY) { firDiagnostic ->
+        PossiblyUninitializedEnumEntryImpl(
+            firDiagnostic.a.map { fqName ->
+                fqName
+            },
+            firDiagnostic as KtPsiDiagnostic,
+            token,
+        )
+    }
 }
 
 private fun KaDiagnosticConverterBuilder.addConversions36() {
@@ -1965,6 +1996,13 @@ private fun KaDiagnosticConverterBuilder.addConversions39() {
         ComponentFunctionMissingImpl(
             firDiagnostic.a,
             firSymbolBuilder.typeBuilder.buildKtType(firDiagnostic.b),
+            firDiagnostic as KtPsiDiagnostic,
+            token,
+        )
+    }
+    add(FirErrors.ACCESSING_POSSIBLY_UNINITIALIZED_ENUM_ENTRY) { firDiagnostic ->
+        AccessingPossiblyUninitializedEnumEntryImpl(
+            firSymbolBuilder.buildSymbol(firDiagnostic.a),
             firDiagnostic as KtPsiDiagnostic,
             token,
         )
@@ -3763,12 +3801,6 @@ private fun KaDiagnosticConverterBuilder.addConversions84() {
             token,
         )
     }
-    add(FirErrors.POTENTIALLY_UNINITIALIZED_ACCESS) { firDiagnostic ->
-        PotentiallyUninitializedAccessImpl(
-            firDiagnostic as KtPsiDiagnostic,
-            token,
-        )
-    }
 }
 
 private fun KaDiagnosticConverterBuilder.addConversions85() {
@@ -4129,15 +4161,6 @@ private fun KaDiagnosticConverterBuilder.addConversions91() {
     add(FirErrors.NON_LOCAL_RETURN_NOT_ALLOWED) { firDiagnostic ->
         NonLocalReturnNotAllowedImpl(
             firSymbolBuilder.buildSymbol(firDiagnostic.a),
-            firDiagnostic as KtPsiDiagnostic,
-            token,
-        )
-    }
-    add(FirErrors.POTENTIALLY_UNINITIALIZED_PROPERTY) { firDiagnostic ->
-        PotentiallyUninitializedPropertyImpl(
-            firDiagnostic.a.map { firBasedSymbol ->
-                firSymbolBuilder.buildSymbol(firBasedSymbol)
-            },
             firDiagnostic as KtPsiDiagnostic,
             token,
         )
@@ -4979,6 +5002,15 @@ private fun KaDiagnosticConverterBuilder.addConversions109() {
             firSymbolBuilder.buildSymbol(firDiagnostic.a),
             firDiagnostic.b,
             firDiagnostic.c,
+            firDiagnostic as KtPsiDiagnostic,
+            token,
+        )
+    }
+    add(FirErrors.POSSIBLY_UNINITIALIZED_PROPERTY) { firDiagnostic ->
+        PossiblyUninitializedPropertyImpl(
+            firDiagnostic.a.map { fqName ->
+                fqName
+            },
             firDiagnostic as KtPsiDiagnostic,
             token,
         )
@@ -8031,6 +8063,13 @@ private fun KaDiagnosticConverterBuilder.addConversions179() {
             token,
         )
     }
+    add(FirErrors.ACCESSING_POSSIBLY_UNINITIALIZED_PROPERTY) { firDiagnostic ->
+        AccessingPossiblyUninitializedPropertyImpl(
+            firSymbolBuilder.variableBuilder.buildVariableSymbol(firDiagnostic.a),
+            firDiagnostic as KtPsiDiagnostic,
+            token,
+        )
+    }
 }
 
 private fun KaDiagnosticConverterBuilder.addConversions180() {
@@ -8243,6 +8282,13 @@ private fun KaDiagnosticConverterBuilder.addConversions187() {
         ResultTypeMismatchImpl(
             firSymbolBuilder.typeBuilder.buildKtType(firDiagnostic.a),
             firSymbolBuilder.typeBuilder.buildKtType(firDiagnostic.b),
+            firDiagnostic as KtPsiDiagnostic,
+            token,
+        )
+    }
+    add(FirErrors.CONSTRUCTING_POSSIBLY_DEADLOCKING_CLASS) { firDiagnostic ->
+        ConstructingPossiblyDeadlockingClassImpl(
+            firDiagnostic.a,
             firDiagnostic as KtPsiDiagnostic,
             token,
         )
