@@ -570,13 +570,20 @@ internal open class TCServiceMessagesClient(
      * of the [SuiteNode] in the stack.
      */
     fun closeSuiteWithFailingTestCause(suiteNode: SuiteNode, ts: Long, failingTestCause: Throwable) {
+        var attachedFailureToTestNode = false
         do {
             val currentLeaf = leaf ?: return
             if (currentLeaf is TestNode) {
                 currentLeaf.failure(TestFailed(currentLeaf.cleanName, failingTestCause), false)
+                attachedFailureToTestNode = true
             }
             close(ts, currentLeaf.localId)
         } while (currentLeaf.localId != suiteNode.localId)
+        // If there are no TestNodes on the stack, we have to re-throw the throwable, as otherwise we'd be swallowing it and incorrectly
+        // reporting the test suite as passing.
+        if (!attachedFailureToTestNode) {
+            throw failingTestCause
+        }
     }
 
     private fun requireLeaf() = leaf ?: error("test out of group")
