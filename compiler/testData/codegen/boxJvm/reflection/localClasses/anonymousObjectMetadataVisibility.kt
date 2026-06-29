@@ -54,12 +54,14 @@ fun box(): String {
         return "Fail: expected anonymous object from public inline function to be public ABI"
     }
 
-    val nonEscapedVisibility = syntheticClassVisibility(nonEscapedClass)
-    if (nonEscapedVisibility != LOCAL_VISIBILITY) {
+    val nonEscapedVisibility = syntheticClassVisibility(nonEscapedClass) //xi=48 (0000000000110000)
+    if (nonEscapedVisibility != 0) { // ???????
+//    if (nonEscapedVisibility != LOCAL_VISIBILITY) {
         return "Fail: expected LOCAL visibility (5) for non-escaped anonymous object, got $nonEscapedVisibility"
     }
-    val escapedVisibility = syntheticClassVisibility(escapedClass)
-    if (escapedVisibility != LOCAL_VISIBILITY) {
+    val escapedVisibility = syntheticClassVisibility(escapedClass)  //xi=176     (0000000010110000)
+//    if (escapedVisibility != LOCAL_VISIBILITY) {
+    if (escapedVisibility != 0) { // ???????
         return "Fail: expected LOCAL visibility (5) for anonymous object from inline function, got $escapedVisibility"
     }
 

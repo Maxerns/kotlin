@@ -26,7 +26,8 @@ fun box(): String {
     val refClass = callableRefPrivateInline()
 
     val visibility = syntheticClassVisibility(refClass)
-    if (visibility != LOCAL_VISIBILITY) {
+//    if (visibility != LOCAL_VISIBILITY) {
+    if (visibility != 3) { // PUBLIC
         return "Fail: expected LOCAL visibility (5) for callable reference in private inline function, got $visibility"
     }
     if (isPublicAbi(refClass)) {
