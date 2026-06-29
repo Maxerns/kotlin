@@ -1,4 +1,5 @@
 // IGNORE_BACKEND: JS_IR, JS_IR_ES6, WASM_JS, WASM_WASI
+// FULL_JDK
 
 enum class Color(val s: String) {
     BLACK("black"),
@@ -14,10 +15,11 @@ fun box(): String {
     try {
         Color.BLACK
         return "FAIL 1.1: should throw"
-    } catch (e: Error) {
+    } catch (e: ExceptionInInitializerError) {
         val cause = e.cause
         if (cause !is IllegalStateException) return "FAIL 1.2: cause must be IllegalStateException, was ${cause?.let { it::class }}"
         if (cause.message != "miku is not a color") return "FAIL 1.3: message must be 'miku is not a color', was '${cause.message}'"
+        if (e.message != null) return "FAIL 1.4: message must be null, got ${e.message}"
     }
 
     try {

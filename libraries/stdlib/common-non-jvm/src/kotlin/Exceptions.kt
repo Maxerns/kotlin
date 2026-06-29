@@ -93,3 +93,10 @@ public actual open class AssertionError : Error {
     @SinceKotlin("1.4")
     public actual constructor(message: String?, cause: Throwable?) : super(message, cause)
 }
+
+//@SinceKotlin("2.5") // TODO: Use 2.5 after branching
+public actual open class ExceptionInInitializerError : Error {
+    public actual constructor() : super()
+    public actual constructor(message: String?) : super(message)
+    public actual constructor(cause: Throwable?) : super(null, cause)
+}
