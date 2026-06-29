@@ -188,17 +188,12 @@ class KaptStubConverter(val kaptContext: KaptContextForStubGeneration, val gener
         }
     }
 
-    private val firJvmTypeMapper: FirJvmTypeMapper? by lazy(LazyThreadSafetyMode.NONE) {
-        kaptContext.firSession?.let(::FirJvmTypeMapper)
-    }
+    private val firJvmTypeMapper: FirJvmTypeMapper? = kaptContext.firSession?.let(::FirJvmTypeMapper)
 
-    private val irTypeSystem by lazy(LazyThreadSafetyMode.NONE) {
-        IrTypeSystemContextImpl(kaptContext.irBuiltIns)
-    }
+    private val irTypeSystem = IrTypeSystemContextImpl(kaptContext.irBuiltIns)
 
-    private val legacyFunctionTypeKindProjector: LegacyFunctionTypeKindProjector? by lazy(LazyThreadSafetyMode.NONE) {
+    private val legacyFunctionTypeKindProjector: LegacyFunctionTypeKindProjector? =
         kaptContext.firSession?.let(::LegacyFunctionTypeKindProjector)
-    }
 
     private fun projectLegacyFunctionTypeKindsIfNeeded(
         typeReference: KtTypeReference?,
@@ -744,11 +739,11 @@ class KaptStubConverter(val kaptContext: KaptContextForStubGeneration, val gener
         }
 
         fun typeFromAsm() = signatureParser.parseFieldSignature(field.signature, treeMaker.Type(type))
-        val fieldTypeReference by lazy(LazyThreadSafetyMode.NONE) {
+        val fieldTypeReference =
             (kaptContext.origins[field]?.element as? KtCallableDeclaration)
                 ?.takeIf { it !is KtFunction }
                 ?.typeReference
-        }
+
         val fieldTypeMappingMode = irField?.let {
             if (it.correspondingPropertySymbol?.owner?.isVar == true) {
                 MethodSignatureMapper.getTypeMappingModeForParameter(irTypeSystem, it, it.type)
@@ -1016,7 +1011,7 @@ class KaptStubConverter(val kaptContext: KaptContextForStubGeneration, val gener
         val contextParameters = declaration.parameters.filter { it.kind == IrParameterKind.Context }
         val extensionReceiver = declaration.parameters.find { it.kind == IrParameterKind.ExtensionReceiver }
         val psiElement = kaptContext.origins[method]?.element
-        val returnTypeReference by lazy(LazyThreadSafetyMode.NONE) {
+        val returnTypeReference =
             when (psiElement) {
                 is KtFunction -> psiElement.typeReference
                 is KtProperty -> if (declaration.isGetter) psiElement.typeReference else null
@@ -1024,13 +1019,12 @@ class KaptStubConverter(val kaptContext: KaptContextForStubGeneration, val gener
                 is KtParameter -> if (declaration.isGetter) psiElement.typeReference else null
                 else -> null
             }
-        }
         val returnTypeMappingMode = MethodSignatureMapper.getTypeMappingModeForReturnType(irTypeSystem, declaration, declaration.returnType)
         val genericSignature = signatureParser.parseMethodSignature(
             method.signature, parameters, exceptionTypes, jcReturnType,
             nonErrorParameterTypeProvider = { index, lazyType ->
                 fun getNonErrorMethodParameterType(type: IrType, ktTypeProvider: () -> KtTypeReference?): JCExpression {
-                    val typeReference by lazy(LazyThreadSafetyMode.NONE, ktTypeProvider)
+                    val typeReference = ktTypeProvider()
                     val typeMappingMode = MethodSignatureMapper.getTypeMappingModeForParameter(irTypeSystem, declaration, type)
                     return getNonErrorType(
                         type.containsErrorTypes(),
