@@ -22,7 +22,6 @@ object JvmBackendErrors : KtDiagnosticsContainer() {
     val ACCIDENTAL_OVERRIDE by error1<PsiElement, String>(DECLARATION_SIGNATURE_OR_DEFAULT)
 
     val TYPEOF_SUSPEND_TYPE by error0<PsiElement>()
-    val TYPEOF_NON_REIFIED_TYPE_PARAMETER_WITH_RECURSIVE_BOUND by error1<PsiElement, String>()
 
     val SUSPENSION_POINT_INSIDE_MONITOR by error1<PsiElement, String>()
 
@@ -55,7 +54,6 @@ object KtDefaultJvmErrorMessages : BaseDiagnosticRendererFactory() {
         map.put(JvmBackendErrors.ACCIDENTAL_OVERRIDE, "Accidental override: {0}", STRING)
         map.put(JvmBackendErrors.CONFLICTING_INHERITED_JVM_DECLARATIONS, "Inherited platform declarations clash: {0}", STRING)
         map.put(JvmBackendErrors.TYPEOF_SUSPEND_TYPE, "Suspend functional types are not supported in 'typeOf'.")
-        map.put(JvmBackendErrors.TYPEOF_NON_REIFIED_TYPE_PARAMETER_WITH_RECURSIVE_BOUND, "Non-reified type parameters with recursive bounds are not supported yet: {0}", STRING)
         map.put(JvmBackendErrors.SUSPENSION_POINT_INSIDE_MONITOR, "A suspension point at {0} is inside a critical section.", STRING)
 
         map.put(

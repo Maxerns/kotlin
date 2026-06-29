@@ -18,7 +18,6 @@ import org.jetbrains.kotlin.ir.IrBuiltIns
 import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.makeNullable
 import org.jetbrains.kotlin.ir.types.typeWith
-import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.resolve.jvm.AsmTypes
 import org.jetbrains.kotlin.types.TypeSystemCommonBackendContext
 import org.jetbrains.kotlin.types.model.KotlinTypeMarker
@@ -68,7 +67,6 @@ class ReifiedTypeInliner(
         fun generateExternalEntriesForEnumTypeIfNeeded(type: IrType): FieldInsnNode?
 
         fun reportSuspendTypeUnsupported()
-        fun reportNonReifiedTypeParameterWithRecursiveBoundUnsupported(typeParameterName: Name)
 
         fun rewritePluginDefinedOperationMarker(
             v: InstructionAdapter,
@@ -135,6 +133,7 @@ class ReifiedTypeInliner(
     }
 
     private var maxStackSize = 0
+    private var maxLocals = 0
 
     private val hasReifiedParameters = parametersMapping?.hasReifiedParameters() ?: false
 
@@ -157,7 +156,8 @@ class ReifiedTypeInliner(
             }
         }
 
-        node.maxStack = node.maxStack + maxStackSize
+        node.maxStack += maxStackSize
+        node.maxLocals += maxLocals
         return result
     }
 
@@ -189,7 +189,7 @@ class ReifiedTypeInliner(
                 OperationKind.IS -> processIs(insn, instructions, type, asmType)
                 OperationKind.JAVA_CLASS -> processJavaClass(insn, asmType)
                 OperationKind.ENUM_REIFIED -> processSpecialEnumFunction(insn, instructions, type, asmType)
-                OperationKind.TYPE_OF -> processTypeOf(insn, instructions, type)
+                OperationKind.TYPE_OF -> processTypeOf(insn, node, type)
                 OperationKind.CATCH -> processCatch(insn, node, asmType)
             }
 
@@ -272,15 +272,16 @@ class ReifiedTypeInliner(
 
     private fun processTypeOf(
         insn: MethodInsnNode,
-        instructions: InsnList,
+        node: MethodNode,
         type: IrType,
     ): Boolean = rewriteNextTypeInsn(insn, Opcodes.ACONST_NULL) { stubConstNull: AbstractInsnNode ->
         val newMethodNode = newMethodNodeWithCorrectStackSize {
-            typeSystem.generateTypeOf(it, type, intrinsicsSupport)
+            val localsUsed = typeSystem.generateTypeOf(it, type, intrinsicsSupport, node.maxLocals)
+            maxLocals = max(maxLocals, localsUsed)
         }
 
-        instructions.insert(insn, newMethodNode.instructions)
-        instructions.remove(stubConstNull)
+        node.instructions.insert(insn, newMethodNode.instructions)
+        node.instructions.remove(stubConstNull)
 
         maxStackSize = max(maxStackSize, newMethodNode.maxStack)
         return true
