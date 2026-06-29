@@ -44,6 +44,7 @@ val commonCompilerModules = descriptorsCompilerModules + arrayOf(
     ":kotlin-util-io",
     ":kotlin-util-klib",
     ":kotlin-util-klib-abi",
+    ":kotlin-util-jvm-inline-codegen",
     ":kotlin-util-klib-metadata",
     ":compiler:build-tools:kotlin-build-statistics",
     ":js:js.config",
