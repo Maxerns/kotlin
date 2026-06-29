@@ -1576,6 +1576,9 @@ fun IrElement.sourceElement(): AbstractKtSourceElement? =
 fun IrFunction.isTopLevelInPackage(name: String, packageFqName: FqName) =
     this.name.asString() == name && parent.kotlinFqName == packageFqName
 
+fun IrProperty.isTopLevelInPackage(name: String, packageFqName: FqName) =
+    this.name.asString() == name && parent.kotlinFqName == packageFqName
+
 val IrValueDeclaration.isAssignable: Boolean
     get() = when (this) {
         is IrValueParameter -> isAssignable
