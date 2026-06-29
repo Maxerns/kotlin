@@ -26,7 +26,6 @@ import org.jetbrains.kotlin.platform.wasm.WasmTarget
 import org.jetbrains.kotlin.wasm.config.wasmUseStackSwitchingProposal
 import org.jetbrains.kotlin.wasm.config.wasmTarget
 
-@OptIn(InternalSymbolFinderAPI::class)
 class BackendWasmSymbols(
     irBuiltIns: IrBuiltIns,
     configuration: CompilerConfiguration,
@@ -349,6 +348,8 @@ class BackendWasmSymbols(
         wasmTypedFuncRefClass.typeWith(functionType)
 
     val wasmAnyRefClass = ClassIds.anyref.classSymbol()
+
+    val checkStaticInitializationState by CallableIds.checkStaticInitializationState.functionSymbol()
 
     inner class JsInteropAdapters {
         val kotlinToJsStringAdapter by CallableIds.kotlinToJsStringAdapter.functionSymbol()
@@ -673,5 +674,6 @@ private object CallableIds {
     val js = CallableId(JsStandardClassIds.BASE_JS_PACKAGE, Name.identifier("js"))
     val registerRootSuiteBlock = CallableId(StandardClassIds.BASE_TEST_PACKAGE, Name.identifier("registerRootSuiteBlock"))
     val runRootSuites = CallableId(StandardClassIds.BASE_TEST_PACKAGE, Name.identifier("runRootSuites"))
+    val checkStaticInitializationState = "checkStaticInitializationState".wasmCallableId
 }
 

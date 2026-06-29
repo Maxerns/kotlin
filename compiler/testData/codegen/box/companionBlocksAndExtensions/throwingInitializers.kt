@@ -1,5 +1,4 @@
 // LANGUAGE: +CompanionBlocksAndExtensions
-// IGNORE_BACKEND: JS_IR, JS_IR_ES6, WASM_JS, WASM_WASI
 // FULL_JDK
 
 class C {

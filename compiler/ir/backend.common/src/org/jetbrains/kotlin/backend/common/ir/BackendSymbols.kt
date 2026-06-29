@@ -145,7 +145,6 @@ abstract class BackendSymbols(irBuiltIns: IrBuiltIns) : PreSerializationSymbols.
     }
 }
 
-@OptIn(InternalSymbolFinderAPI::class)
 abstract class BackendKlibSymbols(irBuiltIns: IrBuiltIns) : PreSerializationKlibSymbols, BackendSymbols(irBuiltIns) {
     final override val getProgressionLastElementByReturnType: Map<IrClassifierSymbol, IrSimpleFunctionSymbol> by CallableId(StandardNames.KOTLIN_INTERNAL_FQ_NAME, Name.identifier("getProgressionLastElement")).functionSymbolAssociatedBy {
         it.returnType.classifierOrFail
@@ -160,9 +159,14 @@ abstract class BackendKlibSymbols(irBuiltIns: IrBuiltIns) : PreSerializationKlib
         getKey = { it.parameters[0].type.makeNotNull() }
     )
 
+    val staticInitializationFailure by staticInitializationFailureCallableId.functionSymbol()
+
     companion object {
         private val String.collectionsCallableId get() = CallableId(StandardNames.COLLECTIONS_PACKAGE_FQ_NAME, Name.identifier(this))
         private val contentEquals = "contentEquals".collectionsCallableId
+
+        private val String.baseInternalCallableId get() = CallableId(StandardClassIds.BASE_INTERNAL_PACKAGE, Name.identifier(this))
+        private val staticInitializationFailureCallableId = "staticInitializationFailure".baseInternalCallableId
     }
 }
 
