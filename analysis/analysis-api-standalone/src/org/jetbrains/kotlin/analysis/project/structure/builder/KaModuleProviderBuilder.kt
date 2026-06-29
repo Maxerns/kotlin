@@ -32,6 +32,8 @@ public class KaModuleContainerBuilder(
      * The default [StandaloneLibraryScopeConstructionMode] for library modules created within this provider via [buildKtLibraryModule] or
      * [buildKtSdkModule]. Individual modules may override it.
      *
+     * The option is a **workaround** for exceptional cases. See [StandaloneLibraryScopeConstructionMode] for more information.
+     *
      * **Caution:** Because a library module's content scope is built eagerly when the module is created, this default must be set *before*
      * the corresponding module-building calls.
      */

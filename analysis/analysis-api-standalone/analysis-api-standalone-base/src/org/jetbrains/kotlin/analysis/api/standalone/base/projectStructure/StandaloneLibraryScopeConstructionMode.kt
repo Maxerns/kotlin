@@ -8,11 +8,15 @@ package org.jetbrains.kotlin.analysis.api.standalone.base.projectStructure
 /**
  * The strategy used to build a library module's content scope from its binary roots in Standalone mode.
  *
- * It determines the memory footprint and performance profile of a library module's content scope. This can have a significant impact on
- * Standalone's performance.
+ * The content scope of a library module determines the files belonging to the library. The construction mode allows picking the data
+ * structure and algorithm that implements the content scope. This has a direct impact on the memory footprint and performance profile of
+ * the scope check, and in general, Standalone's overall performance.
+ *
+ * [ParentTraversal] is the default. In most cases, it should be the most performant and most memory-friendly option. In *exceptional*
+ * cases, particularly with non-standard virtual file system implementations, it may cause errors or performance issues. The other options
+ * are provided as workarounds, with [Trie] being the recommended one.
  *
  * The mode can be set per module on the module builder, or as a default for all modules on the module provider builder.
- * [ParentTraversal] is the default.
  */
 sealed class StandaloneLibraryScopeConstructionMode {
     /**
@@ -29,7 +33,7 @@ sealed class StandaloneLibraryScopeConstructionMode {
      * Determines containment by matching a file's path segments against a trie built from the library root paths.
      *
      * This mode performs reasonably well, but is (likely) not as efficient as [ParentTraversal], because the containment checks heavily
-     * allocate substrings.
+     * allocate substrings. It is a workaround for rare cases when [ParentTraversal] might not function correctly.
      *
      * Because the trie relies on on-disk paths, this mode falls back to [Enumeration] when a library root lacks one (for example, with an
      * in-memory file system).
@@ -39,7 +43,8 @@ sealed class StandaloneLibraryScopeConstructionMode {
     /**
      * Determines containment by checking a file against a precomputed set of all files reachable from the library roots.
      *
-     * This mode is inefficient, as it eagerly enumerates and retains every file under each library root.
+     * This mode is inefficient, as it eagerly enumerates and retains every file under each library root. It should only be used as a last
+     * resort.
      */
     data object Enumeration : StandaloneLibraryScopeConstructionMode()
 

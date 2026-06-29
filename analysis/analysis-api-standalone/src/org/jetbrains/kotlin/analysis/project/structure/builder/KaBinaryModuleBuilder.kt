@@ -20,7 +20,9 @@ public abstract class KtBinaryModuleBuilder : KtModuleBuilder() {
     /**
      * The [StandaloneLibraryScopeConstructionMode] used to build this module's content scope when [contentScope] is not set explicitly.
      *
-     * The default construction mode is seeded from the owning provider's [KtModuleProviderBuilder.libraryScopeConstructionMode] and may be
+     * The option is a **workaround** for exceptional cases. See [StandaloneLibraryScopeConstructionMode] for more information.
+     *
+     * The default construction mode is seeded from the owning provider's [KaModuleContainerBuilder.libraryScopeConstructionMode] and may be
      * overridden here.
      */
     public var libraryScopeConstructionMode: StandaloneLibraryScopeConstructionMode =
