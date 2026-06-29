@@ -21,7 +21,6 @@ import androidx.compose.compiler.plugins.kotlin.inference.*
 import com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.backend.jvm.ir.psiElement
 import org.jetbrains.kotlin.builtins.isFunctionType
-import org.jetbrains.kotlin.codegen.kotlinType
 import org.jetbrains.kotlin.container.StorageComponentContainer
 import org.jetbrains.kotlin.container.useInstance
 import org.jetbrains.kotlin.descriptors.*
@@ -102,7 +101,7 @@ private class PsiElementNode(
             InferenceDescriptorType(it)
         } ?: InferenceUnknownType()
 
-    private fun kotlinTypeOf(element: KtExpression) = element.kotlinType(bindingContext)?.let {
+    private fun kotlinTypeOf(element: KtExpression) = bindingContext.getType(element)?.let {
         InferenceKotlinType(it)
     } ?: InferenceUnknownType()
 }
