@@ -41,6 +41,25 @@ internal fun bridgeReturnType(type: SirType): KotlinToSwiftBridge =
     bridgeType(type, SirTypeVariance.COVARIANT) as KotlinToSwiftBridge
 
 context(session: SirSession)
+internal fun asyncContinuationBridges(
+    resultBridge: SwiftToKotlinBridge,
+): Triple<KotlinToSwiftBridge, KotlinToSwiftBridge, KotlinToSwiftBridge> = Triple(
+    // continuation
+    AsCovariantBlock(parameters = listOf(resultBridge), returnType = AsVoid),
+    // exception
+    AsCovariantBlock(
+        parameters = listOf(AsObjCBridged(SirSwiftModule.error.nominalType(), CType.NSError)),
+        returnType = AsVoid,
+    ),
+    // cancellation
+    AsObject(
+        swiftType = KotlinCoroutineSupportModule.swiftJob.nominalType(),
+        kotlinType = KotlinType.KotlinObject,
+        cType = CType.Object,
+    ),
+)
+
+context(session: SirSession)
 private fun bridgeTypeForVariadicParameter(type: SirType): Bridge =
     AsNSArrayForVariadic(SirArrayType(type), bridgeAsNSCollectionElement(type))
 
@@ -924,21 +943,7 @@ internal sealed interface Bridge {
             context(session: SirSession)
             private fun computeAsyncParameters(
                 returnType: SwiftToKotlinBridge
-            ): Triple<KotlinToSwiftBridge, KotlinToSwiftBridge, KotlinToSwiftBridge> = Triple(
-                // continuation
-                AsCovariantBlock(parameters = listOf(returnType), returnType = AsVoid),
-                // exception
-                AsCovariantBlock(
-                    parameters = listOf(AsObjCBridged(SirSwiftModule.error.nominalType(), CType.NSError)),
-                    returnType = AsVoid,
-                ),
-                // cancellation
-                AsObject(
-                    swiftType = KotlinCoroutineSupportModule.swiftJob.nominalType(),
-                    kotlinType = KotlinType.KotlinObject,
-                    cType = CType.Object,
-                ),
-            )
+            ): Triple<KotlinToSwiftBridge, KotlinToSwiftBridge, KotlinToSwiftBridge> = asyncContinuationBridges(returnType)
 
             context(session: SirSession)
             operator fun invoke(

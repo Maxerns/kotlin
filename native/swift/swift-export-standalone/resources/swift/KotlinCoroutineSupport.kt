@@ -102,6 +102,19 @@ public suspend fun <T> suspendSwiftCoroutine(
     }
 }
 
+public suspend fun <T> awaitSwiftCoroutine(
+    block: (resume: (Result<T>) -> Unit, cancellation: SwiftJob) -> Unit,
+): T {
+    val cancellation = SwiftJob()
+    coroutineContext[Job]?.let {
+        cancellation.alsoCancel(it)
+        it.alsoCancel(cancellation)
+    }
+    return suspendCancellableCoroutine { cont ->
+        block({ result -> if (cont.isActive) cont.resumeWith(result) }, cancellation)
+    }
+}
+
 @ExportedBridge("__root___SwiftJob_init_allocate")
 public fun __root___SwiftJob_init_allocate(): kotlin.native.internal.NativePtr {
     val instance = kotlin.native.internal.createUninitializedInstance<SwiftJob>()

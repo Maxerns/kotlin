@@ -92,6 +92,30 @@ package func withKotlinTask<T>(
     }
 }
 
+package func runSwiftCoroutine<T>(
+    continuation: @escaping (T) -> Swift.Void,
+    exception: @escaping (Swift.Error) -> Swift.Void,
+    cancellation: KotlinTask,
+    body: @escaping () async throws -> T
+) -> Swift.Void {
+    let task = Task {
+        await withTaskCancellationHandler {
+            do {
+                let result = try await body()
+                continuation(result)
+            } catch {
+                exception(error)
+            }
+        } onCancel: {
+            cancellation.cancelExternally()
+        }
+    }
+    cancellation.setCallback { shouldCancel in
+        defer { if shouldCancel { task.cancel() } }
+        return task.isCancelled
+    }
+}
+
 public protocol KotlinFlow: KotlinRuntime.KotlinBase { }
 
 public protocol KotlinTypedFlow<Element> {
