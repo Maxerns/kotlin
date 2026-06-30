@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.incremental
 import com.intellij.util.io.KeyDescriptor
 import org.jetbrains.kotlin.build.report.DoNothingICReporter
 import org.jetbrains.kotlin.build.report.ICReporter
+import org.jetbrains.kotlin.compilerRunner.OutputItemsCollectorImpl
 import org.jetbrains.kotlin.incremental.storage.BasicFileToPathConverter
 import org.jetbrains.kotlin.incremental.storage.FileToPathConverter
 import java.io.File
@@ -31,7 +32,8 @@ class IncrementalCompilationContext(
     val trackLibrarySetChanges: Boolean = false,
     val icFeatures: IncrementalCompilationFeatures = IncrementalCompilationFeatures.DEFAULT_CONFIGURATION,
     val fragmentContext: FragmentContext? = null,
-    val useCompilerMapsOnly: Boolean = false
+    val useCompilerMapsOnly: Boolean = false,
+    val generatedSources: MutableSet<File> = mutableSetOf(),
 ) {
     @Deprecated("This constructor is scheduled to be removed. KSP is using it")
     constructor(
