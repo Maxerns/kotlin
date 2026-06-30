@@ -64,18 +64,15 @@ object FirDefaultComplementarySymbolsCalculator : FirComplementarySymbolsCalcula
             mergedUniverse
         }
 
-    private val unrelatedSubclassesCache = mutableMapOf<FirRegularClassSymbol, Set<FirClassSymbol<*>>>()
-
     context(holder: SessionHolder)
-    fun FirRegularClassSymbol.collectUnrelatedSubclasses(): Set<FirClassSymbol<*>> =
-        unrelatedSubclassesCache.getOrPut(this) {
-            val mergedUnrelated = getImmediateSuperTypes().flatMapTo(mutableSetOf()) { it.collectUnrelatedSubclasses() }
-            val universe = collectRelevantSealedUniverse(mutableMapOf())
+    fun FirRegularClassSymbol.collectUnrelatedSubclasses(): Set<FirClassSymbol<*>> {
+        val mergedUnrelated = getImmediateSuperTypes().flatMapTo(mutableSetOf()) { it.collectUnrelatedSubclasses() }
+        val universe = collectRelevantSealedUniverse(mutableMapOf())
 
-            universe.leaves.filterTo(mutableSetOf()) {
-                it in mergedUnrelated || (isFinal || it.isFinal || isClass && it.isClass) && areUnrelated(this, it)
-            }
+        return universe.leaves.filterTo(mutableSetOf()) {
+            it in mergedUnrelated || (isFinal || it.isFinal || isClass && it.isClass) && areUnrelated(this, it)
         }
+    }
 
     context(holder: SessionHolder)
     override fun getComplementarySymbolsFor(symbol: FirRegularClassSymbol): Set<FirClassSymbol<*>> =
