@@ -546,10 +546,6 @@ object KotlinCompilerClient {
                 listOf("--add-exports", "java.base/sun.nio.ch=ALL-UNNAMED")
             else emptyList()
         val environmentVariablesForTests = getEnvironmentVariablesForTests(reportingTargets)
-        val isJava9OrHigher = javaLanguageVersion >= JavaLanguageVersion.of(9)
-        if (!isJava9OrHigher) {
-            daemonJVMOptions.jvmParams.removeIf { it.startsWith("-add-opens") }
-        }
         val jvmArguments = daemonJVMOptions.mappers.flatMap { it.toArgs("-") }
         if (
             (jvmArguments + getImplicitJvmArguments(environmentVariablesForTests))

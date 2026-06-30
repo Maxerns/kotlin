@@ -161,10 +161,7 @@ class CompilerDaemonTest : KotlinIntegrationTestBase() {
             assertEquals("200m", opts.maxMemory)
             assertEquals("10k", opts.maxMetaspaceSize)
             assertEquals("100", opts.reservedCodeCacheSize)
-            assertEquals(
-                arrayListOf("aaa", "bbb,ccc", "ddd", "xxx,yyy", "ea"),
-                opts.jvmParams.filterNot { it.startsWith("-add-opens") }
-            )
+            assertEquals(arrayListOf("aaa", "bbb,ccc", "ddd", "xxx,yyy", "ea"), opts.jvmParams)
 
             System.setProperty(CompilerSystemProperties.COMPILE_DAEMON_JVM_OPTIONS_PROPERTY.property, "-Xmx300m,-XX:MaxMetaspaceSize=10k,-XX:ReservedCodeCacheSize=100")
             val opts2 = configureDaemonJVMOptions(inheritMemoryLimits = false, inheritAdditionalProperties = false, inheritOtherJvmOptions = false)
