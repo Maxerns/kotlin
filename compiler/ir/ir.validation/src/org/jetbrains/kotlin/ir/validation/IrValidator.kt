@@ -70,7 +70,7 @@ private class IrValidator(
 
 private class IrFileValidator(
     config: IrValidatorConfig,
-    private val context: CheckerContext
+    private var context: CheckerContext
 ) : IrTreeSymbolsVisitor() {
     private val contextUpdaters: List<ContextUpdater> = listOf(ParentChainUpdater) + config.checkers.flatMap { it.requiredContextUpdaters }
     private val elementCheckers: List<IrElementChecker<*>> = config.checkers.filterIsInstance<IrElementChecker<*>>()
@@ -80,8 +80,20 @@ private class IrFileValidator(
 
     private val checkersPerElementCache = hashMapOf<Class<out IrElement>, List<IrElementChecker<*>>>()
 
+    private fun withNewContext(newContext: CheckerContext, block: () -> Unit) {
+        val oldContext = context
+        context = newContext
+        try {
+            block()
+        } finally {
+            context = oldContext
+        }
+    }
+
     private fun List<ContextUpdater>.runWithContextUpdaters(element: IrElement, block: () -> Unit) {
-        this.fold(block) { currentBlock, updater -> { updater.runInNewContext(context, element, currentBlock) } }.invoke()
+        withNewContext(this.fold(context) { currentContext, updater -> updater.createNewContext(currentContext, element) }) {
+            block()
+        }
     }
 
     private fun getCheckersFor(type: Class<out IrElement>) = checkersPerElementCache.computeIfAbsent(type) {
@@ -100,7 +112,7 @@ private class IrFileValidator(
     }
 
     override fun visitAnnotationUsage(annotationUsage: IrAnnotation) {
-        context.withinAnnotationUsageSubTree {
+        withNewContext(context.withinAnnotationUsageSubTree()) {
             super.visitAnnotationUsage(annotationUsage)
         }
     }

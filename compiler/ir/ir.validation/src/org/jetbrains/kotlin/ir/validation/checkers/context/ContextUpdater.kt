@@ -12,8 +12,7 @@ import org.jetbrains.kotlin.ir.IrElement
  */
 interface ContextUpdater {
     /**
-     * Temporarily updates the [context]  based on the given [element], executes [block] within the updated context,
-     * and then restores the context to its original state.
+     * Returns new [CheckerContext] based on the current [context] and the given [element].
      */
-    fun runInNewContext(context: CheckerContext, element: IrElement, block: () -> Unit)
+    fun createNewContext(context: CheckerContext, element: IrElement): CheckerContext
 }

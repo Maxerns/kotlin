@@ -9,15 +9,14 @@ import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.IrTypeParametersContainer
 
 object TypeParameterScopeUpdater : ContextUpdater {
-    override fun runInNewContext(
+    override fun createNewContext(
         context: CheckerContext,
         element: IrElement,
-        block: () -> Unit,
-    ) {
-        if (element is IrTypeParametersContainer) {
-            context.withTypeParametersInScope(element, block)
+    ): CheckerContext {
+        return if (element is IrTypeParametersContainer) {
+            context.withTypeParametersInScope(element)
         } else {
-            block()
+            context
         }
     }
 }

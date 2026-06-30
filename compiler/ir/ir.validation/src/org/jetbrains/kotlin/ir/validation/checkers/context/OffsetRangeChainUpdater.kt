@@ -10,16 +10,14 @@ import org.jetbrains.kotlin.ir.expressions.IrInlinedFunctionBlock
 import org.jetbrains.kotlin.ir.validation.temporarilyPushing
 
 object OffsetRangeChainUpdater : ContextUpdater {
-    override fun runInNewContext(
+    override fun createNewContext(
         context: CheckerContext,
         element: IrElement,
-        block: () -> Unit,
-    ) {
-        OffsetRange.createIfRealValidOffsets(element, useOwnOffsetsOfInlinedFunctionBlock = false)?.let { newOffsetBoundaries ->
-            context.offsetRanges.temporarilyPushing(newOffsetBoundaries) {
-                block()
-            }
-        } ?: block()
+    ): CheckerContext {
+        val newRange = OffsetRange.createIfRealValidOffsets(element, useOwnOffsetsOfInlinedFunctionBlock = false) ?: return context
+        return context.copy(
+            offsetRanges = context.offsetRanges + newRange
+        )
     }
 }
 
