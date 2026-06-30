@@ -41,4 +41,4 @@ KaNamedFunctionSymbol:
   deprecation: null
   returnValueStatus: Unspecified
   importableFqName: null
-  psi: null
+  psi: @org.jetbrains.kotlin.plugin.sandbox.NestedClassAndMaterializeMember class MyClass

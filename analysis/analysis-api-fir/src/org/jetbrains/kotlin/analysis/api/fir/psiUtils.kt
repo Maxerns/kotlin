@@ -26,6 +26,8 @@ import org.jetbrains.kotlin.descriptors.annotations.AnnotationUseSiteTarget
 import org.jetbrains.kotlin.diagnostics.KtDiagnostic
 import org.jetbrains.kotlin.diagnostics.KtPsiDiagnostic
 import org.jetbrains.kotlin.fir.FirElement
+import org.jetbrains.kotlin.fir.declarations.FirDeclaration
+import org.jetbrains.kotlin.fir.declarations.FirDeclarationOrigin
 import org.jetbrains.kotlin.fir.psi
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
@@ -70,8 +72,10 @@ private fun isAllowedFakeElementKind(kind: KtFakeSourceElementKind): Boolean =
             || kind is KtFakeSourceElementKind.DataClassGeneratedMembers
             || kind in allowedFakeElementKinds
 
-internal fun FirElement.findPsi(): PsiElement? =
-    getAllowedPsi()
+private fun FirElement.findPsi(): PsiElement? = getAllowedPsi() ?: when {
+    this is FirDeclaration && origin is FirDeclarationOrigin.Plugin -> psi
+    else -> null
+}
 
 @KaImplementationDetail
 internal fun KaFirSymbol<*>.findPsi(): PsiElement? {
