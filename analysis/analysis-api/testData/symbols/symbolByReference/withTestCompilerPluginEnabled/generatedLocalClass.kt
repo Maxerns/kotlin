@@ -1,4 +1,5 @@
 // WITH_FIR_TEST_COMPILER_PLUGIN
+// RENDER_SYMBOL_PSI
 interface DataFrame<out T>
 
 annotation class Refine

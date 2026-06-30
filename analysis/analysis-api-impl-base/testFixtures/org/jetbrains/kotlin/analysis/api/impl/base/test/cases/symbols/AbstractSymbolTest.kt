@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.analysis.api.impl.base.test.cases.symbols.SymbolTest
 import org.jetbrains.kotlin.analysis.api.impl.base.test.cases.symbols.SymbolTestDirectives.DO_NOT_REQUIRE_SYMBOL_RESTORATION
 import org.jetbrains.kotlin.analysis.api.impl.base.test.cases.symbols.SymbolTestDirectives.PRETTY_RENDERER_OPTION
 import org.jetbrains.kotlin.analysis.api.impl.base.test.cases.symbols.SymbolTestDirectives.RENDER_IS_PUBLIC_API
+import org.jetbrains.kotlin.analysis.api.impl.base.test.cases.symbols.SymbolTestDirectives.RENDER_SYMBOL_PSI
 import org.jetbrains.kotlin.analysis.api.renderer.declarations.KaDeclarationRenderer
 import org.jetbrains.kotlin.analysis.api.renderer.declarations.impl.KaDeclarationRendererForDebug
 import org.jetbrains.kotlin.analysis.api.renderer.declarations.renderers.KaClassifierBodyRenderer
@@ -404,7 +405,8 @@ abstract class AbstractSymbolTest : AbstractAnalysisApiBasedTest() {
         val renderer = KaDebugRenderer(
             renderExtra = true,
             renderExpandedTypes = directives[PRETTY_RENDERER_OPTION].any { it == PrettyRendererOption.FULLY_EXPANDED_TYPES },
-            renderIsPublicApi = RENDER_IS_PUBLIC_API in directives
+            renderIsPublicApi = RENDER_IS_PUBLIC_API in directives,
+            renderSymbolPsi = RENDER_SYMBOL_PSI in directives,
         )
         return with(renderer) { render(useSiteSession, symbol) }
     }
@@ -426,6 +428,8 @@ object SymbolTestDirectives : SimpleDirectivesContainer() {
     val ILLEGAL_PSI by stringDirective(description = "Symbol should not be created for this PSI element")
 
     val RENDER_IS_PUBLIC_API by directive(description = "Render `isPublicApi` attribute for symbols")
+
+    val RENDER_SYMBOL_PSI by directive(description = "Render `psi` attribute for symbols")
 }
 
 enum class PrettyRendererOption(val transformation: (KaDeclarationRenderer) -> KaDeclarationRenderer) {

@@ -10,6 +10,7 @@ import org.jetbrains.annotations.TestOnly
 import org.jetbrains.kotlin.analysis.api.*
 import org.jetbrains.kotlin.analysis.api.annotations.*
 import org.jetbrains.kotlin.analysis.api.base.KaContextReceiver
+import org.jetbrains.kotlin.analysis.api.components.KaDeprecation
 import org.jetbrains.kotlin.analysis.api.contracts.description.Context
 import org.jetbrains.kotlin.analysis.api.contracts.description.KaContractEffectDeclaration
 import org.jetbrains.kotlin.analysis.api.contracts.description.renderKaContractEffectDeclaration
@@ -22,7 +23,6 @@ import org.jetbrains.kotlin.analysis.utils.printer.prettyPrint
 import org.jetbrains.kotlin.descriptors.Visibility
 import org.jetbrains.kotlin.name.*
 import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.analysis.api.components.KaDeprecation
 import org.jetbrains.kotlin.types.Variance
 import java.lang.reflect.InvocationTargetException
 import kotlin.reflect.KClass
@@ -41,6 +41,7 @@ public class KaDebugRenderer(
     public val renderTypeByProperties: Boolean = false,
     public val renderExpandedTypes: Boolean = false,
     public val renderIsPublicApi: Boolean = false,
+    public val renderSymbolPsi: Boolean = false,
 ) {
 
     public fun render(analysisSession: KaSession, symbol: KaSymbol): String = prettyPrint {
@@ -110,6 +111,11 @@ public class KaDebugRenderer(
                     if (symbol is KaDeclarationSymbol) {
                         renderComputedValue("isPublicApi", printer, currentSymbolStack) { isPublicApi(symbol) }
                     }
+                }
+
+                if (renderSymbolPsi) {
+                    val psi = symbol.psi
+                    renderComputedValue("psi", printer, currentSymbolStack) { psi?.text?.substringBefore('\n') }
                 }
             }
         } finally {

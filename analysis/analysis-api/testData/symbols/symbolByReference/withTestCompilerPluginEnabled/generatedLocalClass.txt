@@ -32,6 +32,7 @@ KaKotlinPropertySymbol:
     getContainingModule: KaSourceModule "Sources of main"
     deprecation: null
     importableFqName: null
+    psi: null
   callableId: null
   contextParameters: []
   contextReceivers: []
@@ -83,6 +84,7 @@ KaKotlinPropertySymbol:
       getContainingModule: KaSourceModule "Sources of main"
       deprecation: null
       importableFqName: null
+      psi: null
     returnType: KaUsualClassType:
       annotations: []
       typeArguments: []
@@ -98,6 +100,7 @@ KaKotlinPropertySymbol:
     getContainingModule: KaSourceModule "Sources of main"
     deprecation: null
     importableFqName: null
+    psi: null
   hasBackingField: true
   hasGetter: true
   hasSetter: false
@@ -150,6 +153,7 @@ KaKotlinPropertySymbol:
     getContainingModule: KaSourceModule "Sources of main"
     deprecation: null
     importableFqName: null
+    psi: null
   returnType: KaUsualClassType:
     annotations: []
     typeArguments: []
@@ -169,3 +173,4 @@ KaKotlinPropertySymbol:
   javaSetterName: null
   isInline: false
   importableFqName: null
+  psi: null
