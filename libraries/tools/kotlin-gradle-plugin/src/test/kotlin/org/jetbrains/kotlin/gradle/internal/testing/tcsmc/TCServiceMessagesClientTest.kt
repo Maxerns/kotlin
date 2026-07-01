@@ -13,6 +13,15 @@ open class TCServiceMessagesClientTest {
     protected var treatFailedTestOutputAsStacktrace: Boolean = false
 
     internal fun assertEvents(assertion: String, produceServiceMessage: TCServiceMessagesClient.() -> Unit) {
+        assertEvents(
+            assertion = { actual ->
+                assertEquals(assertion.trimTrailingWhitespaces().trim(), actual)
+            },
+            produceServiceMessage = produceServiceMessage,
+        )
+    }
+
+    internal fun assertEvents(assertion: (actual: String) -> Unit, produceServiceMessage: TCServiceMessagesClient.() -> Unit) {
         val results = RecordingTestResultProcessor()
         val client = createClient(results)
 
@@ -20,10 +29,7 @@ open class TCServiceMessagesClientTest {
             client.produceServiceMessage()
         }
 
-        assertEquals(
-            assertion.trimTrailingWhitespaces().trim(),
-            results.output.toString().trimTrailingWhitespaces().trim()
-        )
+        assertion(results.output.toString().trimTrailingWhitespaces().trim())
     }
 
     internal open fun createClient(results: RecordingTestResultProcessor): TCServiceMessagesClient {
