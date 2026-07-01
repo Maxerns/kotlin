@@ -441,6 +441,8 @@ class CacheBuilder(
                             // The stdlib per-file cache is a system cache, not part of incremental compilation.
                             makePerFileCache && !library.isNativeStdlib ->
                                 "incremental compilation (kotlin.incremental.native=false)"
+                            makePerFileCache && library.isNativeStdlib ->
+                                "stdlib per-file cache (-Xbinary=perFileCacheForStdlib=false)"
                             else ->
                                 "compiler caches (https://kotl.in/disable-native-cache)"
                         }
