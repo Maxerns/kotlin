@@ -134,7 +134,6 @@ KaNamedFunctionSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -152,6 +151,7 @@ KaNamedFunctionSymbol:
       modality: FINAL
       name: value
       origin: SOURCE_MEMBER_GENERATED
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []

@@ -34,7 +34,6 @@ import org.jetbrains.kotlin.analysis.api.symbols.markers.KaContextParameterOwner
 import org.jetbrains.kotlin.analysis.api.symbols.markers.KaTypeParameterOwnerSymbol
 import org.jetbrains.kotlin.analysis.low.level.api.fir.api.getModule
 import org.jetbrains.kotlin.analysis.low.level.api.fir.api.resolveToFirSymbolOfType
-import org.jetbrains.kotlin.analysis.low.level.api.fir.compile.isForeignValue
 import org.jetbrains.kotlin.analysis.low.level.api.fir.sessions.llFirSession
 import org.jetbrains.kotlin.analysis.low.level.api.fir.util.getContainingFile
 import org.jetbrains.kotlin.config.LanguageFeature
@@ -443,7 +442,7 @@ internal class KaFirSymbolRelationProvider(
         forAccessorSymbol: (KaPropertyAccessorSymbol) -> Sequence<KaCallableSymbol>,
         fallback: (KaCallableSymbol) -> Sequence<KaCallableSymbol>,
     ): Sequence<KaCallableSymbol> = when (this) {
-        is KaValueParameterSymbol -> this.generatedPrimaryConstructorProperty?.let(fallback).orEmpty()
+        is KaValueParameterSymbol -> this.primaryConstructorProperty?.let(fallback).orEmpty()
         is KaPropertyAccessorSymbol -> forAccessorSymbol(this)
         is KaNamedFunctionSymbol -> getSyntheticJavaPropertyAccessor(this)?.let(forAccessorSymbol) ?: fallback(this)
         else -> fallback(this)

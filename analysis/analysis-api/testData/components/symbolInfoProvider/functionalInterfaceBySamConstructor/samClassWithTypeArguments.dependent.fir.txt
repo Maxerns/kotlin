@@ -103,7 +103,6 @@ CONSTRUCTOR:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -121,6 +120,7 @@ CONSTRUCTOR:
       modality: FINAL
       name: function
       origin: SAM_CONSTRUCTOR
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaFunctionType:
         abbreviation: null

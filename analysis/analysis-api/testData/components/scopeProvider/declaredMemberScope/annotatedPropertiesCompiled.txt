@@ -141,7 +141,6 @@ KaNamedFunctionSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -159,6 +158,7 @@ KaNamedFunctionSymbol:
       modality: FINAL
       name: l
       origin: LIBRARY
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []
@@ -313,7 +313,6 @@ KaKotlinPropertySymbol:
       ]
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -331,6 +330,7 @@ KaKotlinPropertySymbol:
       modality: FINAL
       name: value
       origin: LIBRARY
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []
@@ -355,7 +355,6 @@ KaKotlinPropertySymbol:
         ]
         callableId: null
         contextReceivers: []
-        generatedPrimaryConstructorProperty: null
         hasDeclaredDefaultValue: false
         hasDefaultValue: false
         isActual: false
@@ -373,6 +372,7 @@ KaKotlinPropertySymbol:
         modality: FINAL
         name: value
         origin: LIBRARY
+        primaryConstructorProperty: null
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []
@@ -530,7 +530,6 @@ KaKotlinPropertySymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -548,6 +547,7 @@ KaKotlinPropertySymbol:
       modality: FINAL
       name: value
       origin: LIBRARY
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []
@@ -569,7 +569,6 @@ KaKotlinPropertySymbol:
         annotations: []
         callableId: null
         contextReceivers: []
-        generatedPrimaryConstructorProperty: null
         hasDeclaredDefaultValue: false
         hasDefaultValue: false
         isActual: false
@@ -587,6 +586,7 @@ KaKotlinPropertySymbol:
         modality: FINAL
         name: value
         origin: LIBRARY
+        primaryConstructorProperty: null
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []
@@ -741,7 +741,6 @@ KaKotlinPropertySymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -759,6 +758,7 @@ KaKotlinPropertySymbol:
       modality: FINAL
       name: value
       origin: LIBRARY
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []
@@ -780,7 +780,6 @@ KaKotlinPropertySymbol:
         annotations: []
         callableId: null
         contextReceivers: []
-        generatedPrimaryConstructorProperty: null
         hasDeclaredDefaultValue: false
         hasDefaultValue: false
         isActual: false
@@ -798,6 +797,7 @@ KaKotlinPropertySymbol:
         modality: FINAL
         name: value
         origin: LIBRARY
+        primaryConstructorProperty: null
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []
@@ -1013,7 +1013,6 @@ KaKotlinPropertySymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -1031,6 +1030,7 @@ KaKotlinPropertySymbol:
       modality: FINAL
       name: value
       origin: LIBRARY
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []
@@ -1084,7 +1084,6 @@ KaKotlinPropertySymbol:
         annotations: []
         callableId: null
         contextReceivers: []
-        generatedPrimaryConstructorProperty: null
         hasDeclaredDefaultValue: false
         hasDefaultValue: false
         isActual: false
@@ -1102,6 +1101,7 @@ KaKotlinPropertySymbol:
         modality: FINAL
         name: value
         origin: LIBRARY
+        primaryConstructorProperty: null
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []
@@ -1256,7 +1256,6 @@ KaKotlinPropertySymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -1274,6 +1273,7 @@ KaKotlinPropertySymbol:
       modality: FINAL
       name: value
       origin: LIBRARY
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []
@@ -1295,7 +1295,6 @@ KaKotlinPropertySymbol:
         annotations: []
         callableId: null
         contextReceivers: []
-        generatedPrimaryConstructorProperty: null
         hasDeclaredDefaultValue: false
         hasDefaultValue: false
         isActual: false
@@ -1313,6 +1312,7 @@ KaKotlinPropertySymbol:
         modality: FINAL
         name: value
         origin: LIBRARY
+        primaryConstructorProperty: null
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []
@@ -1467,7 +1467,6 @@ KaKotlinPropertySymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -1485,6 +1484,7 @@ KaKotlinPropertySymbol:
       modality: FINAL
       name: value
       origin: LIBRARY
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []
@@ -1506,7 +1506,6 @@ KaKotlinPropertySymbol:
         annotations: []
         callableId: null
         contextReceivers: []
-        generatedPrimaryConstructorProperty: null
         hasDeclaredDefaultValue: false
         hasDefaultValue: false
         isActual: false
@@ -1524,6 +1523,7 @@ KaKotlinPropertySymbol:
         modality: FINAL
         name: value
         origin: LIBRARY
+        primaryConstructorProperty: null
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []
@@ -1678,7 +1678,6 @@ KaKotlinPropertySymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -1696,6 +1695,7 @@ KaKotlinPropertySymbol:
       modality: FINAL
       name: value
       origin: LIBRARY
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []
@@ -1717,7 +1717,6 @@ KaKotlinPropertySymbol:
         annotations: []
         callableId: null
         contextReceivers: []
-        generatedPrimaryConstructorProperty: null
         hasDeclaredDefaultValue: false
         hasDefaultValue: false
         isActual: false
@@ -1735,6 +1734,7 @@ KaKotlinPropertySymbol:
         modality: FINAL
         name: value
         origin: LIBRARY
+        primaryConstructorProperty: null
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []
@@ -2002,7 +2002,6 @@ KaKotlinPropertySymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -2020,6 +2019,7 @@ KaKotlinPropertySymbol:
       modality: FINAL
       name: value
       origin: LIBRARY
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []
@@ -2041,7 +2041,6 @@ KaKotlinPropertySymbol:
         annotations: []
         callableId: null
         contextReceivers: []
-        generatedPrimaryConstructorProperty: null
         hasDeclaredDefaultValue: false
         hasDefaultValue: false
         isActual: false
@@ -2059,6 +2058,7 @@ KaKotlinPropertySymbol:
         modality: FINAL
         name: value
         origin: LIBRARY
+        primaryConstructorProperty: null
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []
@@ -2122,7 +2122,6 @@ KaConstructorSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -2140,6 +2139,7 @@ KaConstructorSymbol:
       modality: FINAL
       name: withDefaultGetter
       origin: LIBRARY
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []
@@ -2155,7 +2155,6 @@ KaConstructorSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -2173,6 +2172,7 @@ KaConstructorSymbol:
       modality: FINAL
       name: withDefaultSetter
       origin: LIBRARY
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []
@@ -2188,7 +2188,6 @@ KaConstructorSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -2206,6 +2205,7 @@ KaConstructorSymbol:
       modality: FINAL
       name: both
       origin: LIBRARY
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []
@@ -2224,7 +2224,6 @@ KaConstructorSymbol:
       ]
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -2242,6 +2241,7 @@ KaConstructorSymbol:
       modality: FINAL
       name: allAnnotations
       origin: LIBRARY
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []

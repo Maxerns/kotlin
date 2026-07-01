@@ -57,7 +57,6 @@ scopes:
             annotations: []
             callableId: null
             contextReceivers: []
-            generatedPrimaryConstructorProperty: null
             hasDeclaredDefaultValue: false
             hasDefaultValue: false
             isActual: false
@@ -75,6 +74,7 @@ scopes:
             modality: FINAL
             name: other
             origin: LIBRARY
+            primaryConstructorProperty: null
             receiverParameter: null
             returnType: KaUsualClassType:
               annotations: []

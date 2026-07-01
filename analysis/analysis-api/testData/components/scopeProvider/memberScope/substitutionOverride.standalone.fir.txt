@@ -129,7 +129,6 @@ KaNamedFunctionSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -147,6 +146,7 @@ KaNamedFunctionSymbol:
       modality: FINAL
       name: t
       origin: SUBSTITUTION_OVERRIDE
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []
@@ -207,7 +207,6 @@ KaNamedFunctionSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -225,6 +224,7 @@ KaNamedFunctionSymbol:
       modality: FINAL
       name: t
       origin: SUBSTITUTION_OVERRIDE
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []
@@ -303,7 +303,6 @@ KaNamedFunctionSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -321,6 +320,7 @@ KaNamedFunctionSymbol:
       modality: FINAL
       name: tt
       origin: SOURCE
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaTypeParameterType:
         annotations: []
@@ -402,7 +402,6 @@ KaNamedFunctionSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -420,6 +419,7 @@ KaNamedFunctionSymbol:
       modality: FINAL
       name: tt
       origin: SOURCE
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaTypeParameterType:
         annotations: []
@@ -501,7 +501,6 @@ KaNamedFunctionSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -519,6 +518,7 @@ KaNamedFunctionSymbol:
       modality: FINAL
       name: t
       origin: SUBSTITUTION_OVERRIDE
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []
@@ -534,7 +534,6 @@ KaNamedFunctionSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -552,6 +551,7 @@ KaNamedFunctionSymbol:
       modality: FINAL
       name: tt
       origin: SUBSTITUTION_OVERRIDE
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaTypeParameterType:
         annotations: []
@@ -629,7 +629,6 @@ KaNamedFunctionSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -647,6 +646,7 @@ KaNamedFunctionSymbol:
       modality: FINAL
       name: t
       origin: SUBSTITUTION_OVERRIDE
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []
@@ -662,7 +662,6 @@ KaNamedFunctionSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -680,6 +679,7 @@ KaNamedFunctionSymbol:
       modality: FINAL
       name: tt
       origin: SUBSTITUTION_OVERRIDE
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaTypeParameterType:
         annotations: []
@@ -739,7 +739,6 @@ KaNamedFunctionSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -757,6 +756,7 @@ KaNamedFunctionSymbol:
       modality: FINAL
       name: other
       origin: LIBRARY
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []

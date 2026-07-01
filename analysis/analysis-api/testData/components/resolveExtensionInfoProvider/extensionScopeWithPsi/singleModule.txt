@@ -98,7 +98,6 @@ callables: 5
         annotations: []
         callableId: null
         contextReceivers: []
-        generatedPrimaryConstructorProperty: null
         hasDeclaredDefaultValue: false
         hasDefaultValue: false
         isActual: false
@@ -116,6 +115,7 @@ callables: 5
         modality: FINAL
         name: foo
         origin: SOURCE
+        primaryConstructorProperty: null
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []
@@ -364,7 +364,6 @@ callables: 5
         annotations: []
         callableId: null
         contextReceivers: []
-        generatedPrimaryConstructorProperty: null
         hasDeclaredDefaultValue: false
         hasDefaultValue: false
         isActual: false
@@ -382,6 +381,7 @@ callables: 5
         modality: FINAL
         name: value
         origin: SOURCE
+        primaryConstructorProperty: null
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []
@@ -398,7 +398,6 @@ callables: 5
           annotations: []
           callableId: null
           contextReceivers: []
-          generatedPrimaryConstructorProperty: null
           hasDeclaredDefaultValue: false
           hasDefaultValue: false
           isActual: false
@@ -416,6 +415,7 @@ callables: 5
           modality: FINAL
           name: value
           origin: SOURCE
+          primaryConstructorProperty: null
           receiverParameter: null
           returnType: KaUsualClassType:
             annotations: []

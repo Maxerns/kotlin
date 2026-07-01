@@ -262,7 +262,6 @@ KaKotlinPropertySymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -280,6 +279,7 @@ KaKotlinPropertySymbol:
       modality: FINAL
       name: v
       origin: SOURCE
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []
@@ -327,7 +327,6 @@ KaKotlinPropertySymbol:
         annotations: []
         callableId: null
         contextReceivers: []
-        generatedPrimaryConstructorProperty: null
         hasDeclaredDefaultValue: false
         hasDefaultValue: false
         isActual: false
@@ -345,6 +344,7 @@ KaKotlinPropertySymbol:
         modality: FINAL
         name: v
         origin: SOURCE
+        primaryConstructorProperty: null
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []
@@ -431,7 +431,6 @@ KaConstructorSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: KaKotlinPropertySymbol(/Status.Error.message)
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -449,6 +448,7 @@ KaConstructorSymbol:
       modality: FINAL
       name: message
       origin: SOURCE
+      primaryConstructorProperty: KaKotlinPropertySymbol(/Status.Error.message)
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []

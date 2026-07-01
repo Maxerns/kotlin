@@ -160,7 +160,6 @@ KaConstructorSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: KaKotlinPropertySymbol(/Anno5.s)
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -178,6 +177,7 @@ KaConstructorSymbol:
       modality: FINAL
       name: s
       origin: SOURCE
+      primaryConstructorProperty: KaKotlinPropertySymbol(/Anno5.s)
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []
@@ -300,7 +300,6 @@ KaNamedFunctionSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -318,6 +317,7 @@ KaNamedFunctionSymbol:
       modality: FINAL
       name: arg
       origin: SOURCE
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: [

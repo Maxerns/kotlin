@@ -24,7 +24,6 @@ KaConstructorSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: KaKotlinPropertySymbol(/Foo.ints)
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -42,6 +41,7 @@ KaConstructorSymbol:
       modality: FINAL
       name: ints
       origin: SOURCE
+      primaryConstructorProperty: KaKotlinPropertySymbol(/Foo.ints)
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []

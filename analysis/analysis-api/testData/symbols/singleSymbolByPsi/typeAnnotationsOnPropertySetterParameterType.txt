@@ -18,7 +18,6 @@ KaPropertySetterSymbol:
     annotations: []
     callableId: null
     contextReceivers: []
-    generatedPrimaryConstructorProperty: null
     hasDeclaredDefaultValue: false
     hasDefaultValue: false
     isActual: false
@@ -36,6 +35,7 @@ KaPropertySetterSymbol:
     modality: FINAL
     name: value
     origin: SOURCE
+    primaryConstructorProperty: null
     receiverParameter: null
     returnType: KaUsualClassType:
       annotations: [
@@ -64,7 +64,6 @@ KaPropertySetterSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -82,6 +81,7 @@ KaPropertySetterSymbol:
       modality: FINAL
       name: value
       origin: SOURCE
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: [

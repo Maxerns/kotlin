@@ -24,7 +24,6 @@ KaConstructorSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: KaKotlinPropertySymbol(/P.x)
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -42,6 +41,7 @@ KaConstructorSymbol:
       modality: FINAL
       name: x
       origin: SOURCE
+      primaryConstructorProperty: KaKotlinPropertySymbol(/P.x)
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []
@@ -57,7 +57,6 @@ KaConstructorSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: KaKotlinPropertySymbol(/P.y)
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -75,6 +74,7 @@ KaConstructorSymbol:
       modality: FINAL
       name: y
       origin: SOURCE
+      primaryConstructorProperty: KaKotlinPropertySymbol(/P.y)
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []

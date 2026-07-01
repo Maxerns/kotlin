@@ -116,7 +116,6 @@ KaKotlinPropertySymbol:
       ]
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -134,6 +133,7 @@ KaKotlinPropertySymbol:
       modality: FINAL
       name: value
       origin: LIBRARY
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []
@@ -158,7 +158,6 @@ KaKotlinPropertySymbol:
         ]
         callableId: null
         contextReceivers: []
-        generatedPrimaryConstructorProperty: null
         hasDeclaredDefaultValue: false
         hasDefaultValue: false
         isActual: false
@@ -176,6 +175,7 @@ KaKotlinPropertySymbol:
         modality: FINAL
         name: value
         origin: LIBRARY
+        primaryConstructorProperty: null
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []

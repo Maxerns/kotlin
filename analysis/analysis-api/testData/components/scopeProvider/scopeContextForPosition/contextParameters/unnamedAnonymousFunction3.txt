@@ -24,7 +24,6 @@ scopes:
         annotations: []
         callableId: null
         contextReceivers: []
-        generatedPrimaryConstructorProperty: null
         hasDeclaredDefaultValue: false
         hasDefaultValue: false
         isActual: false
@@ -42,6 +41,7 @@ scopes:
         modality: FINAL
         name: p
         origin: SOURCE
+        primaryConstructorProperty: null
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []

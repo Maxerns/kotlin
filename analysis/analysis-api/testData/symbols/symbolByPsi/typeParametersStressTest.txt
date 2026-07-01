@@ -377,7 +377,6 @@ KaConstructorSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -395,6 +394,7 @@ KaConstructorSymbol:
       modality: FINAL
       name: arg
       origin: SOURCE
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaTypeParameterType:
         annotations: []

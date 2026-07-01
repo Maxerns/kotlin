@@ -32,7 +32,6 @@ KaNamedFunctionSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -50,6 +49,7 @@ KaNamedFunctionSymbol:
       modality: FINAL
       name: args
       origin: JS_DYNAMIC
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaDynamicType:
         annotations: []

@@ -61,7 +61,6 @@ callables: 1
         annotations: []
         callableId: null
         contextReceivers: []
-        generatedPrimaryConstructorProperty: null
         hasDeclaredDefaultValue: false
         hasDefaultValue: false
         isActual: false
@@ -79,6 +78,7 @@ callables: 1
         modality: FINAL
         name: value
         origin: PLUGIN
+        primaryConstructorProperty: null
         receiverParameter: null
         returnType: KaUsualClassType:
           annotations: []

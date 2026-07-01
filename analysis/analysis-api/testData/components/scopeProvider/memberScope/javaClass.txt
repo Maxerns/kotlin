@@ -131,7 +131,6 @@ KaNamedFunctionSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -149,6 +148,7 @@ KaNamedFunctionSymbol:
       modality: FINAL
       name: classes
       origin: JAVA_SOURCE
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaFlexibleType:
         annotations: []
@@ -287,7 +287,6 @@ KaNamedFunctionSymbol:
       annotations: []
       callableId: null
       contextReceivers: []
-      generatedPrimaryConstructorProperty: null
       hasDeclaredDefaultValue: false
       hasDefaultValue: false
       isActual: false
@@ -305,6 +304,7 @@ KaNamedFunctionSymbol:
       modality: FINAL
       name: other
       origin: LIBRARY
+      primaryConstructorProperty: null
       receiverParameter: null
       returnType: KaUsualClassType:
         annotations: []
