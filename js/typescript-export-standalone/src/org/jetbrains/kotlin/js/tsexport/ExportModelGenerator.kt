@@ -113,7 +113,7 @@ internal class ExportModelGenerator(private val config: TypeScriptExportConfig) 
             is KaNamedFunctionSymbol -> listOfNotNull(exportFunction(declaration, parent = null, classTypeParameterScope = emptyMap()))
             is KaPropertySymbol -> exportProperty(declaration, parent = null, classTypeParameterScope = emptyMap())
             is KaNamedClassSymbol -> listOfNotNull(exportClass(declaration, parent = null, outerClassTypeParameterScope = emptyMap()))
-            is KaTypeAliasSymbol -> listOf(ErrorDeclaration("Type alias declarations are not implemented yet"))
+            is KaTypeAliasSymbol -> listOf(exportTypeAlias(declaration))
             else -> return null
         }
 
@@ -194,6 +194,22 @@ internal class ExportModelGenerator(private val config: TypeScriptExportConfig) 
                 isExternal = klass.isExternal,
             )
         }.withAttributes(klass)
+    }
+
+    context(_: KaSession)
+    private fun exportTypeAlias(typeAlias: KaTypeAliasSymbol): ExportedTypeAlias {
+        val typeParameterScope = TypeParameterScope(
+            container = typeAlias,
+            config = config,
+            transitivelyExportedClasses = pendingTransitivelyExportedClasses,
+            superTypeApproximator = superTypeApproximator,
+        )
+        return ExportedTypeAlias(
+            name = ExportedMemberName.Identifier(typeAlias.getExportedIdentifier()),
+            typeParameters = typeParameterScope.values.toList(),
+            aliasedType = exportType(typeAlias.expandedType, typeParameterScope),
+            originalClassId = typeAlias.classId,
+        ).withAttributes(typeAlias)
     }
 
     context(_: KaSession)
@@ -748,8 +764,7 @@ internal class ExportModelGenerator(private val config: TypeScriptExportConfig) 
                 }
                 is KaTypeAliasSymbol -> {
                     if (!nested.isEffectivelyExported(config, includingImplicitExport = true)) continue
-                    // TODO(KT-49795): Export type aliases
-                    continue
+                    members.add(exportTypeAlias(nested))
                 }
                 else -> continue
             }

@@ -117,7 +117,7 @@ public annotation class ExperimentalJsStatic
  */
 @ExperimentalJsExport
 @Retention(AnnotationRetention.BINARY)
-@Target(CLASS, PROPERTY, FUNCTION, FILE)
+@Target(CLASS, PROPERTY, FUNCTION, FILE, TYPEALIAS)
 @SinceKotlin("1.4")
 @OptionalExpectation
 public expect annotation class JsExport() {
@@ -127,7 +127,7 @@ public expect annotation class JsExport() {
      */
     @ExperimentalJsExport
     @Retention(AnnotationRetention.BINARY)
-    @Target(CLASS, PROPERTY, FUNCTION, CONSTRUCTOR)
+    @Target(CLASS, PROPERTY, FUNCTION, CONSTRUCTOR, TYPEALIAS)
     @SinceKotlin("1.8")
     @OptionalExpectation
     public annotation class Ignore()

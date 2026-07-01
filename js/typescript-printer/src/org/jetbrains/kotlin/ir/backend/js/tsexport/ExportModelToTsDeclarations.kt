@@ -96,6 +96,7 @@ public class ExportModelToTsDeclarations(private val moduleKind: ModuleKind) {
     private fun ExportedDeclaration.toTypeScript(indent: String, prefix: String = ""): String =
         attributes.toTypeScript(indent) + indent + when (this) {
             is ErrorDeclaration -> generateTypeScriptString()
+            is ExportedTypeAlias -> generateTypeScriptString(indent, prefix)
             is ExportedConstructor -> generateTypeScriptString(indent)
             is ExportedConstructSignature -> generateTypeScriptString(indent)
             is ExportedNamespace -> generateTypeScriptString(indent, prefix)
@@ -373,6 +374,11 @@ public class ExportModelToTsDeclarations(private val moduleKind: ModuleKind) {
         return "$objectClass\n$objectMetadata${generateDefaultExportIfNeed(name, indent)}"
     }
 
+    private fun ExportedTypeAlias.generateTypeScriptString(indent: String, prefix: String): String {
+        val renderedTypeParameters = renderTypeParameters(typeParameters, includeVariance = true)
+        return "${prefix}type ${name.value}$renderedTypeParameters = ${aliasedType.toTypeScript(indent)};"
+    }
+
     private fun ExportedRegularClass.generateTypeScriptString(indent: String, prefix: String): String {
         val keyword = if (isInterface) "interface" else "class"
         val superInterfacesKeyword = if (isInterface) "extends" else "implements"
@@ -381,7 +387,7 @@ public class ExportModelToTsDeclarations(private val moduleKind: ModuleKind) {
         val superInterfacesClause = superInterfaces.toImplementsClause(superInterfacesKeyword, indent)
 
         val [membersForNamespace, classMembers] = members.partition {
-            it is ExportedNamespace || isInterface && it is ExportedMember && it.isStatic
+            it is ExportedNamespace || it is ExportedTypeAlias || isInterface && it is ExportedMember && it.isStatic
         }
 
         val namespaceMembers = membersForNamespace.map {

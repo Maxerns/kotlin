@@ -230,7 +230,7 @@ public actual annotation class JsQualifier(actual val value: String)
  */
 @ExperimentalJsExport
 @Retention(AnnotationRetention.BINARY)
-@Target(CLASS, PROPERTY, FUNCTION, FILE)
+@Target(CLASS, PROPERTY, FUNCTION, FILE, TYPEALIAS)
 @SinceKotlin("1.3")
 public actual annotation class JsExport {
     /**
@@ -239,7 +239,7 @@ public actual annotation class JsExport {
      */
     @ExperimentalJsExport
     @Retention(AnnotationRetention.BINARY)
-    @Target(CLASS, PROPERTY, FUNCTION, CONSTRUCTOR)
+    @Target(CLASS, PROPERTY, FUNCTION, CONSTRUCTOR, TYPEALIAS)
     @SinceKotlin("1.8")
     public actual annotation class Ignore
 

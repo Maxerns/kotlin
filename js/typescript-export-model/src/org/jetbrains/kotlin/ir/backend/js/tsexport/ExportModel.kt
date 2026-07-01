@@ -119,6 +119,15 @@ public data class ExportedPropertySetter(
 // TODO: Cover all cases with frontend and disable error declarations
 public class ErrorDeclaration(public val message: String) : ExportedDeclaration()
 
+public data class ExportedTypeAlias(
+    override val name: ExportedMemberName.Identifier,
+    val typeParameters: List<ExportedTypeParameter>,
+    val aliasedType: ExportedType,
+    val originalClassId: ClassId? = null,
+) : ExportedDeclaration(), ExportedMember {
+    override val isMember: Boolean = false
+    override val isStatic: Boolean = true
+}
 
 public sealed class ExportedClass : ExportedDeclaration() {
     public abstract val name: String

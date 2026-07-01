@@ -552,6 +552,7 @@ enum class LanguageFeature(
     // 2.6
 
     ReportReificationProblemsInDnnAndFlexible(sinceVersion = KOTLIN_2_6, enabledInProgressiveMode = true, "KTLC-399"),
+    JsAllowExportTypealiases(sinceVersion = KOTLIN_2_5, "KT-49795"),
 
     // End of 2.* language features --------------------------------------------------
 
