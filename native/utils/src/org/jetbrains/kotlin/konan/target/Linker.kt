@@ -42,18 +42,20 @@ private fun llvmArStaticLibraryCommands(
     libraries: List<String>,
     tempFiles: TempFiles,
 ): List<Command> {
+    // Neither operation below starts from a clean slate: 'r' replaces/inserts members by name but keeps any member no
+    // longer in the input set, and 'q' merely quick-appends (duplicating members on a re-run). Correctness therefore
+    // relies on [executable] not pre-existing: the sole caller (Linker.linkCommands) deletes it before these commands
+    // run, so llvm-ar always writes a fresh archive containing exactly the requested members.
+    //
     // Operation + modifiers: c - create without a warning, s - write the symbol index (the linker resolves members through it),
     // D - deterministic output (zeroed timestamps/uids).
     val operation = if (libraries.isEmpty()) {
-        // The common case (in particular every per-file cache fragment): only object files. The 'r' operation
-        // replaces/inserts members, so re-running over a stale archive (e.g. after an interrupted build) stays
-        // correct rather than appending duplicates.
+        // The common case (in particular every per-file cache fragment): only object files.
         "rcsD"
     } else {
         // With .a inputs we must flatten them — add their members instead of the archive itself, since linkers don't
         // recurse into member archives. llvm-ar does this with the 'L' modifier (the replacement for the GNU-ar
-        // thin-archive trick — KT-84035), which is only valid with the 'q' (quick-append) operation; 'q' assumes a
-        // fresh output, which holds for a normal `-produce static`.
+        // thin-archive trick — KT-84035), which is only valid with the 'q' (quick-append) operation.
         "qcsDL"
     }
     val members = objectFiles + libraries
