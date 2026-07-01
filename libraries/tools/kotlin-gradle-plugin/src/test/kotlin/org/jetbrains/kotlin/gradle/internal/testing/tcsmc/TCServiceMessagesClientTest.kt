@@ -39,4 +39,12 @@ open class TCServiceMessagesClientTest {
 
     internal fun TCServiceMessagesClient.serviceMessage(name: String, attributes: Map<String, String>) =
         serviceMessage(ServiceMessage.parse(ServiceMessage.asString(name, attributes))!!)
+
+    internal fun runWithClient(block: TCServiceMessagesClient.() -> Unit) {
+        val results = RecordingTestResultProcessor()
+        val client = createClient(results)
+        client.root {
+            client.block()
+        }
+    }
 }
