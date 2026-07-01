@@ -28,7 +28,7 @@ import kotlin.system.exitProcess
 //     brew install protobuf261.rb
 //
 // You may need to provide custom path to protoc executable, just modify this constant:
-private const val PROTOC_EXE = "/opt/homebrew/bin/protoc"
+private const val PROTOC_EXE = "protoc"
 
 class ProtoPath(val file: String, val generateDebug: Boolean = true) {
     val outPath: String = File(file).parent
