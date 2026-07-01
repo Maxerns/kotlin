@@ -103,13 +103,25 @@ internal class KaFirValueParameterSymbol private constructor(
                 }
 
                 val parameterIndex = index
-                val ownerFunction = containingDeclaration as? KaNamedFunctionSymbol ?: return false
+                val ownerFunction = containingDeclaration as? KaFunctionSymbol ?: return false
 
+                // Checks the effective (possibly inherited) default value of the matching parameter, not just the declared one. The
+                // recursion into `hasDefaultValue` lets a default propagate across several hops at once, e.g., from the `expect`
+                // counterpart of the base an `actual` override inherits from. The `isOverride`/`isActual` guards below keep the
+                // (potentially expensive) `allOverriddenSymbols`/`getExpectsForActual` lookups from firing on every hop.
                 fun KaDeclarationSymbol.hasMatchingParameterWithDefaultValue(): Boolean =
-                    (this as? KaFunctionSymbol)?.valueParameters?.getOrNull(parameterIndex)?.hasDeclaredDefaultValue == true
+                    (this as? KaFunctionSymbol)?.valueParameters?.getOrNull(parameterIndex)?.hasDefaultValue == true
 
-                ownerFunction.isOverride && ownerFunction.allOverriddenSymbols.any { it.hasMatchingParameterWithDefaultValue() } ||
+                // An implicit default value can only be inherited from an overridden declaration (for a named function) or from the
+                // matched `expect` declaration (for a named function or a constructor). Other function kinds cannot have one.
+                when (ownerFunction) {
+                    is KaNamedFunctionSymbol ->
+                        ownerFunction.isOverride && ownerFunction.allOverriddenSymbols.any { it.hasMatchingParameterWithDefaultValue() } ||
+                                ownerFunction.isActual && ownerFunction.getExpectsForActual().any { it.hasMatchingParameterWithDefaultValue() }
+                    is KaConstructorSymbol ->
                         ownerFunction.isActual && ownerFunction.getExpectsForActual().any { it.hasMatchingParameterWithDefaultValue() }
+                    else -> false
+                }
             }
         }
 
