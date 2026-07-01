@@ -18,6 +18,7 @@ import org.jetbrains.kotlin.fir.declarations.utils.visibility
 import org.jetbrains.kotlin.fir.expressions.FirExpression
 import org.jetbrains.kotlin.fir.expressions.isImplicitWhenSubjectVariable
 import org.jetbrains.kotlin.fir.resolve.toSymbol
+import org.jetbrains.kotlin.fir.resolve.toTypeParameterSymbol
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirClassSymbol
@@ -169,8 +170,17 @@ private fun ConeKotlinType.isFinal(session: FirSession): Boolean = when (this) {
     is ConeFlexibleType -> lowerBound.isFinal(session)
     is ConeDefinitelyNotNullType -> original.isFinal(session)
     is ConeClassLikeType -> toSymbol(session)?.fullyExpandedClass(session)?.isFinal == true
+    is ConeTypeParameterType -> toTypeParameterSymbol(session)?.resolvedBounds?.any { it.coneType.isFinal(session) } == true
+
+    // I couldn't come up with tests that would verify these, but these feel like the correct values.
     is ConeIntersectionType -> intersectedTypes.any { it.isFinal(session) }
-    else -> false
+    is ConeCapturedType -> constructor.supertypes?.any { it.isFinal(session) } == true
+    is ConeIntegerLiteralType -> true
+
+    is ConeLookupTagBasedType,
+    is ConeStubType,
+    is ConeTypeVariableType,
+        -> false
 }
 
 private fun FirVariable.isInCurrentOrFriendModule(session: FirSession): Boolean {
