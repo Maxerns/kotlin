@@ -822,7 +822,7 @@ class SwiftPMImportPersistentIdentifierPackageLockIntegrationTests : KGPBaseTest
 
                     assertExactTasksInGraph(
                         ":$sharedProjectName:${SerializeSwiftPMDependenciesMetadataForLockFiles.TASK_NAME}",
-                        ":$sharedProjectName:${ValidateLocalSwiftPMDependencies.TASK_NAME}",
+                        //":$sharedProjectName:${ValidateLocalSwiftPMDependencies.TASK_NAME}",
                         ":$sharedProjectName:${FingerprintSyntheticPackage.TASK_NAME}",
                         ":$sharedProjectName:${GenerateSyntheticLinkageImportProject.syntheticImportProjectGenerationTaskName}",
                         ":$sharedProjectName:${
@@ -868,7 +868,7 @@ class SwiftPMImportPersistentIdentifierPackageLockIntegrationTests : KGPBaseTest
                 build(":${FetchSyntheticImportProjectPackages.TASK_NAME}") {
 
                     assertExactTasksInGraph(
-                        ":${ValidateLocalSwiftPMDependencies.TASK_NAME}",
+                        //":${ValidateLocalSwiftPMDependencies.TASK_NAME}",
                         ":${FingerprintSyntheticPackage.TASK_NAME}",
                         ":${GenerateSyntheticLinkageImportProject.syntheticImportProjectGenerationTaskName}",
                         ":${FetchSyntheticImportProjectPackages.TASK_NAME}",

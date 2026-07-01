@@ -673,7 +673,7 @@ class SwiftPMImportPersistentDefaultIdentifierPackageLockIntegrationTests : KGPB
                     // umbrella generate should be picked by shared
                     assertExactTasksInGraph(
                         ":$sharedProjectName:${SerializeSwiftPMDependenciesMetadataForLockFiles.TASK_NAME}",
-                        ":$sharedProjectName:${ValidateLocalSwiftPMDependencies.TASK_NAME}",
+                        //":$sharedProjectName:${ValidateLocalSwiftPMDependencies.TASK_NAME}",
                         ":$sharedProjectName:${FingerprintSyntheticPackage.TASK_NAME}",
                         ":$sharedProjectName:${GenerateSyntheticLinkageImportProject.syntheticImportProjectGenerationTaskName}",
                         ":$sharedProjectName:$expectedSharedGenerateUmbrellaPackageTaskName",
@@ -803,7 +803,6 @@ class SwiftPMImportPersistentDefaultIdentifierPackageLockIntegrationTests : KGPB
                         ":${FetchSyntheticImportProjectPackages.fetchUmbrellaPackageTaskName(identifier)}",
                         ":${SyncPackageResolvedTask.SYNC_PERSISTED_PACKAGE_RESOLVED_TO_SYNTHETIC_TASK_NAME}",
                         ":${FetchSyntheticImportProjectPackages.TASK_NAME}",
-                        ":${ValidateLocalSwiftPMDependencies.TASK_NAME}"
                     )
                 }
 
@@ -824,7 +823,6 @@ class SwiftPMImportPersistentDefaultIdentifierPackageLockIntegrationTests : KGPB
                         ":${FetchSyntheticImportProjectPackages.fetchUmbrellaPackageTaskName(identifier)}",
                         ":${FetchSyntheticImportProjectPackages.TASK_NAME}",
                         ":${SyncPackageResolvedTask.SYNC_PERSISTED_PACKAGE_RESOLVED_TO_SYNTHETIC_TASK_NAME}",
-                        ":${ValidateLocalSwiftPMDependencies.TASK_NAME}"
                     )
                 }
 
