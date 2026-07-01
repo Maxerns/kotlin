@@ -109,17 +109,17 @@ internal class KaFirValueParameterSymbol private constructor(
                 // recursion into `hasDefaultValue` lets a default propagate across several hops at once, e.g., from the `expect`
                 // counterpart of the base an `actual` override inherits from. The `isOverride`/`isActual` guards below keep the
                 // (potentially expensive) `allOverriddenSymbols`/`getExpectsForActual` lookups from firing on every hop.
-                fun KaDeclarationSymbol.hasMatchingParameterWithDefaultValue(): Boolean =
+                fun KaDeclarationSymbol.hasMatchingDefaultParameter(): Boolean =
                     (this as? KaFunctionSymbol)?.valueParameters?.getOrNull(parameterIndex)?.hasDefaultValue == true
 
                 // An implicit default value can only be inherited from an overridden declaration (for a named function) or from the
                 // matched `expect` declaration (for a named function or a constructor). Other function kinds cannot have one.
                 when (ownerFunction) {
                     is KaNamedFunctionSymbol ->
-                        ownerFunction.isOverride && ownerFunction.allOverriddenSymbols.any { it.hasMatchingParameterWithDefaultValue() } ||
-                                ownerFunction.isActual && ownerFunction.getExpectsForActual().any { it.hasMatchingParameterWithDefaultValue() }
+                        ownerFunction.isOverride && ownerFunction.allOverriddenSymbols.any { it.hasMatchingDefaultParameter() } ||
+                                ownerFunction.isActual && ownerFunction.getExpectsForActual().any { it.hasMatchingDefaultParameter() }
                     is KaConstructorSymbol ->
-                        ownerFunction.isActual && ownerFunction.getExpectsForActual().any { it.hasMatchingParameterWithDefaultValue() }
+                        ownerFunction.isActual && ownerFunction.getExpectsForActual().any { it.hasMatchingDefaultParameter() }
                     else -> false
                 }
             }
