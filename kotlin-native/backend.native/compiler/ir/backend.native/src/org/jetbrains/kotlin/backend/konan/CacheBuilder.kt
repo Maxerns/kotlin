@@ -277,9 +277,6 @@ class CacheBuilder(
     }
 
     private fun KotlinLibrary.getPerFileCachedBinaryFilePaths(cacheRoot: Path, filesToCache: List<String>): List<Path> {
-        require(!isExternal && !isCInteropLibrary()) {
-            "Can be only invoked per-file library cache."
-        }
         // Restrict to the files rebuilt this run (empty = whole-library build) so the IC build output doesn't list untouched files as rebuilt.
         return getFilesWithFqNames()
                 .filter { filesToCache.isEmpty() || it.filePath in filesToCache }
