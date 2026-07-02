@@ -1,9 +1,6 @@
-// TARGET_BACKEND: NATIVE
-// test is disabled now because of https://youtrack.jetbrains.com/issue/KT-55426
-// IGNORE_NATIVE: cacheMode=STATIC_EVERYWHERE
-// IGNORE_NATIVE: cacheMode=STATIC_PER_FILE_EVERYWHERE
-// IGNORE_NATIVE: cacheMode=STATIC_USE_HEADERS_EVERYWHERE
+// RUN_PIPELINE_TILL: BACKEND
 // DISABLE_IR_VISIBILITY_CHECKS: ANY
+// DIAGNOSTICS: -ERROR_SUPPRESSION
 
 // MODULE: lib
 // FILE: lib.kt
@@ -25,5 +22,5 @@ import kotlin.concurrent.*
 fun box() : String {
     val o = "O"
     val x = Box(o)
-    return x::value.compareAndExchangeField(o, "K") + x.value
+    return x::value.<!LEAKED_VOLATILE_FIELD!>compareAndExchangeField(o, "K")<!> + x.value
 }
