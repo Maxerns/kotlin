@@ -55,13 +55,6 @@ class OutputItemsCollectorImpl : OutputItemsCollector {
     override fun addSourceFileGeneratedForPlugin(sourceFile: File) {
         sourceFileGeneratedForPlugin.add(sourceFile)
     }
-
-    fun clear() {
-        outputs.clear()
-        sourcesReferencedByCompilerPlugin.clear()
-        outputsFileGeneratedForPlugin.clear()
-        sourceFileGeneratedForPlugin.clear()
-    }
 }
 
 data class SimpleOutputItem(val sourceFiles: Collection<File>, val outputFile: File) {
