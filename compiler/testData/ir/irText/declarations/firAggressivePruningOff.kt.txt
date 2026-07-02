@@ -1,0 +1,29 @@
+class Foo {
+  private val unusedPrivateProperty: String
+    private get
+
+  private val privatePropertyReferencedByNonInline: String
+    private get
+
+  private val privatePropertyReferencedByInline: String
+    private get
+
+  constructor() /* primary */
+
+  private fun privateFunReferencedByInline(): String {
+  }
+
+  private fun privateFunReferencedByNonInline(): String {
+  }
+
+  inline fun publicInlineFun(): String {
+    return <this>.privateFunReferencedByInline().plus(other = <this>.<get-privatePropertyReferencedByInline>())
+  }
+
+  fun publicNonInlineFun(): String {
+  }
+
+  private fun unusedPrivateFun(): String {
+  }
+
+}

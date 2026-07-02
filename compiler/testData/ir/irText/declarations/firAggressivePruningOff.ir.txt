@@ -1,0 +1,65 @@
+FILE fqName:<root> fileName:/firAggressivePruningOff.kt
+  CLASS CLASS name:Foo modality:FINAL visibility:public superTypes:[kotlin.Any]
+    thisReceiver: VALUE_PARAMETER INSTANCE_RECEIVER kind:DispatchReceiver name:<this> type:<root>.Foo
+    PROPERTY name:unusedPrivateProperty visibility:private modality:FINAL [val]
+      FIELD PROPERTY_BACKING_FIELD name:unusedPrivateProperty type:kotlin.String visibility:private [final]
+      FUN DEFAULT_PROPERTY_ACCESSOR name:<get-unusedPrivateProperty> visibility:private modality:FINAL returnType:kotlin.String
+        VALUE_PARAMETER kind:DispatchReceiver name:<this> index:0 type:<root>.Foo
+        correspondingProperty: PROPERTY name:unusedPrivateProperty visibility:private modality:FINAL [val]
+        BLOCK_BODY
+          RETURN type=kotlin.Nothing from='private final fun <get-unusedPrivateProperty> (): kotlin.String declared in <root>.Foo'
+            GET_FIELD 'FIELD PROPERTY_BACKING_FIELD name:unusedPrivateProperty type:kotlin.String visibility:private [final]' type=kotlin.String origin=null
+              receiver: GET_VAR '<this>: <root>.Foo declared in <root>.Foo.<get-unusedPrivateProperty>' type=<root>.Foo origin=null
+    PROPERTY name:privatePropertyReferencedByNonInline visibility:private modality:FINAL [val]
+      FIELD PROPERTY_BACKING_FIELD name:privatePropertyReferencedByNonInline type:kotlin.String visibility:private [final]
+      FUN DEFAULT_PROPERTY_ACCESSOR name:<get-privatePropertyReferencedByNonInline> visibility:private modality:FINAL returnType:kotlin.String
+        VALUE_PARAMETER kind:DispatchReceiver name:<this> index:0 type:<root>.Foo
+        correspondingProperty: PROPERTY name:privatePropertyReferencedByNonInline visibility:private modality:FINAL [val]
+        BLOCK_BODY
+          RETURN type=kotlin.Nothing from='private final fun <get-privatePropertyReferencedByNonInline> (): kotlin.String declared in <root>.Foo'
+            GET_FIELD 'FIELD PROPERTY_BACKING_FIELD name:privatePropertyReferencedByNonInline type:kotlin.String visibility:private [final]' type=kotlin.String origin=null
+              receiver: GET_VAR '<this>: <root>.Foo declared in <root>.Foo.<get-privatePropertyReferencedByNonInline>' type=<root>.Foo origin=null
+    PROPERTY name:privatePropertyReferencedByInline visibility:private modality:FINAL [val]
+      FIELD PROPERTY_BACKING_FIELD name:privatePropertyReferencedByInline type:kotlin.String visibility:private [final]
+      FUN DEFAULT_PROPERTY_ACCESSOR name:<get-privatePropertyReferencedByInline> visibility:private modality:FINAL returnType:kotlin.String
+        VALUE_PARAMETER kind:DispatchReceiver name:<this> index:0 type:<root>.Foo
+        correspondingProperty: PROPERTY name:privatePropertyReferencedByInline visibility:private modality:FINAL [val]
+        BLOCK_BODY
+          RETURN type=kotlin.Nothing from='private final fun <get-privatePropertyReferencedByInline> (): kotlin.String declared in <root>.Foo'
+            GET_FIELD 'FIELD PROPERTY_BACKING_FIELD name:privatePropertyReferencedByInline type:kotlin.String visibility:private [final]' type=kotlin.String origin=null
+              receiver: GET_VAR '<this>: <root>.Foo declared in <root>.Foo.<get-privatePropertyReferencedByInline>' type=<root>.Foo origin=null
+    CONSTRUCTOR visibility:public returnType:<root>.Foo [primary]
+    FUN FAKE_OVERRIDE name:equals visibility:public modality:OPEN returnType:kotlin.Boolean [fake_override,operator]
+      VALUE_PARAMETER kind:DispatchReceiver name:<this> index:0 type:kotlin.Any
+      VALUE_PARAMETER kind:Regular name:other index:1 type:kotlin.Any?
+      overridden:
+        public open fun equals (other: kotlin.Any?): kotlin.Boolean declared in kotlin.Any
+    FUN FAKE_OVERRIDE name:hashCode visibility:public modality:OPEN returnType:kotlin.Int [fake_override]
+      VALUE_PARAMETER kind:DispatchReceiver name:<this> index:0 type:kotlin.Any
+      overridden:
+        public open fun hashCode (): kotlin.Int declared in kotlin.Any
+    FUN FAKE_OVERRIDE name:toString visibility:public modality:OPEN returnType:kotlin.String [fake_override]
+      VALUE_PARAMETER kind:DispatchReceiver name:<this> index:0 type:kotlin.Any
+      overridden:
+        public open fun toString (): kotlin.String declared in kotlin.Any
+    FUN name:privateFunReferencedByInline visibility:private modality:FINAL returnType:kotlin.String
+      VALUE_PARAMETER kind:DispatchReceiver name:<this> index:0 type:<root>.Foo
+      BLOCK_BODY
+    FUN name:privateFunReferencedByNonInline visibility:private modality:FINAL returnType:kotlin.String
+      VALUE_PARAMETER kind:DispatchReceiver name:<this> index:0 type:<root>.Foo
+      BLOCK_BODY
+    FUN name:publicInlineFun visibility:public modality:FINAL returnType:kotlin.String [inline]
+      VALUE_PARAMETER kind:DispatchReceiver name:<this> index:0 type:<root>.Foo
+      BLOCK_BODY
+        RETURN type=kotlin.Nothing from='public final fun publicInlineFun (): kotlin.String declared in <root>.Foo'
+          CALL 'public final fun plus (other: kotlin.Any?): kotlin.String declared in kotlin.String' type=kotlin.String origin=PLUS
+            ARG <this>: CALL 'private final fun privateFunReferencedByInline (): kotlin.String declared in <root>.Foo' type=kotlin.String origin=null
+              ARG <this>: GET_VAR '<this>: <root>.Foo declared in <root>.Foo.publicInlineFun' type=<root>.Foo origin=IMPLICIT_ARGUMENT
+            ARG other: CALL 'private final fun <get-privatePropertyReferencedByInline> (): kotlin.String declared in <root>.Foo' type=kotlin.String origin=GET_PROPERTY
+              ARG <this>: GET_VAR '<this>: <root>.Foo declared in <root>.Foo.publicInlineFun' type=<root>.Foo origin=IMPLICIT_ARGUMENT
+    FUN name:publicNonInlineFun visibility:public modality:FINAL returnType:kotlin.String
+      VALUE_PARAMETER kind:DispatchReceiver name:<this> index:0 type:<root>.Foo
+      BLOCK_BODY
+    FUN name:unusedPrivateFun visibility:private modality:FINAL returnType:kotlin.String
+      VALUE_PARAMETER kind:DispatchReceiver name:<this> index:0 type:<root>.Foo
+      BLOCK_BODY
