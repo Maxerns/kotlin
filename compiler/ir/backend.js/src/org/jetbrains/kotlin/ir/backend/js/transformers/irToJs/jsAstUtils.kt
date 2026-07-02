@@ -762,7 +762,6 @@ private val debugFriendlyOrigins: Set<IrDeclarationOrigin> = hashSetOf(
     IrDeclarationOrigin.DEFINED,
     IrDeclarationOrigin.LOCAL_FUNCTION,
     IrDeclarationOrigin.LOCAL_FUNCTION_FOR_LAMBDA,
-    IrDeclarationOrigin.FUNCTION_FOR_DEFAULT_PARAMETER,
     IrDeclarationOrigin.LOWERED_SUSPEND_FUNCTION,
     AbstractSuspendFunctionsLowering.DECLARATION_ORIGIN_COROUTINE_IMPL_INVOKE,
     ENUM_ENTRIES_INITIALIZER_ORIGIN,
