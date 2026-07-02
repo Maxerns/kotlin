@@ -256,7 +256,7 @@ internal fun addFunctionsListSymbolForChecker(generationState: NativeGenerationS
         val cacheKeys = generationState.dependenciesTracker.allCachedBitcodeDependencies.flatMap { dependency ->
             val library = dependency.library
             when (val cache = context.config.cachedLibraries.getLibraryCache(library)) {
-                null -> error("Library ${library.location} is expected to be cached")
+                null -> error("Library ${library.path} is expected to be cached")
 
                 is CachedLibraries.Cache.Monolithic -> listOf(library.uniqueName)
 
