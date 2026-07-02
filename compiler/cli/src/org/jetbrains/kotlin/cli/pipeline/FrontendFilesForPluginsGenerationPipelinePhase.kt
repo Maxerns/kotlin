@@ -31,21 +31,24 @@ class FrontendFilesForPluginsGenerationPipelinePhase<A : FrontendPipelineArtifac
     name = "FrontendFilesForPluginsGenerationPipelinePhase"
 ) {
     override fun executePhase(input: A): A {
-        val frontendOutput = createFilesWithGeneratedDeclarations(input.frontendOutput)
-        input.configuration.fileMappingTracker?.let { fileMappingTracker ->
-            frontendOutput.outputs.flatMap { it.fir }.filter { it.sourceFile == null }.forEach { firFile ->
-                fileMappingTracker.recordSourceFileGeneratedForPlugin(File(firFile.name))
-            }
-        }
         return input.withNewFrontendOutput(
-            frontendOutput
+            createFilesWithGeneratedDeclarations(input.frontendOutput) {
+                input.configuration.fileMappingTracker?.recordSourceFileGeneratedForPlugin(File(it.name))
+            }
         )
     }
 
     companion object {
         fun createFilesWithGeneratedDeclarations(allModulesOutput: AllModulesFrontendOutput): AllModulesFrontendOutput {
+            return createFilesWithGeneratedDeclarations(allModulesOutput) {}
+        }
+
+        private fun createFilesWithGeneratedDeclarations(
+            allModulesOutput: AllModulesFrontendOutput,
+            onFile: (FirFile) -> Unit,
+        ): AllModulesFrontendOutput {
             val outputs = allModulesOutput.outputs.map {
-                val newFiles = createFilesWithGeneratedDeclarations(it.session)
+                val newFiles = createFilesWithGeneratedDeclarations(it.session).onEach { onFile(it) }
                 if (newFiles.isEmpty()) return@map it
                 it.copy(fir = it.fir + newFiles)
             }
