@@ -3,5 +3,5 @@ import test2.*
 
 @Test
 fun runTest() {
-    assertEquals("foo Changed", Derived().bar())
+    assertEquals(4, inlineValue())
 }
