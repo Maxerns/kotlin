@@ -243,7 +243,7 @@ private class FunctionClsStubBuilder(
     private val functionProto: ProtoBuf.Function
 ) : CallableClsStubBuilder(parent, outerContext, protoContainer, functionProto.typeParameterList) {
     override val receiverType: ProtoBuf.Type?
-        get() = functionProto.receiverType(c.typeTable)
+        get() = functionProto.receiverOrCompanionExtensionReceiverType(c.typeTable)
 
     override val receiverAnnotations: List<AnnotationWithTarget>
         get() {
@@ -334,7 +334,7 @@ private class PropertyClsStubBuilder(
     private val isVar = Flags.IS_VAR.get(propertyProto.flags)
 
     override val receiverType: ProtoBuf.Type?
-        get() = propertyProto.receiverType(c.typeTable)
+        get() = propertyProto.receiverOrCompanionExtensionReceiverType(c.typeTable)
 
     override val receiverAnnotations: List<AnnotationWithTarget>
         get() = c.components.annotationLoader
