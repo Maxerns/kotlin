@@ -16,11 +16,11 @@ import java.io.File
  */
 class RelocatableFileToPathConverter(
     private val baseDir: File,
-    private val generatedSources: Set<File> = emptySet(),
+    private val compilerGeneratedSyntheticSources: Set<File> = emptySet(),
 ) : FileToPathConverter {
 
     override fun toPath(file: File): String {
-        if (file in generatedSources) {
+        if (file in compilerGeneratedSyntheticSources) {
             return file.invariantSeparatorsPath
         }
         check(file.isAbsolute) { "Expected absolute path but found relative path: ${file.path}" }
@@ -31,7 +31,7 @@ class RelocatableFileToPathConverter(
     }
 
     override fun toFile(path: String): File {
-        if (File(path) in generatedSources) {
+        if (File(path) in compilerGeneratedSyntheticSources) {
             return File(path).normalize()
         }
         // Note: The given path is Unix-style but baseDir could be Windows-style; call normalize() so that the style of the returned file's
@@ -56,9 +56,9 @@ class FileLocations(
     val buildDir: File,
 ) {
 
-    fun getRelocatablePathConverterForSourceFiles(generatedFiles: Set<File> = emptySet()) =
-        RelocatableFileToPathConverter(rootProjectDir, generatedFiles)
+    fun getRelocatablePathConverterForSourceFiles(compilerGeneratedSyntheticSources: Set<File> = emptySet()) =
+        RelocatableFileToPathConverter(rootProjectDir, compilerGeneratedSyntheticSources)
 
-    fun getRelocatablePathConverterForOutputFiles(generatedFiles: Set<File> = emptySet()) =
-        RelocatableFileToPathConverter(buildDir, generatedFiles)
+    fun getRelocatablePathConverterForOutputFiles(compilerGeneratedSyntheticSources: Set<File> = emptySet()) =
+        RelocatableFileToPathConverter(buildDir, compilerGeneratedSyntheticSources)
 }

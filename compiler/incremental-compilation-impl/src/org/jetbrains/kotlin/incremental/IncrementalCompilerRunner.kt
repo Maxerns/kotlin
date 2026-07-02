@@ -93,10 +93,12 @@ abstract class IncrementalCompilerRunner<
         fileLocations: FileLocations?,
         transaction: CompilationTransaction,
         fragmentContext: FragmentContext? = null,
-        generatedSources: MutableSet<File> = mutableSetOf(),
+        compilerGeneratedSyntheticSources: MutableSet<File> = mutableSetOf(),
     ) = IncrementalCompilationContext(
-        pathConverterForSourceFiles = fileLocations?.getRelocatablePathConverterForSourceFiles(generatedSources) ?: BasicFileToPathConverter,
-        pathConverterForOutputFiles = fileLocations?.getRelocatablePathConverterForOutputFiles(generatedSources) ?: BasicFileToPathConverter,
+        pathConverterForSourceFiles = fileLocations?.getRelocatablePathConverterForSourceFiles(compilerGeneratedSyntheticSources)
+            ?: BasicFileToPathConverter,
+        pathConverterForOutputFiles = fileLocations?.getRelocatablePathConverterForOutputFiles(compilerGeneratedSyntheticSources)
+            ?: BasicFileToPathConverter,
         transaction = transaction,
         reporter = reporter,
         trackChangesInLookupCache = shouldTrackChangesInLookupCache,
@@ -104,7 +106,7 @@ abstract class IncrementalCompilerRunner<
         storeFullFqNamesInLookupCache = shouldStoreFullFqNamesInLookupCache,
         icFeatures = icFeatures,
         fragmentContext = fragmentContext,
-        generatedSources = generatedSources,
+        compilerGeneratedSyntheticSources = compilerGeneratedSyntheticSources,
     )
 
     protected abstract val shouldTrackChangesInLookupCache: Boolean
@@ -613,8 +615,8 @@ abstract class IncrementalCompilerRunner<
                 exitCode = ec
                 compiled
             }
-            icContext.generatedSources.clear()
-            icContext.generatedSources.addAll(outputItemsCollector.sourceFileGeneratedForPlugin)
+            icContext.compilerGeneratedSyntheticSources.clear()
+            icContext.compilerGeneratedSyntheticSources.addAll(outputItemsCollector.sourceFileGeneratedForPlugin)
 
             dirtySources.addAll(compiledSources)
             allDirtySources.addAll(dirtySources)
