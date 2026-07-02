@@ -1,6 +1,23 @@
 /*
  * Copyright 2010-2026 JetBrains s.r.o. and Kotlin Programming Language contributors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
+ *
+ * PwExecutionSpec.createImpl in this file is based on code from the Playwright project (https://github.com/microsoft/playwright-java)
+ * Original method: com.microsoft.playwright.impl.PlaywrightImpl.createImpl
+ * License: Apache License 2.0
+ *
+ * Modifications:
+ * - use reflection to access private constructor of com.microsoft.playwright.impl.Connection
+ * - override
+ *
+ * PwExecutionSpec.createProcessBuilde in this file is based on code from the Playwright project (https://github.com/microsoft/playwright-java)
+ * Original method: com.microsoft.playwright.impl.driver.Driver.createProcessBuilder
+ * License: Apache License 2.0
+ *
+ * Modifications:
+ * - change path to cli.js
+ *
+ * Copyright [Original Gradle authors]
  */
 
 package org.jetbrains.kotlin.gradle.targets.js.testing.playwright
@@ -112,15 +129,13 @@ internal class PlaywrightTestExecutor() : TestExecuter<PwExecutionSpec> {
             pb.command().add("run-driver")
             pb.redirectError(ProcessBuilder.Redirect.INHERIT)
             val p = pb.start()
-            //TODO shadow classes we need here
-            // Create PipeTransport via reflection
             val pipeTransportClass = try {
                 Class.forName("com.microsoft.playwright.impl.PipeTransport")
             } catch (e: Throwable) {
                 throw RuntimeException("Failed to load PipeTransport class", e)
             }
 
-            // TODO: Merge fix to playwright upstream to get rid of reflection calls
+            // KT-87396: Merge fix to playwright upstream to get rid of reflection calls
             val pipeTransport = try {
                 val constructor = pipeTransportClass.getDeclaredConstructor(
                     InputStream::class.java,
