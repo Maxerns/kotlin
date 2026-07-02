@@ -510,9 +510,8 @@ class MingwLinker(targetProperties: MingwConfigurables)
         fun List<String>.asLinkerInputs(responseFilePrefix: String): List<String> =
             if (isEmpty()) this else listOf(responseFileArg(tempFiles, responseFilePrefix, this))
 
-        val staticLibrariesArgs = staticLibraries.asLinkerInputs("staticlibs")
-        val dynamicLibrariesArgs = dynamicLibraries.asLinkerInputs("dynamiclibs")
-        val usesResponseFile = staticLibraries.isNotEmpty() || dynamicLibraries.isNotEmpty()
+        val librariesArgs = (staticLibraries + dynamicLibraries).asLinkerInputs("libs")
+        val usesResponseFile = librariesArgs.isNotEmpty()
 
         fun Command.constructLinkerArguments(
                 additionalArguments: List<String> = listOf(),
@@ -529,8 +528,7 @@ class MingwLinker(targetProperties: MingwConfigurables)
             }
             if (!debug) +linkerNoDebugFlags
             if (dynamic) +linkerDynamicFlags
-            +staticLibrariesArgs
-            +dynamicLibrariesArgs
+            +librariesArgs
             +linkerArgs
             +linkerKonanFlags.filterNot { it in skipDefaultArguments }
             +additionalArguments
