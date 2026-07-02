@@ -231,5 +231,6 @@ projectTests {
             configurations.testRuntimeClasspath, // Includes KotlinSecurityManager from test-inputs-check
         )
         testClassesDirs = testSourceSet.output.classesDirs
+        systemProperty("ide.can.use.coroutines.fork", "false")
     }
 }
