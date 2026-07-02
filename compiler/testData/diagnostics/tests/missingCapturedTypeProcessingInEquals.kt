@@ -7,5 +7,11 @@ fun foo(vararg ts: String, a: Any?) {
     }
 }
 
+fun <T: <!FINAL_UPPER_BOUND!>String<!>> bar(ts: T, a: Any?) {
+    if (ts == a) {
+        a.length
+    }
+}
+
 /* GENERATED_FIR_TAGS: capturedType, equalityExpression, functionDeclaration, ifExpression, integerLiteral, nullableType,
 outProjection, smartcast, vararg */
