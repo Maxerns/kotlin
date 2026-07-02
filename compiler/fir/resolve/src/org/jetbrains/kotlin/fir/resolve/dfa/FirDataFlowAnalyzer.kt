@@ -249,8 +249,7 @@ abstract class FirDataFlowAnalyzer(
                                 is ConeIntersectionType -> intersectedTypes.all { it.isAcceptableForSmartcast() }
                                 is ConeDefinitelyNotNullType -> original.isAcceptableForSmartcast()
 
-                                // I couldn't come up with tests that would verify these, but these feel like the correct values.
-                                is ConeCapturedType -> true//constructor.supertypes?.all { it.isAcceptableForSmartcast() } == true
+                                is ConeCapturedType -> constructor.supertypes?.all { it.isAcceptableForSmartcast() } == true
                                 is ConeIntegerLiteralType -> true
 
                                 is ConeLookupTagBasedType,
