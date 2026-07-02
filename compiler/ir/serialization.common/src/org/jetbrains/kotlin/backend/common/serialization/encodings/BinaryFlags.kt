@@ -181,24 +181,6 @@ value class ValueParameterFlags(val flags: Long) {
 }
 
 @JvmInline
-value class TypeAliasFlags(val flags: Long) {
-
-    val visibility: DescriptorVisibility get() = ProtoEnumFlags.visibility(IrFlags.VISIBILITY.get(flags.toInt())).toDescriptorVisibility()
-    val isActual: Boolean get() = IrFlags.IS_ACTUAL.get(flags.toInt())
-
-    companion object {
-        fun encode(typeAlias: IrTypeAlias): Long {
-            return typeAlias.run {
-                val visibility = ProtoEnumFlags.visibility(visibility.normalize().delegate)
-                IrFlags.getTypeAliasFlags(annotations.isNotEmpty(), visibility, isActual).toLong()
-            }
-        }
-
-        fun decode(code: Long) = TypeAliasFlags(code)
-    }
-}
-
-@JvmInline
 value class TypeParameterFlags(val flags: Long) {
 
     val variance: Variance get() = ProtoEnumFlags.variance(IrFlags.VARIANCE.get(flags.toInt()))

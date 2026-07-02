@@ -56,7 +56,6 @@ import org.jetbrains.kotlin.backend.common.serialization.proto.IrSimpleTypeLegac
 import org.jetbrains.kotlin.backend.common.serialization.proto.IrSimpleTypeNullability as ProtoSimpleTypeNullablity
 import org.jetbrains.kotlin.backend.common.serialization.proto.IrStatement as ProtoStatement
 import org.jetbrains.kotlin.backend.common.serialization.proto.IrType as ProtoType
-import org.jetbrains.kotlin.backend.common.serialization.proto.IrTypeAlias as ProtoTypeAlias
 import org.jetbrains.kotlin.backend.common.serialization.proto.IrTypeParameter as ProtoTypeParameter
 import org.jetbrains.kotlin.backend.common.serialization.proto.IrValueParameter as ProtoValueParameter
 import org.jetbrains.kotlin.backend.common.serialization.proto.IrVariable as ProtoVariable
@@ -383,6 +382,7 @@ class IrDeclarationDeserializer(
                     val oldDeclarations = declarations.toSet()
                     proto.declarationList
                         .asSequence()
+                        .filterNot { it.declaratorCase == IR_TYPE_ALIAS }
                         .filterNot { isSkippedFakeOverride(it, this) }
                         // On JVM, deserialization may fill bodies of existing declarations, so avoid adding duplicates.
                         .mapNotNullTo(declarations) { declProto -> deserializeDeclaration(declProto, startOffset).takeIf { it !in oldDeclarations } }
@@ -415,34 +415,6 @@ class IrDeclarationDeserializer(
         val ctor = irClass.primaryConstructor ?: error("Full value class has no primary constructor: ${irClass.render()}")
         return FullValueClassRepresentation(ctor.parameters.map { it.name to it.type as IrSimpleType })
     }
-
-    private fun deserializeIrTypeAlias(proto: ProtoTypeAlias, parentStart: Int?): IrTypeAlias =
-        withDeserializedIrDeclarationBase(proto.base, parentStart, setParent = false) { symbol, uniqId, startOffset, endOffset, origin, fcode ->
-            symbolTable.declareTypeAlias(uniqId, { symbol.checkSymbolType(TYPEALIAS_SYMBOL) }) {
-                // This is a quick fix for KT-86501
-                if (it.isBound) return@declareTypeAlias it.owner
-                createIfUnbound(it) {
-                    val flags = TypeAliasFlags.decode(fcode)
-                    val nameType = BinaryNameAndType.decode(proto.nameType)
-                    irFactory.createTypeAlias(
-                        startOffset = startOffset,
-                        endOffset = endOffset,
-                        origin = origin,
-                        name = deserializeName(nameType.nameIndex),
-                        visibility = flags.visibility,
-                        symbol = it,
-                        isActual = flags.isActual,
-                        expandedType = deserializeIrType(nameType.typeIndex),
-                    )
-                }.apply {
-                    parent = currentDeclarationParent
-                }
-            }.usingDeclarationParent {
-                // This check is a quick fix for KT-86501
-                if (typeParameters.isNotEmpty()) return@usingDeclarationParent
-                typeParameters = deserializeTypeParameters(proto.typeParameterList, true, startOffset)
-            }
-        }
 
     private fun deserializeTypeParameters(protos: List<ProtoTypeParameter>, isGlobal: Boolean, parentStart: Int?): List<IrTypeParameter> {
         // NOTE: fun <C : MutableCollection<in T>, T : Any> Array<out T?>.filterNotNullTo(destination: C): C
@@ -840,7 +812,7 @@ class IrDeclarationDeserializer(
             IR_VALUE_PARAMETER -> error("") // deserializeIrValueParameter(proto.irValueParameter, proto.irValueParameter.index)
             IR_ENUM_ENTRY -> deserializeIrEnumEntry(proto.irEnumEntry, parentStart, setParent)
             IR_LOCAL_DELEGATED_PROPERTY -> deserializeIrLocalDelegatedProperty(proto.irLocalDelegatedProperty, parentStart, setParent)
-            IR_TYPE_ALIAS -> deserializeIrTypeAlias(proto.irTypeAlias, parentStart)
+            IR_TYPE_ALIAS -> error("IrTypeAlias must not be deserialized")
             DECLARATOR_NOT_SET -> error("Declaration deserialization not implemented: ${proto.declaratorCase}")
         }
 
