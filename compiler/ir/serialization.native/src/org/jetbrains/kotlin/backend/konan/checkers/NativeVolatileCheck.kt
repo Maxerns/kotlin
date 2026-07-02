@@ -12,9 +12,9 @@ import org.jetbrains.kotlin.ir.declarations.IrParameterKind
 import org.jetbrains.kotlin.ir.expressions.IrCall
 import org.jetbrains.kotlin.ir.expressions.IrFunctionAccessExpression
 import org.jetbrains.kotlin.ir.symbols.IrPropertySymbol
-import org.jetbrains.kotlin.ir.util.file
 import org.jetbrains.kotlin.ir.util.findAnnotation
 import org.jetbrains.kotlin.ir.util.getConstArgument
+import org.jetbrains.kotlin.ir.util.getPackageFragment
 import org.jetbrains.kotlin.ir.util.getSinglePropertyReference
 import org.jetbrains.kotlin.name.FqName
 
@@ -44,7 +44,8 @@ object NativeVolatileCheck : NativeKlibExpressionsChecker<IrCall> {
             expression.arguments[expression.symbol.owner.parameters.indexOfFirst { it.kind == IrParameterKind.ExtensionReceiver }]
         val reference = getSinglePropertyReference(extensionReceiver, null) ?: return
         val property = (reference.reflectionTargetSymbol as? IrPropertySymbol)?.owner ?: return
-        val declarationFile = property.file
+        // If property lies in another module, then it will have `IrExternalPackageFragment` instead of `IrFile`
+        val declarationFile = property.getPackageFragment()
 
         if (declarationFile != context.containingFile) {
             val expressionToReportOn = if (context.inlineBlockStack.isNotEmpty()) context.inlineBlockStack.first() else expression
