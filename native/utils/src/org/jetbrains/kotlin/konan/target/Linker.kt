@@ -42,23 +42,17 @@ private fun llvmArStaticLibraryCommands(
     libraries: List<String>,
     tempFiles: TempFiles,
 ): List<Command> {
-    // Neither operation below starts from a clean slate: 'r' replaces/inserts members by name but keeps any member no
-    // longer in the input set, and 'q' merely quick-appends (duplicating members on a re-run). Correctness therefore
-    // relies on [executable] not pre-existing: the sole caller (Linker.linkCommands) deletes it before these commands
-    // run, so llvm-ar always writes a fresh archive containing exactly the requested members.
-    //
-    // Operation + modifiers: c - create without a warning, s - write the symbol index (the linker resolves members through it),
-    // D - deterministic output (zeroed timestamps/uids).
-    val operation = if (libraries.isEmpty()) {
-        // The common case (in particular every per-file cache fragment): only object files.
-        "rcsD"
-    } else {
-        // With .a inputs we must flatten them — add their members instead of the archive itself, since linkers don't
-        // recurse into member archives. llvm-ar does this with the 'L' modifier (the replacement for the GNU-ar
-        // thin-archive trick — KT-84035), which is only valid with the 'q' (quick-append) operation.
-        "qcsDL"
-    }
     val members = objectFiles + libraries
+    // Operation + modifiers:
+    // q - quick-append (safe here: the output archive is deleted by the caller before these commands run,
+    //   so it always starts empty);
+    // c - create without a warning;
+    // s - write the symbol index (the linker resolves members through it);
+    // D - deterministic output (zeroed timestamps/uids);
+    // L - flatten any .a input by adding its members instead of the archive itself, since linkers don't recurse into member archives
+    //   (the replacement for the GNU-ar thin-archive trick — KT-84035; a no-op for plain object files).
+    // Note: 'L' is only valid with the 'q' operation.
+    val operation = "qcsDL"
     // Always pass the inputs via a response file. A static binary that bundles a per-file cache pulls in hundreds of
     // archives, which would overflow the Windows command-line length limit (CreateProcess error=206); routing through
     // a response file avoids that unconditionally. `--rsp-quoting=windows` keeps backslashes in Windows paths literal
