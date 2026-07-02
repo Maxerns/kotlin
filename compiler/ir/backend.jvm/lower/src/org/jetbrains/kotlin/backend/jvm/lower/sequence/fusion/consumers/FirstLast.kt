@@ -48,27 +48,27 @@ internal class FirstLastConsumerStrategy(data: ConsumerData, expression: IrCall,
         else null
         with(data.builder) {
             return { sequenceElement ->
-                val block = irReturnableBlock(context.irBuiltIns.booleanType) {}
-                var predicateResult: IrVariable? = null
-                if (containsPredicate) {
-                    predicateResult =
-                        scope.createTemporaryVariable(
-                            callRichFunctionReference(predicate!!, data.parent, irGet(sequenceElement)),
-                            nameHint = "predicateResult"
-                        )
-                    val thenPart = irBlock {
+                irReturnableBlock(context.irBuiltIns.booleanType) {
+                    var predicateResult: IrVariable? = null
+                    if (containsPredicate) {
+                        predicateResult =
+                            scope.createTemporaryVariable(
+                                callRichFunctionReference(predicate!!, data.parent, irGet(sequenceElement)),
+                                nameHint = "predicateResult"
+                            )
+                        val thenPart = irBlock {
+                            +irSet(resultVariable, irGet(sequenceElement))
+                            +irSet(skippedVariable, irFalse())
+                        }
+                        +predicateResult
+                        +irIfThen(irGet(predicateResult), thenPart)
+                    } else {
                         +irSet(resultVariable, irGet(sequenceElement))
                         +irSet(skippedVariable, irFalse())
                     }
-                    block.statements.add(predicateResult)
-                    block.statements.add(irIfThen(irGet(predicateResult), thenPart))
-                } else {
-                    block.statements.add(irSet(resultVariable, irGet(sequenceElement)))
-                    block.statements.add(irSet(skippedVariable, irFalse()))
+                    val result = if (isFirst) if (containsPredicate) irNot(irGet(predicateResult!!)) else irFalse() else irTrue()
+                    +irReturn(result).apply { returnTargetSymbol = returnableBlockSymbol }
                 }
-                val result = if (isFirst) if (containsPredicate) irNot(irGet(predicateResult!!)) else irFalse() else irTrue()
-                block.statements.add(irReturn(result).apply { returnTargetSymbol = block.symbol })
-                block
             }
         }
     }

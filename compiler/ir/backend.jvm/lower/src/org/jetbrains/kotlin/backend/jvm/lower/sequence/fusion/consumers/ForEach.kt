@@ -20,14 +20,14 @@ internal class ForEachConsumerStrategy(data: ConsumerData, expression: IrCall) :
     override val returnsElement: Boolean = false
     override fun initializeState(): List<IrVariable> = emptyList()
 
-    override fun getConsumerBuilder(): ConsumerBodyBuilder {
+    override fun getConsumerBuilder(): ConsumerBodyBuilder? {
+        val expression = expression as IrCall
+        val function = expression.arguments.getOrNull(1) as? IrRichFunctionReference ?: return null
         return { sequenceElement ->
-            val block = data.builder.irReturnableBlock(data.context.irBuiltIns.booleanType) {}
-            val expression = expression as IrCall
-            val function = expression.arguments.getOrNull(1) as? IrRichFunctionReference ?: error("No function argument for forEach")
-            block.statements.add(data.builder.callRichFunctionReference(function, data.parent, data.builder.irGet(sequenceElement)))
-            block.statements.add(data.builder.irReturnTrue().apply { returnTargetSymbol = block.symbol })
-            block
+            data.builder.irReturnableBlock(data.context.irBuiltIns.booleanType) {
+                +callRichFunctionReference(function, data.parent, irGet(sequenceElement))
+                +irReturnTrue().apply { returnTargetSymbol = returnableBlockSymbol }
+            }
         }
     }
 

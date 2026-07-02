@@ -57,16 +57,14 @@ internal class FilterToConsumerStrategy(data: ConsumerData, expression: IrCall, 
                 }
                 false
                  */
-                val block = irReturnableBlock(context.irBuiltIns.booleanType) {}
-                block.statements.add(
-                    irIfThen(
+                irReturnableBlock(context.irBuiltIns.booleanType) {
+                    +irIfThen(
                         context.irBuiltIns.unitType,
                         filterCondition,
                         destinationAddCall
                     )
-                )
-                block.statements.add(irReturnTrue().apply { returnTargetSymbol = block.symbol })
-                block
+                    +irReturnTrue().apply { returnTargetSymbol = returnableBlockSymbol }
+                }
             }
         }
     }

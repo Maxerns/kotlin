@@ -32,11 +32,11 @@ internal class FindConsumerStrategy(data: ConsumerData, expression: IrCall, val 
         return listOf(resultVariable)
     }
 
-    override fun getConsumerBuilder(): ConsumerBodyBuilder {
+    override fun getConsumerBuilder(): ConsumerBodyBuilder? {
+        val expression = expression as IrCall
+        val findPredicate = expression.arguments.getOrNull(1) as? IrRichFunctionReference ?: return null
         with(data.builder) {
             return { sequenceElement ->
-                val expression = expression as IrCall
-                val findPredicate = expression.arguments.getOrNull(1) as? IrRichFunctionReference ?: error("No predicate argument for find")
                 /*
                 for find:
                 ```
@@ -51,20 +51,18 @@ internal class FindConsumerStrategy(data: ConsumerData, expression: IrCall, val 
                 return true // always tell the producer to check all the elements
                 ```
                  */
-                val block = irReturnableBlock(context.irBuiltIns.booleanType) {}
-                val wasFoundVariable =
-                    scope.createTemporaryVariable(callRichFunctionReference(findPredicate, data.parent, irGet(sequenceElement)))
-                block.statements.add(wasFoundVariable)
-                block.statements.add(
-                    irIfThen(
+                irReturnableBlock(context.irBuiltIns.booleanType) {
+                    val wasFoundVariable =
+                        scope.createTemporaryVariable(callRichFunctionReference(findPredicate, data.parent, irGet(sequenceElement)))
+                    +wasFoundVariable
+                    +irIfThen(
                         context.irBuiltIns.unitType,
                         irGet(wasFoundVariable),
                         irSet(resultVariable, irGet(sequenceElement))
                     )
-                )
-                val result = if (isFirst) irNot(irGet(wasFoundVariable)) else irTrue()
-                block.statements.add(irReturn(result).apply { returnTargetSymbol = block.symbol })
-                block
+                    val result = if (isFirst) irNot(irGet(wasFoundVariable)) else irTrue()
+                    +irReturn(result).apply { returnTargetSymbol = returnableBlockSymbol }
+                }
             }
         }
     }

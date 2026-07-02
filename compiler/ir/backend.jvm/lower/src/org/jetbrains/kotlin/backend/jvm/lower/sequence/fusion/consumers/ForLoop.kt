@@ -28,16 +28,16 @@ internal class ForLoopConsumerStrategy(data: ConsumerData, val loopData: LoopDat
             val results = updateLoopVariableInBody(data.builder, loopData.loopVariable, loopData.loopBody, loopData.loop, data.parent)
             val preparedBody = results.first(sequenceElement)
             loop = results.second
-            val block = data.builder.irReturnableBlock(data.context.irBuiltIns.booleanType) {}
-            loop?.let {
-                preparedBody.rebindJumps(
-                    it,
-                    { data.builder.irReturnFalse().apply { returnTargetSymbol = block.symbol } },
-                    { data.builder.irReturnTrue().apply { returnTargetSymbol = block.symbol } })
+            data.builder.irReturnableBlock(data.context.irBuiltIns.booleanType) {
+                loop?.let {
+                    preparedBody.rebindJumps(
+                        it,
+                        { irReturnFalse().apply { returnTargetSymbol = returnableBlockSymbol } },
+                        { irReturnTrue().apply { returnTargetSymbol = returnableBlockSymbol } })
+                }
+                +preparedBody
+                +irReturnTrue().apply { returnTargetSymbol = returnableBlockSymbol }
             }
-            block.statements.add(preparedBody)
-            block.statements.add(data.builder.irReturnTrue().apply { returnTargetSymbol = block.symbol })
-            block
         }
     }
 

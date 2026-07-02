@@ -41,20 +41,20 @@ internal class FirstNotNullOfConsumerStrategy(data: ConsumerData, expression: Ir
         val transformFunction = (expression as IrCall).arguments.getOrNull(1) as? IrRichFunctionReference ?: return null
         with(builder) {
             return { sequenceElement ->
-                val block = irReturnableBlock(context.irBuiltIns.booleanType) {}
-                val transformResult = callRichFunctionReference(transformFunction, data.parent, irGet(sequenceElement))
-                val transformResultVariable = scope.createTemporaryVariable(transformResult, "transformResult")
-                block.statements.add(transformResultVariable)
-                val isTransformNotNull = irNotEquals(irGet(transformResultVariable), irNull())
-                val thenPart = irBlock {
-                    +irSet(resultVariable, irGet(transformResultVariable))
-                    +irSet(skippedVariable, irFalse())
+                irReturnableBlock(context.irBuiltIns.booleanType) {
+                    val transformResult = callRichFunctionReference(transformFunction, data.parent, irGet(sequenceElement))
+                    val transformResultVariable = scope.createTemporaryVariable(transformResult, "transformResult")
+                    +transformResultVariable
+                    val isTransformNotNull = irNotEquals(irGet(transformResultVariable), irNull())
+                    val thenPart = irBlock {
+                        +irSet(resultVariable, irGet(transformResultVariable))
+                        +irSet(skippedVariable, irFalse())
+                    }
+                    val isFoundVariable = scope.createTemporaryVariable(isTransformNotNull, "isFound")
+                    +isFoundVariable
+                    +irIfThen(irGet(isFoundVariable), thenPart)
+                    +irReturn(irNot(irGet(isFoundVariable))).apply { returnTargetSymbol = returnableBlockSymbol }
                 }
-                val isFoundVariable = scope.createTemporaryVariable(isTransformNotNull, "isFound")
-                block.statements.add(isFoundVariable)
-                block.statements.add(irIfThen(irGet(isFoundVariable), thenPart))
-                block.statements.add(irReturn(irNot(irGet(isFoundVariable))).apply { returnTargetSymbol = block.symbol })
-                block
             }
         }
     }
