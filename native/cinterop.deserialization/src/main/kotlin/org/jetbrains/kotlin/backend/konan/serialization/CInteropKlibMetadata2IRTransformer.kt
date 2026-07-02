@@ -240,9 +240,27 @@ class CInteropKlibMetadata2IRTransformer(
         property.setter?.parent = parent
 
         kmProperty.compileTimeValue?.let { kmValue ->
-            property.getter?.let { getter ->
+            val field = IrFactoryImpl.createField(
+                startOffset = UNDEFINED_OFFSET,
+                endOffset = UNDEFINED_OFFSET,
+                origin = IrDeclarationOrigin.IR_EXTERNAL_DECLARATION_STUB,
+                name = Name.identifier(kmProperty.name),
+                visibility = kmProperty.visibility.toDescriptorVisibility(),
+                symbol = IrFieldSymbolImpl(),
+                type = kmProperty.returnType.toIrType(),
+                isFinal = !kmProperty.isVar,
+                isStatic = property.getter?.isStatic == true,
+                isExternal = kmProperty.isExternal
+            ).apply {
                 val irValue = deserializeAnnotationArgument(kmValue)
-                getter.body = IrFactoryImpl.createExpressionBody(irValue)
+                initializer = IrFactoryImpl.createExpressionBody(irValue)
+            }
+            property.backingField = field
+
+            property.getter?.let { getter ->
+                val getField = IrGetFieldImpl(UNDEFINED_OFFSET, UNDEFINED_OFFSET, field.symbol, field.type)
+                val irReturn = IrReturnImpl(UNDEFINED_OFFSET, UNDEFINED_OFFSET, getter.returnType, getter.symbol, getField)
+                getter.body = IrFactoryImpl.createBlockBody(UNDEFINED_OFFSET, UNDEFINED_OFFSET, listOf(irReturn))
             }
         }
 
