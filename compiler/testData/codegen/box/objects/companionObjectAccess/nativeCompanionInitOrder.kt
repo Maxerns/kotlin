@@ -1,11 +1,7 @@
-// ISSUE: KT-40768 KJS: initialization order for companion objects (inherited classes) different from K/JVM
-// IGNORE_BACKEND: JS_IR, JS_IR_ES6
-// ISSUE: KT-86521 Native: init order of companion objects is different from JVM
-// IGNORE_BACKEND: NATIVE
-// ^ also see nativeCompanionInitOrder* tests for Native-specific treatment.
-// ISSUE: KT-84267 K/Wasm: init order of companion objects is different from JVM
-// IGNORE_KLIB_RUNTIME_ERRORS_WITH_CUSTOM_SECOND_STAGE: Wasm-js:2.3,2.4
-// ^^^KT-84267 is fixed in 2.4.20-beta1
+// See companionInitOrderWithSuperclass for the common treatment.
+// TARGET_BACKEND: NATIVE
+// LANGUAGE: +CompanionBlocksAndExtensions
+// With this language feature, the behaviour should be exactly the same as on JVM.
 
 var l = ""
 private fun log(t: String) {
