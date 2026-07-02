@@ -1,7 +1,8 @@
 // IGNORE_BACKEND: JS_IR
 // IGNORE_BACKEND: JS_IR_ES6
-// IGNORE_BACKEND: NATIVE
+// DONT_TARGET_EXACT_BACKEND: NATIVE
 // WITH_STDLIB
+// XXX!: On Native, this test both fails and doesn't fail on TC.
 
 fun box(): String {
     try {
