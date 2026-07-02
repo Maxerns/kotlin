@@ -82,6 +82,8 @@ interface J {
         <!WRONG_MODIFIER_CONTAINING_DECLARATION!>protected<!> val protected = 1
         public val public = 1
         internal val internal = 1
+        var internal2 = 1
+            internal set
 
         <!WRONG_MODIFIER_TARGET!>abstract<!> val abstract: String
         <!WRONG_MODIFIER_TARGET!>open<!> val bar = 1
