@@ -17,8 +17,8 @@ import org.junit.jupiter.api.DisplayName
 class SandboxPluginTest : BaseCompilationTest() {
 
     @DefaultStrategyAndPlatformAgnosticScenarioTest
-    @DisplayName("KT-")
-    fun testChangedReceiverSupertypeRecompilesUsages(scenario: ScenarioCreator) {
+    @DisplayName("KT-87217 and KT-87370 Generating top-level callables from compiler plugins shouldn't break IC")
+    fun testGeneratingTopLevelCallables(scenario: ScenarioCreator) {
         scenario {
             val module = module("sandbox-plugin", compilationConfigAction = { operation: BaseCompilationOperation.Builder ->
                 operation.compilerArguments[CommonCompilerArguments.COMPILER_PLUGINS] = listOf(PLUGIN_SANDBOX_PLUGIN)
