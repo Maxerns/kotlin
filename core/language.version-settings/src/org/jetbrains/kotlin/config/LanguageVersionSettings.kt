@@ -548,11 +548,11 @@ enum class LanguageFeature(
     CallCompletionRefinementsFor25(sinceVersion = KOTLIN_2_5, "KT-86042"),
 
     ForbidValueClassRecursionViaTypeParameters(sinceVersion = KOTLIN_2_5, enabledInProgressiveMode = true, issue = "KT-85848"),
+    JsAllowExportTypealiases(sinceVersion = KOTLIN_2_5, "KT-49795"),
 
     // 2.6
 
     ReportReificationProblemsInDnnAndFlexible(sinceVersion = KOTLIN_2_6, enabledInProgressiveMode = true, "KTLC-399"),
-    JsAllowExportTypealiases(sinceVersion = KOTLIN_2_5, "KT-49795"),
 
     // End of 2.* language features --------------------------------------------------
 
